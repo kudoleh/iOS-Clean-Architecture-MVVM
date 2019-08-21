@@ -1,7 +1,7 @@
 # Sample iOS application using Clean Architecture and MVVM
 iOS Project implemented with Clean Layered Architecture and MVVM with Router.
 
-Medium post with detail description about this project: https://medium.com/p/c9d167d9f5b3
+Medium post with detail description about this project: https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3
 
 ## Architecture concepts used here:
 * Clean Layered Architecture https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
