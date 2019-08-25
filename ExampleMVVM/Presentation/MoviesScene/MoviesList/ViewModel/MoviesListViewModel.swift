@@ -13,22 +13,39 @@ enum MoviesListViewRoute {
     case closeMovieQueriesSuggestions
 }
 
-protocol MoviesListViewRouter {
-    func perform(_ segue: MoviesListViewRoute)
+enum MoviesListViewModelLoading {
+    case none
+    case fullScreen
+    case nextPage
 }
 
-final class MoviesListViewModel {
-    
-    enum LoadingType {
-        case none
-        case fullScreen
-        case nextPage
-    }
+protocol MoviesListViewModelInput: MoviesQueryListViewModelDelegate {
+    func viewDidLoad()
+    func didLoadNextPage()
+    func didSearch(query: String)
+    func didCancelSearch()
+    func showQueriesSuggestions()
+    func closeQueriesSuggestions()
+    func didSelect(item: MoviesListViewItemModel)
+}
+
+protocol MoviesListViewModelOutput {
+    var items: Observable<[MoviesListViewItemModel]> { get }
+    var isEmpty: Bool { get }
+    var loadingType: Observable<MoviesListViewModelLoading> { get }
+    var query: Observable<String> { get }
+    var error: Observable<String> { get }
+    var isLoading: Observable<Bool> { get }
+    var route: Observable<MoviesListViewRoute?> { get }
+}
+
+protocol MoviesListViewModel: MoviesListViewModelInput, MoviesListViewModelOutput {}
+
+final class DefaultMoviesListViewModel: MoviesListViewModel {
     
     private(set) var currentPage: Int = 0
     private var totalPageCount: Int = 1
     
-    var isEmpty: Bool { return items.value.isEmpty }
     var hasMorePages: Bool {
         return currentPage < totalPageCount
     }
@@ -37,18 +54,19 @@ final class MoviesListViewModel {
         return currentPage + 1
     }
     
-    var router: MoviesListViewRouter?
     private let searchMoviesUseCase: SearchMoviesUseCase
     private let posterImagesRepository: PosterImagesRepository
     
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
     
     // MARK: - OUTPUT
-    var items: Observable<[Item]> = Observable([Item]())
-    private(set) var loadingType: Observable<LoadingType> = Observable(.none) { didSet { isLoading.value = loadingType.value != .none } }
+    var items: Observable<[MoviesListViewItemModel]> = Observable([MoviesListViewItemModel]())
+    var isEmpty: Bool { return items.value.isEmpty }
+    private(set) var loadingType: Observable<MoviesListViewModelLoading> = Observable(.none) { didSet { isLoading.value = loadingType.value != .none } }
     private(set) var query: Observable<String> = Observable("")
     private(set) var error: Observable<String> = Observable("")
     private(set) var isLoading: Observable<Bool> = Observable(false)
+    private(set) var route: Observable<MoviesListViewRoute?> = Observable(nil)
     
     @discardableResult
     init(searchMoviesUseCase: SearchMoviesUseCase,
@@ -60,8 +78,8 @@ final class MoviesListViewModel {
     private func appendPage(moviesPage: MoviesPage) {
         self.currentPage = moviesPage.page
         self.totalPageCount = moviesPage.totalPages
-        self.items.value = items.value + moviesPage.movies.map { MoviesListViewModel.Item(movie: $0,
-                                                                                          posterImagesRepository: posterImagesRepository) }
+        self.items.value = items.value + moviesPage.movies.map { DefaultMoviesListViewItemModel(movie: $0,
+                                                                                                posterImagesRepository: posterImagesRepository) }
     }
     
     private func resetPages() {
@@ -70,7 +88,7 @@ final class MoviesListViewModel {
         items.value.removeAll()
     }
     
-    private func load(movieQuery: MovieQuery, loadingType: LoadingType) {
+    private func load(movieQuery: MovieQuery, loadingType: MoviesListViewModelLoading) {
         self.loadingType.value = loadingType
         self.query.value = movieQuery.query
         
@@ -95,16 +113,15 @@ final class MoviesListViewModel {
         resetPages()
         load(movieQuery: movieQuery, loadingType: .fullScreen)
     }
-    
-    // MARK: - INPUT. View event methods
-    func viewDidLoad() {
-        loadingType.value = .none
-    }
 }
 
 // MARK: - INPUT. View event methods
-extension MoviesListViewModel {
+extension DefaultMoviesListViewModel {
 
+    func viewDidLoad() {
+        loadingType.value = .none
+    }
+    
     func didLoadNextPage() {
         guard hasMorePages, !isLoading.value else { return }
         load(movieQuery: MovieQuery(query: query.value),
@@ -121,23 +138,23 @@ extension MoviesListViewModel {
     }
 
     func showQueriesSuggestions() {
-        router?.perform(.showMovieQueriesSuggestions)
+        route.value = .showMovieQueriesSuggestions
     }
     
     func closeQueriesSuggestions() {
-        router?.perform(.closeMovieQueriesSuggestions)
+        route.value = .closeMovieQueriesSuggestions
     }
     
-    func didSelect(item: MoviesListViewModel.Item) {
-        router?.perform(.showMovieDetail(title: item.title,
-                                         overview: item.overview,
-                                         posterPlaceholderImage: item.posterImage.value,
-                                         posterPath: item.posterPath))
+    func didSelect(item: MoviesListViewItemModel) {
+        route.value = .showMovieDetail(title: item.title,
+                                       overview: item.overview,
+                                       posterPlaceholderImage: item.posterImage.value,
+                                       posterPath: item.posterPath)
     }
 }
 
 // MARK: - Delegate method from another model views
-extension MoviesListViewModel: MoviesQueryListViewModelDelegate {
+extension DefaultMoviesListViewModel {
     func moviesQueriesListDidSelect(movieQuery: MovieQuery) {
         update(movieQuery: movieQuery)
     }

@@ -13,7 +13,7 @@ final class MoviesListTableViewController: UITableViewController {
     var nextPageLoadingSpinner: UIActivityIndicatorView?
     
     var viewModel: MoviesListViewModel!
-    var items: [MoviesListViewModel.Item]! {
+    var items: [MoviesListViewItemModel]! {
         didSet { reload() }
     }
     

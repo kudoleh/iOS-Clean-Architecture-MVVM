@@ -11,13 +11,13 @@
 //import Combine
 //
 //@available(iOS 13.0, *)
-//extension MoviesQueryListViewModelWrapper.Item: Identifiable { }
+//extension DefaultMoviesQueryListViewItemModel: Identifiable { }
 //
 //@available(iOS 13.0, *)
 //struct MoviesQueryListView: View {
 //    @ObjectBinding var viewModel: MoviesQueryListViewModelWrapper
 //    var body: some View {
-//        List(viewModel.items.value) { item in
+//        List(viewModel.items.value as! [DefaultMoviesQueryListViewItemModel]) { item in
 //            Button(action: {
 //                self.viewModel.didSelect(item: item)
 //            }) {
@@ -30,8 +30,8 @@
 //}
 //
 //@available(iOS 13.0, *)
-//final class MoviesQueryListViewModelWrapper: MoviesQueryListViewModel, BindableObject {
-//    public var didChange = PassthroughSubject<[Item], Never>()
+//final class MoviesQueryListViewModelWrapper: DefaultMoviesQueryListViewModel, BindableObject {
+//    public var didChange = PassthroughSubject<[MoviesQueryListViewItemModel], Never>()
 //
 //    override init(numberOfQueriesToShow: Int,
 //                  fetchMoviesRecentQueriesUseCase: FetchMoviesRecentQueriesUseCase,
@@ -41,6 +41,6 @@
 //                   delegate: delegate)
 //
 //        items.observe(on: self) { [weak self] values in
-//            self?.didChange.send(values) }
+//            self?.didChange.send(values as! [DefaultMoviesQueryListViewItemModel]) }
 //    }
 //}

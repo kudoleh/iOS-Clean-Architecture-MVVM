@@ -8,7 +8,19 @@
 
 import Foundation
 
-final class MovieDetailsViewModel {
+protocol MovieDetailsViewModelInput {
+    func updatePosterImage(width: Int)
+}
+
+protocol MovieDetailsViewModelOutput {
+    var title: Observable<String> { get }
+    var posterImage: Observable<Data?> { get }
+    var overview: Observable<String> { get }
+}
+
+protocol MovieDetailsViewModel: MovieDetailsViewModelInput, MovieDetailsViewModelOutput { }
+
+final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     
     private let posterPath: String?
     
@@ -35,8 +47,7 @@ final class MovieDetailsViewModel {
 }
 
 // MARK: - INPUT. View event methods
-extension MovieDetailsViewModel {
-    func viewDidLoad() { }
+extension DefaultMovieDetailsViewModel {
     
     func updatePosterImage(width: Int) {
         guard let posterPath = posterPath, alreadyLoadedImageWidth != width  else { return }

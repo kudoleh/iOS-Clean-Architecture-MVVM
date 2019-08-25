@@ -10,7 +10,7 @@ import UIKit
 
 final class MovieDetailsViewController: UIViewController, StoryboardInstantiable {
     
-    private let fadeTransitionDuration: CFTimeInterval = 0.4
+    private static let fadeTransitionDuration: CFTimeInterval = 0.4
     
     @IBOutlet weak private var posterImageView: UIImageView!
     @IBOutlet weak private var overviewTextView: UITextView!
@@ -27,20 +27,18 @@ final class MovieDetailsViewController: UIViewController, StoryboardInstantiable
         super.viewDidLoad()
 
         bind(to: viewModel)
-        viewModel.viewDidLoad()
-        
         view.accessibilityLabel = NSLocalizedString("Movie details view", comment: "")
     }
     
     func bind(to viewModel: MovieDetailsViewModel) {
-        viewModel.title.observe(on: self) { [unowned self] title in
-            self.title = title
+        viewModel.title.observe(on: self) { [weak self] title in
+            self?.title = title
         }
-        viewModel.posterImage.observe(on: self) { [unowned self] image in
-            self.posterImageView.image = image.flatMap { UIImage(data: $0) }
+        viewModel.posterImage.observe(on: self) { [weak self] image in
+            self?.posterImageView.image = image.flatMap { UIImage(data: $0) }
         }
-        viewModel.overview.observe(on: self) { [unowned self] text in
-            self.overviewTextView.setTextWithFadeTransition(text: text, withFadeTransitionDuration: self.fadeTransitionDuration)
+        viewModel.overview.observe(on: self) { [weak self] text in
+            self?.overviewTextView.setTextWithFadeTransition(text: text, withFadeTransitionDuration: MovieDetailsViewController.fadeTransitionDuration)
         }
     }
     

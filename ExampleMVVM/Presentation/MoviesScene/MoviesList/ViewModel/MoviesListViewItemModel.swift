@@ -7,36 +7,48 @@
 
 import Foundation
 
-extension MoviesListViewModel {
-    
-    final class Item: Equatable {
-        
-        private(set) var id: Int
-        private(set) var posterPath: String?
-        
-        // MARK: - OUTPUT
-        let title: String
-        let overview: String
-        let releaseDate: String
-        private(set) var posterImage: Observable<Data?> = Observable(nil)
-        
-        private let posterImagesRepository: PosterImagesRepository
-        private var imageLoadTask: Cancellable? { willSet { imageLoadTask?.cancel() } }
+protocol MoviesListViewItemModelInput {
+    func viewDidLoad()
+    func updatePosterImage(width: Int)
+}
 
-        init(movie: Movie,
-             posterImagesRepository: PosterImagesRepository) {
-            self.id = movie.id
-            self.title = movie.title
-            self.posterPath = movie.posterPath
-            self.overview = movie.overview
-            self.releaseDate = movie.releaseDate != nil ? dateFormatter.string(from: movie.releaseDate!) : NSLocalizedString("To be announced", comment: "")
-            self.posterImagesRepository = posterImagesRepository
-        }
+protocol MoviesListViewItemModelOutput {
+    var title: String { get }
+    var overview: String { get }
+    var releaseDate: String { get }
+    var posterImage: Observable<Data?> { get }
+    var posterPath: String? { get }
+}
+
+protocol MoviesListViewItemModel: MoviesListViewItemModelInput, MoviesListViewItemModelOutput { }
+
+final class DefaultMoviesListViewItemModel: MoviesListViewItemModel {
+    
+    private(set) var id: Int
+
+    // MARK: - OUTPUT
+    let title: String
+    let overview: String
+    let releaseDate: String
+    private(set) var posterPath: String?
+    private(set) var posterImage: Observable<Data?> = Observable(nil)
+
+    private let posterImagesRepository: PosterImagesRepository
+    private var imageLoadTask: Cancellable? { willSet { imageLoadTask?.cancel() } }
+
+    init(movie: Movie,
+         posterImagesRepository: PosterImagesRepository) {
+        self.id = movie.id
+        self.title = movie.title
+        self.posterPath = movie.posterPath
+        self.overview = movie.overview
+        self.releaseDate = movie.releaseDate != nil ? dateFormatter.string(from: movie.releaseDate!) : NSLocalizedString("To be announced", comment: "")
+        self.posterImagesRepository = posterImagesRepository
     }
 }
 
 // MARK: - INPUT. View event methods
-extension MoviesListViewModel.Item {
+extension DefaultMoviesListViewItemModel {
     
     func viewDidLoad() {}
     
@@ -56,7 +68,7 @@ extension MoviesListViewModel.Item {
     }
 }
 
-func == (lhs: MoviesListViewModel.Item, rhs: MoviesListViewModel.Item) -> Bool {
+func == (lhs: DefaultMoviesListViewItemModel, rhs: DefaultMoviesListViewItemModel) -> Bool {
     return (lhs.id == rhs.id)
 }
 

@@ -44,8 +44,8 @@ class MoviesListViewModelTests: XCTestCase {
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
         searchMoviesUseCaseMock.expectation = self.expectation(description: "contains only first page")
         searchMoviesUseCaseMock.page = MoviesPage(page: 1, totalPages: 2, movies: moviesPages[0].movies)
-        let viewModel = MoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock,
-                                            posterImagesRepository: PosterImagesRepositoryMock())
+        let viewModel = DefaultMoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock,
+                                                   posterImagesRepository: PosterImagesRepositoryMock())
         // when
         viewModel.didSearch(query: "query")
         
@@ -60,8 +60,8 @@ class MoviesListViewModelTests: XCTestCase {
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
         searchMoviesUseCaseMock.expectation = self.expectation(description: "First page loaded")
         searchMoviesUseCaseMock.page = MoviesPage(page: 1, totalPages: 2, movies: moviesPages[0].movies)
-        let viewModel = MoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock,
-                                            posterImagesRepository: PosterImagesRepositoryMock())
+        let viewModel = DefaultMoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock,
+                                                   posterImagesRepository: PosterImagesRepositoryMock())
         // when
         viewModel.didSearch(query: "query")
         waitForExpectations(timeout: 5, handler: nil)
@@ -82,8 +82,8 @@ class MoviesListViewModelTests: XCTestCase {
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
         searchMoviesUseCaseMock.expectation = self.expectation(description: "contain errors")
         searchMoviesUseCaseMock.error = SearchMoviesUseCaseError.someError
-        let viewModel = MoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock,
-                                            posterImagesRepository: PosterImagesRepositoryMock())
+        let viewModel = DefaultMoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock,
+                                                   posterImagesRepository: PosterImagesRepositoryMock())
         // when
         viewModel.didSearch(query: "query")
         
@@ -97,8 +97,8 @@ class MoviesListViewModelTests: XCTestCase {
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
         searchMoviesUseCaseMock.expectation = self.expectation(description: "First page loaded")
         searchMoviesUseCaseMock.page = MoviesPage(page: 1, totalPages: 2, movies: moviesPages[0].movies)
-        let viewModel = MoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock,
-                                            posterImagesRepository: PosterImagesRepositoryMock())
+        let viewModel = DefaultMoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock,
+                                                   posterImagesRepository: PosterImagesRepositoryMock())
         // when
         viewModel.didSearch(query: "query")
         waitForExpectations(timeout: 5, handler: nil)

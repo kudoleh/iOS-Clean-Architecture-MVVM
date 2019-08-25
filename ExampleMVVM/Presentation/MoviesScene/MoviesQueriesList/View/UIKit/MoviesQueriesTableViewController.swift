@@ -27,8 +27,8 @@ final class MoviesQueriesTableViewController: UITableViewController, StoryboardI
     }
     
     func bind(to viewModel: MoviesQueryListViewModel) {
-        viewModel.items.observe(on: self) { [unowned self] _ in
-            self.tableView.reloadData()
+        viewModel.items.observe(on: self) { [weak self] _ in
+            self?.tableView.reloadData()
         }
     }
     

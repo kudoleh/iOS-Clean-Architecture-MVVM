@@ -55,8 +55,8 @@ final class MoviesSceneDIContainer {
     }
     
     func makeMoviesListViewModel() -> MoviesListViewModel {
-        return MoviesListViewModel(searchMoviesUseCase: makeSearchMoviesUseCase(),
-                                   posterImagesRepository: makePosterImagesRepository())
+        return DefaultMoviesListViewModel(searchMoviesUseCase: makeSearchMoviesUseCase(),
+                                          posterImagesRepository: makePosterImagesRepository())
     }
     
     // MARK: - Movie Details
@@ -74,16 +74,17 @@ final class MoviesSceneDIContainer {
                                     overview: String,
                                     posterPlaceholderImage: Data?,
                                     posterPath: String?) -> MovieDetailsViewModel {
-        return MovieDetailsViewModel(title: title,
-                                     overview: overview,
-                                     posterPlaceholderImage: posterPlaceholderImage,
-                                     posterPath: posterPath,
-                                     posterImagesRepository: makePosterImagesRepository())
+        return DefaultMovieDetailsViewModel(title: title,
+                                            overview: overview,
+                                            posterPlaceholderImage: posterPlaceholderImage,
+                                            posterPath: posterPath,
+                                            posterImagesRepository: makePosterImagesRepository())
     }
     
     // MARK: - Movies Queries Suggestions List
     func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController {
 //        if #available(iOS 13.0, *) { // SwiftUI
+//
 //            return UIHostingController(rootView: MoviesQueryListView(viewModel: makeMoviesQueryListViewModelWrapper(delegate: delegate)))
 //        } else { // UIKit
             return MoviesQueriesTableViewController.create(with: makeMoviesQueryListViewModel(delegate: delegate))
@@ -91,9 +92,9 @@ final class MoviesSceneDIContainer {
     }
     
     func makeMoviesQueryListViewModel(delegate: MoviesQueryListViewModelDelegate) -> MoviesQueryListViewModel {
-        return MoviesQueryListViewModel(numberOfQueriesToShow: 10,
-                                        fetchMoviesRecentQueriesUseCase: makeFetchMoviesRecentQueriesUseCase(),
-                                        delegate: delegate)
+        return DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 10,
+                                               fetchMoviesRecentQueriesUseCase: makeFetchMoviesRecentQueriesUseCase(),
+                                               delegate: delegate)
     }
 // SwiftUI
 //    @available(iOS 13.0, *)

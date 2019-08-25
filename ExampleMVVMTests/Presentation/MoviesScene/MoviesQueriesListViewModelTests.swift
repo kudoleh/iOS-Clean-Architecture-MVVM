@@ -49,8 +49,8 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         let useCase = FetchMoviesRecentQueriesUseCaseMock()
         useCase.expectation = self.expectation(description: "Recent query fetched")
         useCase.movieQueries = movieQueries
-        let viewModel = MoviesQueryListViewModel(numberOfQueriesToShow: 3,
-                                                 fetchMoviesRecentQueriesUseCase: useCase)
+        let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
+                                                    fetchMoviesRecentQueriesUseCase: useCase)
 
         // when
         viewModel.viewWillAppear()
@@ -65,8 +65,8 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         let useCase = FetchMoviesRecentQueriesUseCaseMock()
         useCase.expectation = self.expectation(description: "Recent query fetched")
         useCase.error = FetchRecentQueriedUseCase.someError
-        let viewModel = MoviesQueryListViewModel(numberOfQueriesToShow: 3,
-                                                 fetchMoviesRecentQueriesUseCase: useCase)
+        let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
+                                                        fetchMoviesRecentQueriesUseCase: useCase)
         
         // when
         viewModel.viewWillAppear()
@@ -82,12 +82,12 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         let delegate = MoviesQueryListViewModelDelegateMock()
         delegate.expectation = self.expectation(description: "Delegate notified")
         
-        let viewModel = MoviesQueryListViewModel(numberOfQueriesToShow: 3,
-                                                 fetchMoviesRecentQueriesUseCase: FetchMoviesRecentQueriesUseCaseMock(),
-                                                 delegate: delegate)
+        let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
+                                                        fetchMoviesRecentQueriesUseCase: FetchMoviesRecentQueriesUseCaseMock(),
+                                                        delegate: delegate)
         
         // when
-        viewModel.didSelect(item: MoviesQueryListViewModel.Item(query: selectedQueryItem.query))
+        viewModel.didSelect(item: DefaultMoviesQueryListViewItemModel(query:       selectedQueryItem.query))
         
         // then
         waitForExpectations(timeout: 5, handler: nil)

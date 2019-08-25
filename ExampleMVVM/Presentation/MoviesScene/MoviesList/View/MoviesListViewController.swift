@@ -18,8 +18,9 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     @IBOutlet weak private var emptyDataLabel: UILabel!
     
     private(set) var viewModel: MoviesListViewModel!
+    private var moviesListViewControllersFactory: MoviesListViewControllersFactory!
     
-    private var moviesQueriesSuggestionsView: MoviesQueriesTableViewController?
+    private var moviesQueriesSuggestionsView: UIViewController?
     private var moviesTableViewController: MoviesListTableViewController?
     private var searchController = UISearchController(searchResultsController: nil)
     
@@ -27,8 +28,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
                             moviesListViewControllersFactory: MoviesListViewControllersFactory) -> MoviesListViewController {
         let view = MoviesListViewController.instantiateViewController()
         view.viewModel = viewModel
-        view.viewModel.router = DefaultMoviesListViewRouter(view: view,
-                                                            moviesListViewControllersFactory: moviesListViewControllersFactory)
+        view.moviesListViewControllersFactory = moviesListViewControllersFactory
         return view
     }
 
@@ -44,18 +44,21 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     }
     
     func bind(to viewModel: MoviesListViewModel) {
-        viewModel.items.observe(on: self) { [unowned self] items in
-            self.moviesTableViewController?.items = items
-            self.updateViewsVisibility(model: self.viewModel)
+        viewModel.items.observe(on: self) { [weak self] items in
+            self?.moviesTableViewController?.items = items
+            self?.updateViewsVisibility(model: viewModel)
         }
-        viewModel.query.observe(on: self) { [unowned self] query in
-            self.updateSearchController(query: query)
+        viewModel.query.observe(on: self) { [weak self] query in
+            self?.updateSearchController(query: query)
         }
-        viewModel.error.observe(on: self) { [unowned self] error in
-            self.showError(error)
+        viewModel.error.observe(on: self) { [weak self] error in
+            self?.showError(error)
         }
-        viewModel.loadingType.observe(on: self) { [unowned self] _ in
-            self.updateViewsVisibility(model: self.viewModel)
+        viewModel.loadingType.observe(on: self) { [weak self] _ in
+           self?.updateViewsVisibility(model: viewModel)
+        }
+        viewModel.route.observe(on: self) { [weak self] route in
+            self?.perform(route)
         }
     }
     
@@ -82,7 +85,8 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         showAlert(title: NSLocalizedString("Error", comment: ""), message: error)
     }
     
-    private func updateViewsVisibility(model: MoviesListViewModel) {
+    private func updateViewsVisibility(model: MoviesListViewModel?) {
+        guard let model = model else { return }
         loadingView.isHidden = true
         emptyDataLabel.isHidden = true
         moviesListContainer.isHidden = true
@@ -161,7 +165,33 @@ extension MoviesListViewController {
     }
 }
 
-// MARK: - MoviesListViewControllersFactory
+// MARK: - Perform Routing
+
+extension MoviesListViewController {
+    func perform(_ route: MoviesListViewRoute?) {
+        guard let route = route else { return }
+        switch route {
+        case .showMovieDetail(let title, let overview, let posterPlaceholderImage, let posterPath):
+            let vc = moviesQueriesSuggestionsView ?? moviesListViewControllersFactory.makeMoviesDetailsViewController(title: title,
+                                                                                                                      overview: overview,
+                                                                                                                      posterPlaceholderImage: posterPlaceholderImage,
+                                                                                                                      posterPath: posterPath)
+            navigationController?.pushViewController(vc, animated: true)
+        case .showMovieQueriesSuggestions:
+            guard let view = view else { return }
+            let vc = moviesQueriesSuggestionsView ?? moviesListViewControllersFactory.makeMoviesQueriesSuggestionsListViewController(delegate: viewModel)
+            add(child: vc, container: suggestionsListContainer)
+            vc.view.frame = view.bounds
+            moviesQueriesSuggestionsView = vc
+            suggestionsListContainer.isHidden = false
+        case .closeMovieQueriesSuggestions:
+            guard let suggestionsListContainer = suggestionsListContainer else { return }
+            moviesQueriesSuggestionsView?.remove()
+            moviesQueriesSuggestionsView = nil
+            suggestionsListContainer.isHidden = true
+        }
+    }
+}
 
 protocol MoviesListViewControllersFactory {
     

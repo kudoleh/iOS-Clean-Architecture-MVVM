@@ -7,26 +7,30 @@
 
 import Foundation
 
+protocol MoviesQueryListViewModelInput {
+    func viewWillAppear()
+    func didSelect(item: MoviesQueryListViewItemModel)
+}
+
+protocol MoviesQueryListViewModelOutput {
+    var items: Observable<[MoviesQueryListViewItemModel]> { get }
+}
+
+protocol MoviesQueryListViewModel: MoviesQueryListViewModelInput, MoviesQueryListViewModelOutput { }
+
 protocol MoviesQueryListViewModelDelegate: class {
     
     func moviesQueriesListDidSelect(movieQuery: MovieQuery)
 }
 
-class MoviesQueryListViewModel {
+class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
 
-    class Item: Equatable {
-        let query: String
-        init(query: String) {
-            self.query = query
-        }
-    }
-    
     private let numberOfQueriesToShow: Int
     private let fetchMoviesRecentQueriesUseCase: FetchMoviesRecentQueriesUseCase
     private weak var delegate: MoviesQueryListViewModelDelegate?
     
     // MARK: - OUTPUT
-    private(set) var items: Observable<[Item]> = Observable([Item]())
+    private(set) var items: Observable<[MoviesQueryListViewItemModel]> = Observable([MoviesQueryListViewItemModel]())
     
     init(numberOfQueriesToShow: Int,
          fetchMoviesRecentQueriesUseCase: FetchMoviesRecentQueriesUseCase,
@@ -41,7 +45,7 @@ class MoviesQueryListViewModel {
         _ = fetchMoviesRecentQueriesUseCase.execute(requestValue: request) { [weak self] result in
             switch result {
             case .success(let items):
-                self?.items.value = items.map { Item(query: $0.query) }
+                self?.items.value = items.map { DefaultMoviesQueryListViewItemModel(query: $0.query) }
             case .failure: break
             }
         }
@@ -49,19 +53,13 @@ class MoviesQueryListViewModel {
 }
 
 // MARK: - INPUT. View event methods
-extension MoviesQueryListViewModel {
-    
-    func viewDidLoad() {}
-    
+extension DefaultMoviesQueryListViewModel {
+        
     func viewWillAppear() {
         updateMoviesQueries()
     }
     
-    func didSelect(item: MoviesQueryListViewModel.Item) {
+    func didSelect(item: MoviesQueryListViewItemModel) {
         delegate?.moviesQueriesListDidSelect(movieQuery: MovieQuery(query: item.query))
     }
-}
-
-func == (lhs: MoviesQueryListViewModel.Item, rhs: MoviesQueryListViewModel.Item) -> Bool {
-    return (lhs.query == rhs.query)
 }
