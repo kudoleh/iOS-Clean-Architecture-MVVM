@@ -1,5 +1,5 @@
 //
-//  MoviesListViewItemModel.swift
+//  MoviesListItemViewModel.swift
 //  ExampleMVVM
 //
 //  Created by Oleh Kudinov on 18.02.19.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol MoviesListViewItemModelInput {
+protocol MoviesListItemViewModelInput {
     func viewDidLoad()
     func updatePosterImage(width: Int)
 }
 
-protocol MoviesListViewItemModelOutput {
+protocol MoviesListItemViewModelOutput {
     var title: String { get }
     var overview: String { get }
     var releaseDate: String { get }
@@ -20,9 +20,9 @@ protocol MoviesListViewItemModelOutput {
     var posterPath: String? { get }
 }
 
-protocol MoviesListViewItemModel: MoviesListViewItemModelInput, MoviesListViewItemModelOutput { }
+protocol MoviesListItemViewModel: MoviesListItemViewModelInput, MoviesListItemViewModelOutput {}
 
-final class DefaultMoviesListViewItemModel: MoviesListViewItemModel {
+final class DefaultMoviesListItemViewModel: MoviesListItemViewModel {
     
     private(set) var id: Int
 
@@ -48,7 +48,7 @@ final class DefaultMoviesListViewItemModel: MoviesListViewItemModel {
 }
 
 // MARK: - INPUT. View event methods
-extension DefaultMoviesListViewItemModel {
+extension DefaultMoviesListItemViewModel {
     
     func viewDidLoad() {}
     
@@ -68,7 +68,7 @@ extension DefaultMoviesListViewItemModel {
     }
 }
 
-func == (lhs: DefaultMoviesListViewItemModel, rhs: DefaultMoviesListViewItemModel) -> Bool {
+func == (lhs: DefaultMoviesListItemViewModel, rhs: DefaultMoviesListItemViewModel) -> Bool {
     return (lhs.id == rhs.id)
 }
 

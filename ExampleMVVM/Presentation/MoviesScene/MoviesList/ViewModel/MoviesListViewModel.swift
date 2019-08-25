@@ -26,11 +26,11 @@ protocol MoviesListViewModelInput: MoviesQueryListViewModelDelegate {
     func didCancelSearch()
     func showQueriesSuggestions()
     func closeQueriesSuggestions()
-    func didSelect(item: MoviesListViewItemModel)
+    func didSelect(item: MoviesListItemViewModel)
 }
 
 protocol MoviesListViewModelOutput {
-    var items: Observable<[MoviesListViewItemModel]> { get }
+    var items: Observable<[MoviesListItemViewModel]> { get }
     var isEmpty: Bool { get }
     var loadingType: Observable<MoviesListViewModelLoading> { get }
     var query: Observable<String> { get }
@@ -60,7 +60,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
     
     // MARK: - OUTPUT
-    var items: Observable<[MoviesListViewItemModel]> = Observable([MoviesListViewItemModel]())
+    var items: Observable<[MoviesListItemViewModel]> = Observable([MoviesListItemViewModel]())
     var isEmpty: Bool { return items.value.isEmpty }
     private(set) var loadingType: Observable<MoviesListViewModelLoading> = Observable(.none) { didSet { isLoading.value = loadingType.value != .none } }
     private(set) var query: Observable<String> = Observable("")
@@ -78,7 +78,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     private func appendPage(moviesPage: MoviesPage) {
         self.currentPage = moviesPage.page
         self.totalPageCount = moviesPage.totalPages
-        self.items.value = items.value + moviesPage.movies.map { DefaultMoviesListViewItemModel(movie: $0,
+        self.items.value = items.value + moviesPage.movies.map { DefaultMoviesListItemViewModel(movie: $0,
                                                                                                 posterImagesRepository: posterImagesRepository) }
     }
     
@@ -145,7 +145,7 @@ extension DefaultMoviesListViewModel {
         route.value = .closeMovieQueriesSuggestions
     }
     
-    func didSelect(item: MoviesListViewItemModel) {
+    func didSelect(item: MoviesListItemViewModel) {
         route.value = .showMovieDetail(title: item.title,
                                        overview: item.overview,
                                        posterPlaceholderImage: item.posterImage.value,

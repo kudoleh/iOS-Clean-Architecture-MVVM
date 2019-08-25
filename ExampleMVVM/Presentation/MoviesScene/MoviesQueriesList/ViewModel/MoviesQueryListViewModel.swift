@@ -9,11 +9,11 @@ import Foundation
 
 protocol MoviesQueryListViewModelInput {
     func viewWillAppear()
-    func didSelect(item: MoviesQueryListViewItemModel)
+    func didSelect(item: MoviesQueryListItemViewModel)
 }
 
 protocol MoviesQueryListViewModelOutput {
-    var items: Observable<[MoviesQueryListViewItemModel]> { get }
+    var items: Observable<[MoviesQueryListItemViewModel]> { get }
 }
 
 protocol MoviesQueryListViewModel: MoviesQueryListViewModelInput, MoviesQueryListViewModelOutput { }
@@ -30,7 +30,7 @@ class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
     private weak var delegate: MoviesQueryListViewModelDelegate?
     
     // MARK: - OUTPUT
-    private(set) var items: Observable<[MoviesQueryListViewItemModel]> = Observable([MoviesQueryListViewItemModel]())
+    private(set) var items: Observable<[MoviesQueryListItemViewModel]> = Observable([MoviesQueryListItemViewModel]())
     
     init(numberOfQueriesToShow: Int,
          fetchMoviesRecentQueriesUseCase: FetchMoviesRecentQueriesUseCase,
@@ -45,7 +45,7 @@ class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
         _ = fetchMoviesRecentQueriesUseCase.execute(requestValue: request) { [weak self] result in
             switch result {
             case .success(let items):
-                self?.items.value = items.map { DefaultMoviesQueryListViewItemModel(query: $0.query) }
+                self?.items.value = items.map { DefaultMoviesQueryListItemViewModel(query: $0.query) }
             case .failure: break
             }
         }
@@ -59,7 +59,7 @@ extension DefaultMoviesQueryListViewModel {
         updateMoviesQueries()
     }
     
-    func didSelect(item: MoviesQueryListViewItemModel) {
+    func didSelect(item: MoviesQueryListItemViewModel) {
         delegate?.moviesQueriesListDidSelect(movieQuery: MovieQuery(query: item.query))
     }
 }

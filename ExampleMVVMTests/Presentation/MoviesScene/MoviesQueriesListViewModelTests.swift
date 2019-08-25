@@ -87,7 +87,7 @@ class MoviesQueriesListViewModelTests: XCTestCase {
                                                         delegate: delegate)
         
         // when
-        viewModel.didSelect(item: DefaultMoviesQueryListViewItemModel(query:       selectedQueryItem.query))
+        viewModel.didSelect(item: DefaultMoviesQueryListItemViewModel(query: selectedQueryItem.query))
         
         // then
         waitForExpectations(timeout: 5, handler: nil)

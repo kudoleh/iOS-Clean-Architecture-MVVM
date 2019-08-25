@@ -18,9 +18,9 @@ final class MoviesListItemCell: UITableViewCell {
     @IBOutlet weak private var overviewLabel: UILabel!
     @IBOutlet weak private var posterImageView: UIImageView!
     
-    private var viewModel: MoviesListViewItemModel! { didSet { unbind(from: oldValue) } }
+    private var viewModel: MoviesListItemViewModel! { didSet { unbind(from: oldValue) } }
     
-    func fill(with viewModel: MoviesListViewItemModel) {
+    func fill(with viewModel: MoviesListItemViewModel) {
         self.viewModel = viewModel
         titleLabel.text = viewModel.title
         dateLabel.text = "\(NSLocalizedString("Release Date", comment: "")): \(viewModel.releaseDate)"
@@ -30,13 +30,13 @@ final class MoviesListItemCell: UITableViewCell {
         bind(to: viewModel)
     }
     
-    func bind(to viewModel: MoviesListViewItemModel) {
+    func bind(to viewModel: MoviesListItemViewModel) {
         viewModel.posterImage.observe(on: self) { [weak self] (data: Data?) in
             self?.posterImageView.image = data.flatMap { UIImage(data: $0) }
         }
     }
     
-    private func unbind(from item: MoviesListViewItemModel?) {
+    private func unbind(from item: MoviesListItemViewModel?) {
         item?.posterImage.remove(observer: self)
     }
 }
