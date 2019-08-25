@@ -5,6 +5,7 @@ Medium post with detail description about this project: https://tech.olx.com/cle
 
 ## Architecture concepts used here:
 * Clean Layered Architecture https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
+* Advanced iOS App Architecture https://www.raywenderlich.com/8477-introducing-advanced-ios-app-architecture
 * MVVM
 * Router
 * Data Binding
