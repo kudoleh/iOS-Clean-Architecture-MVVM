@@ -44,6 +44,9 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     }
     
     func bind(to viewModel: MoviesListViewModel) {
+        viewModel.route.observe(on: self) { [weak self] route in
+            self?.perform(route)
+        }
         viewModel.items.observe(on: self) { [weak self] items in
             self?.moviesTableViewController?.items = items
             self?.updateViewsVisibility(model: viewModel)
@@ -56,9 +59,6 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         }
         viewModel.loadingType.observe(on: self) { [weak self] _ in
            self?.updateViewsVisibility(model: viewModel)
-        }
-        viewModel.route.observe(on: self) { [weak self] route in
-            self?.perform(route)
         }
     }
     
