@@ -168,7 +168,7 @@ extension MoviesListViewController {
 // MARK: - Perform Routing
 
 extension MoviesListViewController {
-    func perform(_ route: MoviesListViewRoute?) {
+    func perform(_ route: MoviesListViewModelRoute?) {
         guard let route = route else { return }
         switch route {
         case .showMovieDetail(let title, let overview, let posterPlaceholderImage, let posterPath):

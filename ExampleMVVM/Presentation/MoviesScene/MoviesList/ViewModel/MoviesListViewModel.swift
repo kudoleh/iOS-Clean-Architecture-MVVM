@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MoviesListViewRoute {
+enum MoviesListViewModelRoute {
     case showMovieDetail(title: String, overview: String, posterPlaceholderImage: Data?, posterPath: String?)
     case showMovieQueriesSuggestions
     case closeMovieQueriesSuggestions
@@ -30,13 +30,13 @@ protocol MoviesListViewModelInput: MoviesQueryListViewModelDelegate {
 }
 
 protocol MoviesListViewModelOutput {
+    var route: Observable<MoviesListViewModelRoute?> { get }
     var items: Observable<[MoviesListItemViewModel]> { get }
     var isEmpty: Bool { get }
     var loadingType: Observable<MoviesListViewModelLoading> { get }
     var query: Observable<String> { get }
     var error: Observable<String> { get }
     var isLoading: Observable<Bool> { get }
-    var route: Observable<MoviesListViewRoute?> { get }
 }
 
 protocol MoviesListViewModel: MoviesListViewModelInput, MoviesListViewModelOutput {}
@@ -60,13 +60,13 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
     
     // MARK: - OUTPUT
-    var items: Observable<[MoviesListItemViewModel]> = Observable([MoviesListItemViewModel]())
+    private(set) var route: Observable<MoviesListViewModelRoute?> = Observable(nil)
+    private(set) var items: Observable<[MoviesListItemViewModel]> = Observable([MoviesListItemViewModel]())
     var isEmpty: Bool { return items.value.isEmpty }
     private(set) var loadingType: Observable<MoviesListViewModelLoading> = Observable(.none) { didSet { isLoading.value = loadingType.value != .none } }
     private(set) var query: Observable<String> = Observable("")
     private(set) var error: Observable<String> = Observable("")
     private(set) var isLoading: Observable<Bool> = Observable(false)
-    private(set) var route: Observable<MoviesListViewRoute?> = Observable(nil)
     
     @discardableResult
     init(searchMoviesUseCase: SearchMoviesUseCase,
