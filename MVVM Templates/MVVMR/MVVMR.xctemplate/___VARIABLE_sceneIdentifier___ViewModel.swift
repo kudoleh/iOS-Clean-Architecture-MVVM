@@ -8,6 +8,10 @@
 
 import Foundation
 
+enum ___VARIABLE_sceneIdentifier___ViewModelRoute {
+    case showDetails(itemId: String)
+}
+
 protocol ___VARIABLE_sceneIdentifier___ViewModelInput {
     func viewDidLoad()
 }
@@ -21,7 +25,7 @@ protocol ___VARIABLE_sceneIdentifier___ViewModel: ___VARIABLE_sceneIdentifier___
 class Default___VARIABLE_sceneIdentifier___ViewModel: ___VARIABLE_sceneIdentifier___ViewModel {
     
     // MARK: - OUTPUT
-
+    private(set) var route: Observable<___VARIABLE_sceneIdentifier___ViewModelRoute?> = Observable(nil)
 }
 
 // MARK: - INPUT. View event methods

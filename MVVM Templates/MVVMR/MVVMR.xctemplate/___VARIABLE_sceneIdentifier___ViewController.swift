@@ -28,3 +28,16 @@ class ___VARIABLE_sceneIdentifier___ViewController: UIViewController, Storyboard
 
     }
 }
+
+// MARK: - Perform Routing
+
+extension ___VARIABLE_sceneIdentifier___ViewController {
+    func perform(_ route: ___VARIABLE_sceneIdentifier___ViewModelRoute?) {
+        guard let route = route else { return }
+        switch route {
+        case .showDetails(let itemId):
+            // present view
+            break
+        }
+    }
+}
