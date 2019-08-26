@@ -172,7 +172,7 @@ extension MoviesListViewController {
         guard let route = route else { return }
         switch route {
         case .showMovieDetail(let title, let overview, let posterPlaceholderImage, let posterPath):
-            let vc = moviesQueriesSuggestionsView ?? moviesListViewControllersFactory.makeMoviesDetailsViewController(title: title,
+            let vc = moviesListViewControllersFactory.makeMoviesDetailsViewController(title: title,
                                                                                                                       overview: overview,
                                                                                                                       posterPlaceholderImage: posterPlaceholderImage,
                                                                                                                       posterPath: posterPath)
