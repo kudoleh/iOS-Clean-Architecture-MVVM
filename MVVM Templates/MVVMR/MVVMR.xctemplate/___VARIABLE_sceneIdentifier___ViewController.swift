@@ -3,7 +3,7 @@
 //  ___PROJECTNAME___
 //
 //  Created by ___FULLUSERNAME___ on ___DATE___.
-//  Copyright (c) ___YEAR___ sp. z o.o. All rights reserved.
+//  Copyright (c) ___YEAR___ All rights reserved.
 //
 
 import UIKit
