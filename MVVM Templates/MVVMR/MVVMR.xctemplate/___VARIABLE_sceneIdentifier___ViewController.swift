@@ -13,8 +13,9 @@ class ___VARIABLE_sceneIdentifier___ViewController: UIViewController, Storyboard
     var viewModel: ___VARIABLE_sceneIdentifier___ViewModel!
     
     class func create(with viewModel: ___VARIABLE_sceneIdentifier___ViewModel) -> ___VARIABLE_sceneIdentifier___ViewController {
-        let view = ___VARIABLE_sceneIdentifier___ViewController.instantiateViewController()
-        return view
+        let vc = ___VARIABLE_sceneIdentifier___ViewController.instantiateViewController()
+        vc.viewModel = viewModel
+        return vc
     }
     
     override func viewDidLoad() {

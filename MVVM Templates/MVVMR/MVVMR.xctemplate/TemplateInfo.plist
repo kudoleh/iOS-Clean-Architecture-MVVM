@@ -5,7 +5,7 @@
 	<key>DefaultCompletionName</key>
 	<string>Scene</string>
 	<key>Description</key>
-	<string>This generates a  new scene using The MVVMR architecture. It consists of the view controller, view model, router enum and storyboard.</string>
+	<string>This generates a new scene using MVVMR architecture. It consists of the view controller, view model, route handling and storyboard.</string>
 	<key>Kind</key>
 	<string>Xcode.IDEKit.TextSubstitutionFileTemplateKind</string>
 	<key>Options</key>
@@ -82,6 +82,6 @@
 	<key>SortOrder</key>
 	<string>9</string>
 	<key>Summary</key>
-	<string>This generates a new scene using  MVVMR architecture.</string>
+	<string>This generates a new scene using MVVMR architecture.</string>
 </dict>
 </plist>
