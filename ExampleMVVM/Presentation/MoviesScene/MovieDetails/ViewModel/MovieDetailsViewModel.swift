@@ -23,15 +23,14 @@ protocol MovieDetailsViewModel: MovieDetailsViewModelInput, MovieDetailsViewMode
 final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     
     private let posterPath: String?
-    
-    // MARK: - OUTPUT
-    private(set) var title: Observable<String> = Observable("")
-    private(set) var posterImage: Observable<Data?> = Observable(nil)
-    private(set) var overview: Observable<String> = Observable("")
-    
     private let posterImagesRepository: PosterImagesRepository
     private var imageLoadTask: Cancellable? { willSet { imageLoadTask?.cancel() } }
     private var alreadyLoadedImageWidth: Int?
+    
+    // MARK: - OUTPUT
+    let title: Observable<String> = Observable("")
+    let posterImage: Observable<Data?> = Observable(nil)
+    let overview: Observable<String> = Observable("")
     
     init(title: String,
          overview: String,

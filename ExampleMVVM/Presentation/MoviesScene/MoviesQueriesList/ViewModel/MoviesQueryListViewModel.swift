@@ -30,7 +30,7 @@ class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
     private weak var delegate: MoviesQueryListViewModelDelegate?
     
     // MARK: - OUTPUT
-    private(set) var items: Observable<[MoviesQueryListItemViewModel]> = Observable([MoviesQueryListItemViewModel]())
+    let items: Observable<[MoviesQueryListItemViewModel]> = Observable([MoviesQueryListItemViewModel]())
     
     init(numberOfQueriesToShow: Int,
          fetchMoviesRecentQueriesUseCase: FetchMoviesRecentQueriesUseCase,

@@ -30,8 +30,8 @@ final class DefaultMoviesListItemViewModel: MoviesListItemViewModel {
     let title: String
     let overview: String
     let releaseDate: String
-    private(set) var posterPath: String?
-    private(set) var posterImage: Observable<Data?> = Observable(nil)
+    let posterPath: String?
+    let posterImage: Observable<Data?> = Observable(nil)
 
     private let posterImagesRepository: PosterImagesRepository
     private var imageLoadTask: Cancellable? { willSet { imageLoadTask?.cancel() } }
