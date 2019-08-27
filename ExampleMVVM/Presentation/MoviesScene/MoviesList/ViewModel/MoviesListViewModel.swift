@@ -8,6 +8,7 @@
 import Foundation
 
 enum MoviesListViewModelRoute {
+    case initial
     case showMovieDetail(title: String, overview: String, posterPlaceholderImage: Data?, posterPath: String?)
     case showMovieQueriesSuggestions
     case closeMovieQueriesSuggestions
@@ -30,7 +31,7 @@ protocol MoviesListViewModelInput: MoviesQueryListViewModelDelegate {
 }
 
 protocol MoviesListViewModelOutput {
-    var route: Observable<MoviesListViewModelRoute?> { get }
+    var route: Observable<MoviesListViewModelRoute> { get }
     var items: Observable<[MoviesListItemViewModel]> { get }
     var isEmpty: Bool { get }
     var loadingType: Observable<MoviesListViewModelLoading> { get }
@@ -60,7 +61,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
     
     // MARK: - OUTPUT
-    private(set) var route: Observable<MoviesListViewModelRoute?> = Observable(nil)
+    private(set) var route: Observable<MoviesListViewModelRoute> = Observable(.initial)
     private(set) var items: Observable<[MoviesListItemViewModel]> = Observable([MoviesListItemViewModel]())
     var isEmpty: Bool { return items.value.isEmpty }
     private(set) var loadingType: Observable<MoviesListViewModelLoading> = Observable(.none) { didSet { isLoading.value = loadingType.value != .none } }

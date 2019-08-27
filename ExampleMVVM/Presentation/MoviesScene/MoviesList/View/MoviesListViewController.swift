@@ -168,9 +168,9 @@ extension MoviesListViewController {
 // MARK: - Handle Routing
 
 extension MoviesListViewController {
-    func handle(_ route: MoviesListViewModelRoute?) {
-        guard let route = route else { return }
+    func handle(_ route: MoviesListViewModelRoute) {
         switch route {
+        case .initial: break
         case .showMovieDetail(let title, let overview, let posterPlaceholderImage, let posterPath):
             let vc = moviesListViewControllersFactory.makeMoviesDetailsViewController(title: title,
                                                                                                                       overview: overview,
