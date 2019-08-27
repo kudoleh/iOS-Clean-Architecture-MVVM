@@ -38,25 +38,12 @@ final class MovieDetailsViewController: UIViewController, StoryboardInstantiable
             self?.posterImageView.image = image.flatMap { UIImage(data: $0) }
         }
         viewModel.overview.observe(on: self) { [weak self] text in
-            self?.overviewTextView.setTextWithFadeTransition(text: text, withFadeTransitionDuration: MovieDetailsViewController.fadeTransitionDuration)
+            self?.overviewTextView.text = text
         }
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         viewModel.updatePosterImage(width: Int(self.posterImageView.bounds.width))
-    }
-}
-
-fileprivate extension UITextView {
-    
-    func setTextWithFadeTransition(text: String, withFadeTransitionDuration fadeTransitionDuration: CFTimeInterval) {
-        let animation = CATransition()
-        animation.timingFunction = CAMediaTimingFunction(name:
-            CAMediaTimingFunctionName.easeInEaseOut)
-        animation.type = CATransitionType.fade
-        animation.duration = fadeTransitionDuration
-        layer.add(animation, forKey: CATransitionType.fade.rawValue)
-        self.text = text
     }
 }

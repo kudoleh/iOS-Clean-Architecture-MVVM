@@ -45,7 +45,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     
     func bind(to viewModel: MoviesListViewModel) {
         viewModel.route.observe(on: self) { [weak self] route in
-            self?.perform(route)
+            self?.handle(route)
         }
         viewModel.items.observe(on: self) { [weak self] items in
             self?.moviesTableViewController?.items = items
@@ -165,10 +165,10 @@ extension MoviesListViewController {
     }
 }
 
-// MARK: - Perform Routing
+// MARK: - Handle Routing
 
 extension MoviesListViewController {
-    func perform(_ route: MoviesListViewModelRoute?) {
+    func handle(_ route: MoviesListViewModelRoute?) {
         guard let route = route else { return }
         switch route {
         case .showMovieDetail(let title, let overview, let posterPlaceholderImage, let posterPath):
