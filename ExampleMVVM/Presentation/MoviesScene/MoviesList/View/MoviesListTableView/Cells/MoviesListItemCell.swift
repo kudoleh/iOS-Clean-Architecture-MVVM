@@ -13,10 +13,10 @@ final class MoviesListItemCell: UITableViewCell {
     static let reuseIdentifier = String(describing: MoviesListItemCell.self)
     static let height = CGFloat(130)
     
-    @IBOutlet weak private var titleLabel: UILabel!
-    @IBOutlet weak private var dateLabel: UILabel!
-    @IBOutlet weak private var overviewLabel: UILabel!
-    @IBOutlet weak private var posterImageView: UIImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet private weak var overviewLabel: UILabel!
+    @IBOutlet private weak var posterImageView: UIImageView!
     
     private var viewModel: MoviesListItemViewModel! { didSet { unbind(from: oldValue) } }
     

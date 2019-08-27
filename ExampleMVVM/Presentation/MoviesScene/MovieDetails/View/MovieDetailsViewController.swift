@@ -12,8 +12,8 @@ final class MovieDetailsViewController: UIViewController, StoryboardInstantiable
     
     private static let fadeTransitionDuration: CFTimeInterval = 0.4
     
-    @IBOutlet weak private var posterImageView: UIImageView!
-    @IBOutlet weak private var overviewTextView: UITextView!
+    @IBOutlet private weak var posterImageView: UIImageView!
+    @IBOutlet private weak var overviewTextView: UITextView!
     
     var viewModel: MovieDetailsViewModel!
     
