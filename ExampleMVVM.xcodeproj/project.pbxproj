@@ -22,13 +22,13 @@
 		1F474F2E22356C7F0092DB4B /* MoviesRepositoryInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC830221B0041007D99D2 /* MoviesRepositoryInterfaces.swift */; };
 		1F474F2F22356C7F0092DB4B /* PosterImagesRepositoryInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC82C221B0041007D99D2 /* PosterImagesRepositoryInterfaces.swift */; };
 		1F474F3022356C7F0092DB4B /* MoviesQueriesRepositoryInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC828221B0041007D99D2 /* MoviesQueriesRepositoryInterfaces.swift */; };
-		1F53E2B623125896008D6A05 /* UIViewController+addChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B523125896008D6A05 /* UIViewController+addChild.swift */; };
+		1F53E2B623125896008D6A05 /* UIViewController+AddChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */; };
 		1F53E2B823125F71008D6A05 /* MoviesQueryListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B723125F71008D6A05 /* MoviesQueryListItemViewModel.swift */; };
 		1F53E2B923125FAD008D6A05 /* MoviesQueryListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B723125F71008D6A05 /* MoviesQueryListItemViewModel.swift */; };
 		1F77930F222C0DF2004E034C /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F77930E222C0DF2004E034C /* StoryboardInstantiable.swift */; };
 		1F84DECE2300677B00139F73 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEE31612218B17E00C160B9 /* Observable.swift */; };
 		1F84DED023006BDA00139F73 /* FetchMoviesRecentQueriesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F84DECF23006BDA00139F73 /* FetchMoviesRecentQueriesUseCase.swift */; };
-		1F8D09312301C2F20061FB6F /* MoviesPage+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8D092F2301C2F20061FB6F /* MoviesPage+Decodable.swift */; };
+		1F8D09312301C2F20061FB6F /* Movie+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8D092F2301C2F20061FB6F /* Movie+Decodable.swift */; };
 		1F9034C42306FDFE00DEA4BD /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9034C32306FDFE00DEA4BD /* NetworkServiceTests.swift */; };
 		1F9034C52306FF2D00DEA4BD /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1FC48522E3693100BCBA8D /* NetworkService.swift */; };
 		1F9034C62306FF2D00DEA4BD /* DataTransferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1FC48622E3693100BCBA8D /* DataTransferService.swift */; };
@@ -114,11 +114,11 @@
 		1F1FC48722E3693100BCBA8D /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		1F1FC48822E3693100BCBA8D /* NetworkConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
 		1F474F2122356B1E0092DB4B /* Cancelable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cancelable.swift; sourceTree = "<group>"; };
-		1F53E2B523125896008D6A05 /* UIViewController+addChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+addChild.swift"; sourceTree = "<group>"; };
+		1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AddChild.swift"; sourceTree = "<group>"; };
 		1F53E2B723125F71008D6A05 /* MoviesQueryListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesQueryListItemViewModel.swift; sourceTree = "<group>"; };
 		1F77930E222C0DF2004E034C /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		1F84DECF23006BDA00139F73 /* FetchMoviesRecentQueriesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMoviesRecentQueriesUseCase.swift; sourceTree = "<group>"; };
-		1F8D092F2301C2F20061FB6F /* MoviesPage+Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MoviesPage+Decodable.swift"; sourceTree = "<group>"; };
+		1F8D092F2301C2F20061FB6F /* Movie+Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Movie+Decodable.swift"; sourceTree = "<group>"; };
 		1F9034C32306FDFE00DEA4BD /* NetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
 		1F9034CD230713FC00DEA4BD /* DataTransferServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTransferServiceTests.swift; sourceTree = "<group>"; };
 		1F9034D0230714B900DEA4BD /* NetworkConfigurableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfigurableMock.swift; sourceTree = "<group>"; };
@@ -264,7 +264,7 @@
 		1F8D092D2301C2F20061FB6F /* DataMapping */ = {
 			isa = PBXGroup;
 			children = (
-				1F8D092F2301C2F20061FB6F /* MoviesPage+Decodable.swift */,
+				1F8D092F2301C2F20061FB6F /* Movie+Decodable.swift */,
 			);
 			path = DataMapping;
 			sourceTree = "<group>";
@@ -438,10 +438,10 @@
 		1FA533D5201EF29600747E55 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				1F84DECD2300673A00139F73 /* DIContainer */,
 				1FA5338C201E1FDE00747E55 /* AppDelegate.swift */,
 				FC2B715B2156FF93002BD59E /* AppAppearance.swift */,
 				1F1CD655222368CA00B0143C /* AppConfigurations.swift */,
+				1F84DECD2300673A00139F73 /* DIContainer */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -493,7 +493,7 @@
 			children = (
 				1FEED0EE2023575C000F4EAA /* Protocols */,
 				1FEE31612218B17E00C160B9 /* Observable.swift */,
-				1F53E2B523125896008D6A05 /* UIViewController+addChild.swift */,
+				1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -849,10 +849,10 @@
 				1FA533E2201EF5F700747E55 /* APIEndpoints.swift in Sources */,
 				1F77930F222C0DF2004E034C /* StoryboardInstantiable.swift in Sources */,
 				1FE49D84230AA7C200D1D42E /* MoviesQueriesItemCell.swift in Sources */,
-				1F53E2B623125896008D6A05 /* UIViewController+addChild.swift in Sources */,
+				1F53E2B623125896008D6A05 /* UIViewController+AddChild.swift in Sources */,
 				1F84DED023006BDA00139F73 /* FetchMoviesRecentQueriesUseCase.swift in Sources */,
 				1FC2C9632301FEC0001AE47E /* MovieQuery+Codable.swift in Sources */,
-				1F8D09312301C2F20061FB6F /* MoviesPage+Decodable.swift in Sources */,
+				1F8D09312301C2F20061FB6F /* Movie+Decodable.swift in Sources */,
 				1FE49D90230AA7C200D1D42E /* MovieDetailsViewModel.swift in Sources */,
 				1F1FC48A22E3693100BCBA8D /* DataTransferService.swift in Sources */,
 				1FEE31622218B17E00C160B9 /* Observable.swift in Sources */,
