@@ -117,9 +117,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
 // MARK: - INPUT. View event methods
 extension DefaultMoviesListViewModel {
 
-    func viewDidLoad() {
-        loadingType.value = .none
-    }
+    func viewDidLoad() { }
     
     func didLoadNextPage() {
         guard hasMorePages, loadingType.value == .none else { return }
