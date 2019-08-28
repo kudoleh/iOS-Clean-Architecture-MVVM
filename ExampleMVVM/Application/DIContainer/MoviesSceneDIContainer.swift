@@ -35,7 +35,7 @@ final class MoviesSceneDIContainer {
         return DefaultFetchMoviesRecentQueriesUseCase(moviesQueriesRepository: makeMoviesQueriesRepository())
     }
     
-    // MARK: - Data Sources
+    // MARK: - Repositories
     func makeMoviesRepository() -> MoviesRepository {
         return DefaultMoviesRepository(dataTransferService: dependencies.apiDataTransferService)
     }
