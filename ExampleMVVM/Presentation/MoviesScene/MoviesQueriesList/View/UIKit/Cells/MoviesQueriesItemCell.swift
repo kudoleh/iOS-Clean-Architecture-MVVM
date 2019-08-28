@@ -5,7 +5,6 @@
 //  Created by Oleh on 03.10.18.
 //
 
-import Foundation
 import UIKit
 
 final class MoviesQueriesItemCell: UITableViewCell {
