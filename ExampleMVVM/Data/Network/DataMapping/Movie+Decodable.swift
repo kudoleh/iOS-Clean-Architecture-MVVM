@@ -40,7 +40,7 @@ extension Movie: Decodable {
         self.title = try container.decode(String.self, forKey: .title)
         self.posterPath = try container.decodeIfPresent(String.self, forKey: .posterPath)
         self.overview = try container.decode(String.self, forKey: .overview)
-        let releaseDateString = try container.decode(String.self, forKey: .releaseDate)
+        let releaseDateString = try container.decodeIfPresent(String.self, forKey: .releaseDate) ?? ""
         releaseDate = DateFormatter.yyyyMMdd.date(from: releaseDateString)
     }
 }
