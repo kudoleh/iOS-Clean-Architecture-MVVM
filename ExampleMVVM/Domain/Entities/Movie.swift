@@ -7,7 +7,7 @@
 
 import Foundation
 
-typealias MovieId = Int
+typealias MovieId = String
 
 struct MoviesPage {
     let page: Int
