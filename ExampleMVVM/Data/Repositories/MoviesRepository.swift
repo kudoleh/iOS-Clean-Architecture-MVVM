@@ -21,10 +21,10 @@ extension DefaultMoviesRepository: MoviesRepository {
     public func moviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
         
         let endpoint = APIEndpoints.movies(query: query.query, page: page)
-        return self.dataTransferService.request(with: endpoint) { (response: Result<MoviesPage, Error>) in
+        return self.dataTransferService.request(with: endpoint) { (response: Result<MoviesPageDTO, Error>) in
             switch response {
-            case .success(let moviesPage):
-                completion(.success(moviesPage))
+            case .success(let moviesPageDTO):
+                completion(.success(moviesPageDTO.mapToMoviePage()))
             case .failure(let error):
                 completion(.failure(error))
             }

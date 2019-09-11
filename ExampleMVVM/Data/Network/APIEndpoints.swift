@@ -9,7 +9,7 @@ import Foundation
 
 struct APIEndpoints {
     
-    static func movies(query: String, page: Int) -> DataEndpoint<MoviesPage> {
+    static func movies(query: String, page: Int) -> DataEndpoint<MoviesPageDTO> {
         
         return DataEndpoint(path: "3/search/movie/",
                             queryParameters: ["query": query,
