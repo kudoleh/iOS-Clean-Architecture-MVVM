@@ -13,11 +13,11 @@ struct MoviesPageDTO: Decodable {
     private enum CodingKeys: String, CodingKey {
         case page
         case totalPages = "total_pages"
-        case movies = "results"
+        case results
     }
     let page: Int
     let totalPages: Int
-    let movies: [MovieDTO]
+    let results: [MovieDTO]
 }
 
 struct MovieDTO: Decodable {
@@ -39,7 +39,7 @@ extension MoviesPageDTO {
     func mapToMoviePage() -> MoviesPage {
         return MoviesPage(page: page,
                           totalPages: totalPages,
-                          movies: movies.map { $0.mapToMovie() })
+                          movies: results.map { $0.mapToMovie() })
     }
 }
 
