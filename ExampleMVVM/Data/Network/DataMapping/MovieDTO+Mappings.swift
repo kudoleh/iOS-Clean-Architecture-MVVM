@@ -1,5 +1,5 @@
 //
-//  MoviesPage+Decodable.swift
+//  MovieDTO+Mappings.swift
 //  Data
 //
 //  Created by Oleh Kudinov on 12.08.19.

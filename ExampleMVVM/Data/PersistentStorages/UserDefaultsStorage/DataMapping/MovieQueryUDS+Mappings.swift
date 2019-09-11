@@ -1,5 +1,5 @@
 //
-//  MovieQuery+Codable.swift
+//  MovieQueryUDS+Mapping.swift
 //  Data
 //
 //  Created by Oleh Kudinov on 12.08.19.
@@ -13,7 +13,6 @@ struct MovieQueriesListUDS: Codable {
 }
 
 struct MovieQueryUDS: Codable {
-
     let query: String
 }
 
