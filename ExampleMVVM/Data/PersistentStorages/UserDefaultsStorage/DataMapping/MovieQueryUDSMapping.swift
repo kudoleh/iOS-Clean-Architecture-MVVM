@@ -8,8 +8,14 @@
 
 import Foundation
 
-extension MovieQuery: Codable {
+struct MovieQueriesListUDS: Codable {
+    var list: [MovieQueryUDS]
+}
 
+struct MovieQueryUDS: Codable {
+
+    let query: String
+    
     private enum CodingKeys: String, CodingKey {
         case query
     }
@@ -22,5 +28,15 @@ extension MovieQuery: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(query, forKey: .query)
+    }
+}
+
+extension MovieQueryUDS {
+    init(movieQuery: MovieQuery) {
+        query = movieQuery.query
+    }
+    
+    func mapToMovieQuery() -> MovieQuery {
+        return MovieQuery(query: query)
     }
 }

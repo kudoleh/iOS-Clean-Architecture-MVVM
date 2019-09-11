@@ -7,10 +7,6 @@
 
 import Foundation
 
-private struct MovieQueriesList: Codable {
-    var list: [MovieQuery]
-}
-
 final class UserDefaultsStorage {
     private let maxStorageLimit: Int
     private let recentsMoviesQueriesKey = "recentsMoviesQueries"
@@ -20,15 +16,15 @@ final class UserDefaultsStorage {
         get {
             if let queriesData = userDefaults.object(forKey: recentsMoviesQueriesKey) as? Data {
                 let decoder = JSONDecoder()
-                if let movieQueryList = try? decoder.decode(MovieQueriesList.self, from: queriesData) {
-                    return movieQueryList.list
+                if let movieQueryList = try? decoder.decode(MovieQueriesListUDS.self, from: queriesData) {
+                    return movieQueryList.list.map { $0.mapToMovieQuery() }
                 }
             }
             return []
         }
         set {
             let encoder = JSONEncoder()
-            if let encoded = try? encoder.encode(MovieQueriesList(list: newValue)) {
+            if let encoded = try? encoder.encode(MovieQueriesListUDS(list: newValue.map(MovieQueryUDS.init))) {
                 userDefaults.set(encoded, forKey: recentsMoviesQueriesKey)
             }
         }
