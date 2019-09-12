@@ -56,6 +56,7 @@ extension DefaultDataTransferService: DataTransfer {
                 }
                 do {
                     let decoder = JSONDecoder()
+                    decoder.keyDecodingStrategy = endpoint.keyDecodingStrategy
                     let result = try decoder.decode(T.self, from: responseData)
                     respondOnQueue.async { completion(.success(result)) }
                 } catch {
