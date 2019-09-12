@@ -22,13 +22,12 @@ public enum BodyEncoding {
 
 public class Endpoint: Requestable {
     public var path: String
-    public var isFullPath: Bool
-    public var method: HTTPMethodType
-    public var queryParameters: [String: Any]
-    public var headerParamaters: [String: String]
-    public var bodyParamaters: [String: Any]
-    public var bodyEncoding: BodyEncoding
-    public var keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy
+    public var isFullPath: Bool = false
+    public var method: HTTPMethodType = .get
+    public var queryParameters: [String: Any] = [:]
+    public var headerParamaters: [String: String] = [:]
+    public var bodyParamaters: [String: Any] = [:]
+    public var bodyEncoding: BodyEncoding = .jsonSerializationData
     
     init(path: String,
          isFullPath: Bool = false,
@@ -36,8 +35,7 @@ public class Endpoint: Requestable {
          queryParameters: [String: Any] = [:],
          headerParamaters: [String: String] = [:],
          bodyParamaters: [String: Any] = [:],
-         bodyEncoding: BodyEncoding = .jsonSerializationData,
-         keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .convertFromSnakeCase) {
+         bodyEncoding: BodyEncoding = .jsonSerializationData) {
         self.path = path
         self.isFullPath = isFullPath
         self.method = method
@@ -45,7 +43,6 @@ public class Endpoint: Requestable {
         self.headerParamaters = headerParamaters
         self.bodyParamaters = bodyParamaters
         self.bodyEncoding = bodyEncoding
-        self.keyDecodingStrategy = keyDecodingStrategy
     }
 }
 

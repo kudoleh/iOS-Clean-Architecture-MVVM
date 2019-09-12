@@ -10,12 +10,24 @@ import Foundation
 
 // Data Transfer Object
 struct MoviesPageDTO: Decodable {
+    private enum CodingKeys: String, CodingKey {
+        case page
+        case totalPages = "total_pages"
+        case results
+    }
     let page: Int
     let totalPages: Int
     let results: [MovieDTO]
 }
 
 struct MovieDTO: Decodable {
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case posterPath = "poster_path"
+        case overview
+        case releaseDate = "release_date"
+    }
     let id: Int
     let title: String
     let posterPath: String?
