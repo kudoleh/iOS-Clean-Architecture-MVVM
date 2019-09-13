@@ -13,7 +13,7 @@ Medium post with detail description about this project: https://tech.olx.com/cle
 * SwiftUI and UKit view implementations by reusing same ViewModel (at least Xcode 11 required)
 
 ## Includes:
-* Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService (Infrastructure Layer)
+* Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService(Infrastructure Layer)
 * UI test with XCUITests
 * Size Classes in Detail view
 * SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
