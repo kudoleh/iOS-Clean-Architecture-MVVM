@@ -7,15 +7,15 @@ Medium post with detail description about this project: https://tech.olx.com/cle
 * Clean Layered Architecture https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
 * Advanced iOS App Architecture https://www.raywenderlich.com/8477-introducing-advanced-ios-app-architecture
 * MVVM
-* Router
 * Data Binding
 * Dependency Injection
+* SwiftUI and UKit view implementations by reusing same ViewModel (at least Xcode 11 required)
 
 ## Includes:
 * Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService (Infrastructure Layer)
 * UI test with XCUITests
 * Size Classes in Detail view
-* SwiftUI example, demostration that presentation layer does not change, only UI (Xcode 11 Beta)
+* SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 
 
 ## Requirements: 
