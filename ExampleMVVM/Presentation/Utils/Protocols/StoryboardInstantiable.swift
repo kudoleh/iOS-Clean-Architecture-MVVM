@@ -19,7 +19,7 @@ public extension StoryboardInstantiable where Self: UIViewController {
     }
     
     static func instantiateViewController(_ bundle: Bundle? = nil) -> Self {
-        let fileName = NSStringFromClass(Self.self).components(separatedBy: ".").last!
+        let fileName = defaultFileName
         let storyboard = UIStoryboard(name: fileName, bundle: bundle)
         guard let vc = storyboard.instantiateInitialViewController() as? Self else {
             
