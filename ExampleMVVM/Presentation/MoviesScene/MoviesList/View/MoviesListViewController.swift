@@ -9,12 +9,12 @@ import UIKit
 
 final class MoviesListViewController: UIViewController, StoryboardInstantiable, Alertable {
     
-    @IBOutlet private weak var contentView: UIView!
-    @IBOutlet private weak var moviesListContainer: UIView!
-    @IBOutlet private weak var suggestionsListContainer: UIView!
-    @IBOutlet private weak var searchBarContainer: UIView!
-    @IBOutlet private weak var loadingView: UIActivityIndicatorView!
-    @IBOutlet private weak var emptyDataLabel: UILabel!
+    @IBOutlet private var contentView: UIView!
+    @IBOutlet private var moviesListContainer: UIView!
+    @IBOutlet private var suggestionsListContainer: UIView!
+    @IBOutlet private var searchBarContainer: UIView!
+    @IBOutlet private var loadingView: UIActivityIndicatorView!
+    @IBOutlet private var emptyDataLabel: UILabel!
     
     private(set) var viewModel: MoviesListViewModel!
     private var moviesListViewControllersFactory: MoviesListViewControllersFactory!

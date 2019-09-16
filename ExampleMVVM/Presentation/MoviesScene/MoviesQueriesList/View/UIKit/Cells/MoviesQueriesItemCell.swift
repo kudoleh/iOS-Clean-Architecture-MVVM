@@ -10,7 +10,7 @@ import UIKit
 final class MoviesQueriesItemCell: UITableViewCell {
     
     static let reuseIdentifier = String(describing: MoviesQueriesItemCell.self)
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private var titleLabel: UILabel!
     
     func fill(with suggestion: MoviesQueryListItemViewModel) {
         self.titleLabel.text = suggestion.query

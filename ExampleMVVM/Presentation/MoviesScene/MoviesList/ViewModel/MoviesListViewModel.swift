@@ -77,8 +77,10 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     private func appendPage(moviesPage: MoviesPage) {
         self.currentPage = moviesPage.page
         self.totalPageCount = moviesPage.totalPages
-        self.items.value = items.value + moviesPage.movies.map { DefaultMoviesListItemViewModel(movie: $0,
-                                                                                                posterImagesRepository: posterImagesRepository) }
+        self.items.value = items.value + moviesPage.movies.map {
+            DefaultMoviesListItemViewModel(movie: $0,
+                                           posterImagesRepository: posterImagesRepository)
+        }
     }
     
     private func resetPages() {

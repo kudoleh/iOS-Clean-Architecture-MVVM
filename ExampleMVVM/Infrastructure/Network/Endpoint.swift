@@ -69,7 +69,7 @@ extension Requestable {
         let baseURL = config.baseURL.absoluteString.last != "/" ? config.baseURL.absoluteString + "/" : config.baseURL.absoluteString
         let endpoint = isFullPath ? path : baseURL.appending(path)
         
-        guard var urlComponents = URLComponents(string: endpoint) else { throw RequestGenerationError.components}
+        guard var urlComponents = URLComponents(string: endpoint) else { throw RequestGenerationError.components }
         var urlQueryItems = [URLQueryItem]()
         
         queryParameters.forEach {
@@ -88,7 +88,7 @@ extension Requestable {
         let url = try self.url(with: config)
         var urlRequest = URLRequest(url: url)
         var allHeaders: [String: String] = config.headers
-        headerParamaters.forEach({ allHeaders.updateValue($1, forKey: $0) })
+        headerParamaters.forEach { allHeaders.updateValue($1, forKey: $0) }
         
         if !bodyParamaters.isEmpty {
             urlRequest.httpBody = encodeBody(bodyParamaters: bodyParamaters, bodyEncoding: bodyEncoding)

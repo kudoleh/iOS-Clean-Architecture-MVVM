@@ -26,7 +26,7 @@ class ___VARIABLE_sceneIdentifier___ViewController: UIViewController, Storyboard
     }
     
     func bind(to viewModel: ___VARIABLE_sceneIdentifier___ViewModel) {
-	viewModel.route.observe(on: self) { [weak self] route in
+        viewModel.route.observe(on: self) { [weak self] route in
             self?.handle(route)
         }
     }

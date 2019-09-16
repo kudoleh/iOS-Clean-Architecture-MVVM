@@ -42,7 +42,7 @@ extension URLSessionTask: Cancellable { }
 extension URLSession: NetworkSession {
     public func loadData(from request: URLRequest,
                          completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> Cancellable {
-        let task = dataTask(with: request) { (data, response, error) in
+        let task = dataTask(with: request) { data, response, error in
             completionHandler(data, response, error)
         }
         task.resume()
@@ -68,7 +68,7 @@ final public class DefaultNetworkService {
     
     private func request(request: URLRequest, completion: @escaping (Result<Data?, NetworkError>) -> Void) -> Cancellable {
         
-        let sessionDataTask = session.loadData(from: request) { [weak self] (data, response, requestError) in
+        let sessionDataTask = session.loadData(from: request) { [weak self] data, response, requestError in
             var error: NetworkError
             if let requestError = requestError {
                 
@@ -139,7 +139,7 @@ final public class DefaultNetworkErrorLogger: NetworkErrorLogger {
     public func log(responseData data: Data?, response: URLResponse?) {
         #if DEBUG
         guard let data = data else { return }
-        if let dataDict =  try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+        if let dataDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             print("responseData: \(String(describing: dataDict))")
         }
         #endif

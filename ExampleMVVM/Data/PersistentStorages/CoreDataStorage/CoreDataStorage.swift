@@ -25,11 +25,11 @@ final class CoreDataStorage {
     // MARK: - Core Data stack
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "CoreDataStorage")
-        container.loadPersistentStores(completionHandler: { (_, error) in
+        container.loadPersistentStores { _, error in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-        })
+        }
         return container
     }()
     
@@ -97,8 +97,8 @@ extension CoreDataStorage: MoviesQueriesStorage {
                                                     ascending: false)]
         let resut = try context.fetch(request)
         resut.filter { $0.query == query.query }.forEach { context.delete($0) }
-        if resut.count > maxStorageLimit-1 {
-            Array(resut[maxStorageLimit-1..<resut.count]).forEach { context.delete($0) }
+        if resut.count > maxStorageLimit - 1 {
+            Array(resut[maxStorageLimit - 1..<resut.count]).forEach { context.delete($0) }
         }
     }
 }

@@ -230,8 +230,8 @@ class NetworkServiceTests: XCTestCase {
         
         //then
         wait(for: [expectation], timeout: 0.1)
-        XCTAssertTrue(networkErrorLogger.loggedErrors.contains(where: {
+        XCTAssertTrue(networkErrorLogger.loggedErrors.contains {
             ($0 as NSError).code == NSURLErrorNotConnectedToInternet
-        }))
+        })
     }
 }

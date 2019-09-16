@@ -39,4 +39,3 @@ public final class Observable<Value> {
         }
     }
 }
-
