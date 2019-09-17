@@ -25,7 +25,7 @@ class Default___VARIABLE_sceneIdentifier___ViewModel: ___VARIABLE_sceneIdentifie
 }
 
 // MARK: - INPUT. View event methods
-extension ___VARIABLE_sceneIdentifier___ViewModel {
+extension Default___VARIABLE_sceneIdentifier___ViewModel {
     func viewDidLoad() {
     }
 }
