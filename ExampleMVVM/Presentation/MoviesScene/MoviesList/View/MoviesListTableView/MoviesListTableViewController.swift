@@ -74,4 +74,9 @@ extension MoviesListTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.didSelect(item: items[indexPath.row])
     }
+    
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard indexPath.row < viewModel.items.value.count else { return }
+        viewModel.items.value[indexPath.row].didEndDisplaying()
+    }
 }

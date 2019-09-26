@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MoviesListItemViewModelInput {
-    func viewDidLoad()
+    func didEndDisplaying()
     func updatePosterImage(width: Int)
 }
 
@@ -50,7 +50,9 @@ final class DefaultMoviesListItemViewModel: MoviesListItemViewModel {
 // MARK: - INPUT. View event methods
 extension DefaultMoviesListItemViewModel {
     
-    func viewDidLoad() {}
+    func didEndDisplaying() {
+        posterImage.value = nil
+    }
     
     func updatePosterImage(width: Int) {
         posterImage.value = nil
