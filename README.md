@@ -22,4 +22,4 @@ Medium post with detail description about this project: https://tech.olx.com/cle
 * at least Xcode Version 10.2.1 with Swift 5.0
 
 # How to use app:
-To search a movie, write a name of a movie inside searchbar and hit search button. There are two network calls: request movies and request poster images. Every successful search query is stored persistently. There are two concurrent requests: Fetch movies and fetch movie offer. Screen loading finishes when both of them are complete.
+To search a movie, write a name of a movie inside searchbar and hit search button. There are two network calls: request movies and request poster images. Every successful search query is stored persistently.
