@@ -12,6 +12,15 @@ public enum DataTransferError: Error {
     case parsingJSON
     case networkFailure(NetworkError)
 }
+extension DataTransferError {
+    var isNotConnected: Bool {
+        guard case let DataTransferError.networkFailure(networkError) = self,
+              case .notConnected = networkError else {
+            return false
+        }
+        return true
+    }
+}
 
 final public class DataEndpoint<T: Any>: Endpoint { }
 
