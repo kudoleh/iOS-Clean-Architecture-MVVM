@@ -107,11 +107,9 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     }
     
     private func handle(error: Error) {
-        var errorMsg = NSLocalizedString("Failed loading movies", comment: "")
-        if let error = error as? DataTransferError, error.isNotConnected {
-            errorMsg = NSLocalizedString("No internet connection", comment: "")
-        }
-        self.error.value = errorMsg
+        self.error.value = error.isInternetConnectionError ?
+            NSLocalizedString("No internet connection", comment: "") :
+            NSLocalizedString("Failed loading movies", comment: "")
     }
     
     private func update(movieQuery: MovieQuery) {
