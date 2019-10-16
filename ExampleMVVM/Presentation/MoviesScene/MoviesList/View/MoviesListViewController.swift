@@ -176,9 +176,9 @@ extension MoviesListViewController {
                                                                                                                       posterPlaceholderImage: posterPlaceholderImage,
                                                                                                                       posterPath: posterPath)
             navigationController?.pushViewController(vc, animated: true)
-        case .showMovieQueriesSuggestions:
+        case .showMovieQueriesSuggestions(let delegate):
             guard let view = view else { return }
-            let vc = moviesQueriesSuggestionsView ?? moviesListViewControllersFactory.makeMoviesQueriesSuggestionsListViewController(delegate: viewModel)
+            let vc = moviesQueriesSuggestionsView ?? moviesListViewControllersFactory.makeMoviesQueriesSuggestionsListViewController(delegate: delegate)
             add(child: vc, container: suggestionsListContainer)
             vc.view.frame = view.bounds
             moviesQueriesSuggestionsView = vc

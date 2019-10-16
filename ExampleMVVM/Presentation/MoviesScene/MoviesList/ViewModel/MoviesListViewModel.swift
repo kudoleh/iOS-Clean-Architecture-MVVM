@@ -10,7 +10,7 @@ import Foundation
 enum MoviesListViewModelRoute {
     case initial
     case showMovieDetail(title: String, overview: String, posterPlaceholderImage: Data?, posterPath: String?)
-    case showMovieQueriesSuggestions
+    case showMovieQueriesSuggestions(delegate: MoviesQueryListViewModelDelegate)
     case closeMovieQueriesSuggestions
 }
 
@@ -20,7 +20,7 @@ enum MoviesListViewModelLoading {
     case nextPage
 }
 
-protocol MoviesListViewModelInput: MoviesQueryListViewModelDelegate {
+protocol MoviesListViewModelInput {
     func viewDidLoad()
     func didLoadNextPage()
     func didSearch(query: String)
@@ -139,7 +139,7 @@ extension DefaultMoviesListViewModel {
     }
 
     func showQueriesSuggestions() {
-        route.value = .showMovieQueriesSuggestions
+        route.value = .showMovieQueriesSuggestions(delegate: self)
     }
     
     func closeQueriesSuggestions() {
@@ -155,7 +155,7 @@ extension DefaultMoviesListViewModel {
 }
 
 // MARK: - Delegate method from another model views
-extension DefaultMoviesListViewModel {
+extension DefaultMoviesListViewModel: MoviesQueryListViewModelDelegate {
     func moviesQueriesListDidSelect(movieQuery: MovieQuery) {
         update(movieQuery: movieQuery)
     }
