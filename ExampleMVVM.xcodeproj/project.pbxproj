@@ -684,9 +684,9 @@
 		FC7408122165557500FE52A5 /* PersistentStorages */ = {
 			isa = PBXGroup;
 			children = (
+				1F9034DE2307464700DEA4BD /* MoviesQueriesStorage.swift */,
 				1F9034E12307474B00DEA4BD /* CoreDataStorage */,
 				1F9034DD2307461C00DEA4BD /* UserDefaultsStorage */,
-				1F9034DE2307464700DEA4BD /* MoviesQueriesStorage.swift */,
 			);
 			path = PersistentStorages;
 			sourceTree = "<group>";
