@@ -484,13 +484,6 @@
 			path = UseCases;
 			sourceTree = "<group>";
 		};
-		1FAFB9D3230405A400A1B211 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
 		1FC8B6E4230AF89A005DBF44 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -674,7 +667,6 @@
 			isa = PBXGroup;
 			children = (
 				1F474F4A223666700092DB4B /* Repositories */,
-				1FAFB9D3230405A400A1B211 /* Services */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
