@@ -1,5 +1,5 @@
 //
-//  MoviesQueriesRepositoryInterfaces.swift
+//  MoviesQueriesRepositoryInterface.swift
 //  ExampleMVVM
 //
 //  Created by Oleh Kudinov on 15.02.19.
