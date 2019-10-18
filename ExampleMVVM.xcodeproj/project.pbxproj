@@ -239,8 +239,8 @@
 			isa = PBXGroup;
 			children = (
 				1FFFC830221B0041007D99D2 /* MoviesRepositoryInterfaces.swift */,
-				1FFFC82C221B0041007D99D2 /* PosterImagesRepositoryInterfaces.swift */,
 				1FFFC828221B0041007D99D2 /* MoviesQueriesRepositoryInterfaces.swift */,
+				1FFFC82C221B0041007D99D2 /* PosterImagesRepositoryInterfaces.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
