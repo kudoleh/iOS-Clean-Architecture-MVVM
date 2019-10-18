@@ -31,8 +31,8 @@ final class MoviesSceneDIContainer {
                                           moviesQueriesRepository: makeMoviesQueriesRepository())
     }
     
-    func makeFetchMoviesRecentQueriesUseCase() -> FetchMoviesRecentQueriesUseCase {
-        return DefaultFetchMoviesRecentQueriesUseCase(moviesQueriesRepository: makeMoviesQueriesRepository())
+    func makeFetchRecentMovieQueriesUseCase() -> FetchRecentMovieQueriesUseCase {
+        return DefaultFetchRecentMovieQueriesUseCase(moviesQueriesRepository: makeMoviesQueriesRepository())
     }
     
     // MARK: - Repositories
@@ -92,14 +92,14 @@ final class MoviesSceneDIContainer {
     
     func makeMoviesQueryListViewModel(delegate: MoviesQueryListViewModelDelegate) -> MoviesQueryListViewModel {
         return DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 10,
-                                               fetchMoviesRecentQueriesUseCase: makeFetchMoviesRecentQueriesUseCase(),
+                                               fetchRecentMovieQueriesUseCase: makeFetchRecentMovieQueriesUseCase(),
                                                delegate: delegate)
     }
 // SwiftUI
 //    @available(iOS 13.0, *)
 //    func makeMoviesQueryListViewModelWrapper(delegate: MoviesQueryListViewModelDelegate) -> MoviesQueryListViewModelWrapper {
 //        return MoviesQueryListViewModelWrapper(numberOfQueriesToShow: 10,
-//                                        fetchMoviesRecentQueriesUseCase: makeFetchMoviesRecentQueriesUseCase(),
+//                                        fetchRecentMovieQueriesUseCase: makeFetchRecentMovieQueriesUseCase(),
 //                                        delegate: delegate)
 //    }
 }

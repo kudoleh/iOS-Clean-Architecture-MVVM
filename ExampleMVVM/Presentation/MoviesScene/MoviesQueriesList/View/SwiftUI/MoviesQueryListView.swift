@@ -34,10 +34,10 @@
 //    public var didChange = PassthroughSubject<[MoviesQueryListItemViewModel], Never>()
 //
 //    override init(numberOfQueriesToShow: Int,
-//                  fetchMoviesRecentQueriesUseCase: FetchMoviesRecentQueriesUseCase,
+//                  fetchRecentMovieQueriesUseCase: FetchRecentMovieQueriesUseCase,
 //                  delegate: MoviesQueryListViewModelDelegate? = nil) {
 //        super.init(numberOfQueriesToShow: numberOfQueriesToShow,
-//                   fetchMoviesRecentQueriesUseCase: fetchMoviesRecentQueriesUseCase,
+//                   fetchRecentMovieQueriesUseCase: fetchRecentMovieQueriesUseCase,
 //                   delegate: delegate)
 //
 //        items.observe(on: self) { [weak self] values in

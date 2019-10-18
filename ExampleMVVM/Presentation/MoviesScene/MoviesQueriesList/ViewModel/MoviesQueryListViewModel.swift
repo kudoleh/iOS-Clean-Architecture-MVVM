@@ -26,23 +26,23 @@ protocol MoviesQueryListViewModelDelegate: class {
 class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
 
     private let numberOfQueriesToShow: Int
-    private let fetchMoviesRecentQueriesUseCase: FetchMoviesRecentQueriesUseCase
+    private let fetchRecentMovieQueriesUseCase: FetchRecentMovieQueriesUseCase
     private weak var delegate: MoviesQueryListViewModelDelegate?
     
     // MARK: - OUTPUT
     let items: Observable<[MoviesQueryListItemViewModel]> = Observable([MoviesQueryListItemViewModel]())
     
     init(numberOfQueriesToShow: Int,
-         fetchMoviesRecentQueriesUseCase: FetchMoviesRecentQueriesUseCase,
+         fetchRecentMovieQueriesUseCase: FetchRecentMovieQueriesUseCase,
          delegate: MoviesQueryListViewModelDelegate? = nil) {
         self.numberOfQueriesToShow = numberOfQueriesToShow
-        self.fetchMoviesRecentQueriesUseCase = fetchMoviesRecentQueriesUseCase
+        self.fetchRecentMovieQueriesUseCase = fetchRecentMovieQueriesUseCase
         self.delegate = delegate
     }
     
     private func updateMoviesQueries() {
-        let request = FetchMoviesRecentQueriesUseCaseRequestValue(number: numberOfQueriesToShow)
-        _ = fetchMoviesRecentQueriesUseCase.execute(requestValue: request) { [weak self] result in
+        let request = FetchRecentMovieQueriesUseCaseRequestValue(number: numberOfQueriesToShow)
+        _ = fetchRecentMovieQueriesUseCase.execute(requestValue: request) { [weak self] result in
             switch result {
             case .success(let items):
                 self?.items.value = items.map { DefaultMoviesQueryListItemViewModel(query: $0.query) }
