@@ -14,8 +14,10 @@ extension MovieQueryEntity {
         query = movieQuery.query
         createdAt = Date()
     }
+}
 
-    func mapToMovieQuery() -> MovieQuery {
-        return MovieQuery(query: query ?? "")
+extension MovieQuery {
+    init(movieQueryEntity: MovieQueryEntity) {
+        query = movieQueryEntity.query ?? ""
     }
 }

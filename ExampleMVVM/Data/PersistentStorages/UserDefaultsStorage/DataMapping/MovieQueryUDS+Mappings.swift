@@ -20,8 +20,10 @@ extension MovieQueryUDS {
     init(movieQuery: MovieQuery) {
         query = movieQuery.query
     }
-    
-    func mapToMovieQuery() -> MovieQuery {
-        return MovieQuery(query: query)
+}
+
+extension MovieQuery {
+    init(movieQueryUDS: MovieQueryUDS) {
+        query = movieQueryUDS.query
     }
 }

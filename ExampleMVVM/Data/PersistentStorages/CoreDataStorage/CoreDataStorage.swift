@@ -57,7 +57,7 @@ extension CoreDataStorage: MoviesQueriesStorage {
                 request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
                                                             ascending: false)]
                 request.fetchLimit = number
-                let resut = try context.fetch(request).map { $0.mapToMovieQuery() }
+                let resut = try context.fetch(request).map ( MovieQuery.init )
                 DispatchQueue.global(qos: .background).async {
                     completion(.success(resut))
                 }
@@ -79,7 +79,7 @@ extension CoreDataStorage: MoviesQueriesStorage {
                 let entity = MovieQueryEntity(movieQuery: query, insertInto: context)
                 try context.save()
                 DispatchQueue.global(qos: .background).async {
-                    completion(.success(entity.mapToMovieQuery()))
+                    completion(.success(MovieQuery(movieQueryEntity: entity)))
                 }
             } catch {
                 DispatchQueue.global(qos: .background).async {
