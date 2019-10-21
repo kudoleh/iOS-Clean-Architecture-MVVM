@@ -48,7 +48,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         }
         viewModel.items.observe(on: self) { [weak self] items in
             self?.moviesTableViewController?.items = items
-            self?.updateViewsVisibility(model: viewModel)
+            self?.updateViewsVisibility()
         }
         viewModel.query.observe(on: self) { [weak self] query in
             self?.updateSearchController(query: query)
@@ -57,7 +57,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
             self?.showError(error)
         }
         viewModel.loadingType.observe(on: self) { [weak self] _ in
-           self?.updateViewsVisibility(model: viewModel)
+            self?.updateViewsVisibility()
         }
     }
     
@@ -84,20 +84,19 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         showAlert(title: NSLocalizedString("Error", comment: ""), message: error)
     }
     
-    private func updateViewsVisibility(model: MoviesListViewModel?) {
-        guard let model = model else { return }
+    private func updateViewsVisibility() {
         loadingView.isHidden = true
         emptyDataLabel.isHidden = true
         moviesListContainer.isHidden = true
         suggestionsListContainer.isHidden = true
         moviesTableViewController?.update(isLoadingNextPage: false)
         
-        if model.loadingType.value == .fullScreen {
+        if viewModel.loadingType.value == .fullScreen {
             loadingView.isHidden = false
-        } else if model.loadingType.value == .nextPage {
+        } else if viewModel.loadingType.value == .nextPage {
             moviesTableViewController?.update(isLoadingNextPage: true)
             moviesListContainer.isHidden = false
-        } else if model.isEmpty {
+        } else if viewModel.isEmpty {
             emptyDataLabel.isHidden = false
         } else {
             moviesListContainer.isHidden = false
