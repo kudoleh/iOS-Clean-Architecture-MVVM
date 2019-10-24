@@ -138,7 +138,7 @@ class NetworkServiceTests: XCTestCase {
                 _ = try result.get()
                 XCTFail("Should not happen")
             } catch let error {
-                if case NetworkError.errorStatusCode(let statusCode) = error {
+                if case NetworkError.error(let statusCode, _) = error {
                     XCTAssertEqual(statusCode, 500)
                     expectation.fulfill()
                 }
@@ -190,7 +190,7 @@ class NetworkServiceTests: XCTestCase {
 
     func test_whenhasStatusCodeUsed_shouldReturnCorrectStatusCode_() {
         //when
-        let sut = NetworkError.errorStatusCode(statusCode: 400)
+        let sut = NetworkError.error(statusCode: 400, responseData: nil)
         //then
         XCTAssertTrue(sut.hasStatusCode(400))
         XCTAssertFalse(sut.hasStatusCode(399))

@@ -11,6 +11,7 @@ public enum DataTransferError: Error {
     case noResponse
     case parsingJSON
     case networkFailure(NetworkError)
+    case networkDecodedError(code: Int, Decodable)
 }
 extension DataTransferError: ConnectionError {
     public var isInternetConnectionError: Bool {
@@ -22,7 +23,8 @@ extension DataTransferError: ConnectionError {
     }
 }
 
-final public class DataEndpoint<T: Any>: Endpoint { }
+final public class DataEndpoint<T: Decodable>: Endpoint { }
+final public class DataEndpointErrorable<T: Decodable, E: Decodable>: Endpoint { }
 
 public protocol DataTransfer {
     @discardableResult
@@ -30,9 +32,7 @@ public protocol DataTransfer {
     @discardableResult
     func request(with endpoint: DataEndpoint<Data>, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable?
     @discardableResult
-    func request<T: Decodable>(with endpoint: DataEndpoint<T>, respondOnQueue: DispatchQueue, completion: @escaping (Result<T, Error>) -> Void) -> Cancellable?
-    @discardableResult
-    func request(with endpoint: DataEndpoint<Data>, respondOnQueue: DispatchQueue, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable?
+    func request<T: Decodable, E: Decodable>(with endpoint: DataEndpointErrorable<T, E>, completion: @escaping (Result<T, Error>) -> Void) -> Cancellable?
 }
 
 public final class DefaultDataTransferService {
@@ -46,53 +46,90 @@ public final class DefaultDataTransferService {
 
 extension DefaultDataTransferService: DataTransfer {
     
-    public func request<T>(with endpoint: DataEndpoint<T>, completion: @escaping (Result<T, Error>) -> Void) -> Cancellable? where T: Decodable {
-        return request(with: endpoint, respondOnQueue: .main, completion: completion)
-    }
-    
-    public func request(with endpoint: DataEndpoint<Data>, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
-        return request(with: endpoint, respondOnQueue: .main, completion: completion)
-    }
-    
-    public func request<T: Decodable>(with endpoint: DataEndpoint<T>, respondOnQueue: DispatchQueue, completion: @escaping (Result<T, Error>) -> Void) -> Cancellable? {
+    public func request<T: Decodable>(with endpoint: DataEndpoint<T>, completion: @escaping (Result<T, Error>) -> Void) -> Cancellable? {
         
         let task = self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success(let responseData):
                 guard let responseData = responseData else {
-                    respondOnQueue.async { completion(Result.failure(DataTransferError.noResponse)) }
+                    DispatchQueue.main.async { completion(Result.failure(DataTransferError.noResponse)) }
                     return
                 }
-                do {
-                    let decoder = JSONDecoder()
-                    let result = try decoder.decode(T.self, from: responseData)
-                    respondOnQueue.async { completion(.success(result)) }
-                } catch {
-                    respondOnQueue.async { completion(Result.failure(DataTransferError.parsingJSON)) }
-                }
+                self.decode(responseData: responseData, completion: completion)
             case .failure(let error):
-                respondOnQueue.async { completion(Result.failure(DataTransferError.networkFailure(error))) }
+                DispatchQueue.main.async { completion(Result.failure(DataTransferError.networkFailure(error))) }
             }
         }
         
         return task
     }
     
-    public func request(with endpoint: DataEndpoint<Data>, respondOnQueue: DispatchQueue, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
+    public func request(with endpoint: DataEndpoint<Data>, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
         let task = self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success(let responseData):
-                guard let responseData = responseData
-                    else {
-                        respondOnQueue.async { completion(Result.failure(DataTransferError.noResponse)) }
+                guard let responseData = responseData else {
+                    DispatchQueue.main.async { completion(Result.failure(DataTransferError.noResponse)) }
                         return
                 }
-                respondOnQueue.async { completion(Result.success(responseData)) }
+                DispatchQueue.main.async { completion(Result.success(responseData)) }
             case .failure(let error):
-                respondOnQueue.async { completion(Result.failure(DataTransferError.networkFailure(error))) }
+                DispatchQueue.main.async { completion(Result.failure(DataTransferError.networkFailure(error))) }
             }
         }
         
         return task
+    }
+    
+    public func request<T: Decodable, E: Decodable>(with endpoint: DataEndpointErrorable<T, E>, completion: @escaping (Result<T, Error>) -> Void) -> Cancellable? {
+        
+        let task = self.networkService.request(endpoint: endpoint) { result in
+            switch result {
+            case .success(let responseData):
+                guard let responseData = responseData else {
+                    DispatchQueue.main.async { completion(Result.failure(DataTransferError.noResponse)) }
+                    return
+                }
+                self.decode(responseData: responseData, completion: completion)
+            case .failure(let error):
+                guard case let NetworkError.error(statusCode, data) = error,
+                    let errorResponseData = data else {
+                        DispatchQueue.main.async { completion(Result.failure(DataTransferError.networkFailure(error))) }
+                        return
+                }
+                self.decode(errorResponseData: errorResponseData,
+                            errorType: E.self,
+                            statusCode: statusCode,
+                            completion: completion)
+            }
+        }
+        
+        return task
+    }
+    
+    private func decode<T: Decodable>(responseData: Data,
+                                      completion: @escaping (Result<T, Error>) -> Void) {
+        do {
+            let result: T = try decode(data: responseData)
+            DispatchQueue.main.async { completion(.success(result)) }
+        } catch {
+            DispatchQueue.main.async { completion(Result.failure(DataTransferError.parsingJSON)) }
+        }
+    }
+    
+    private func decode<T, E: Decodable>(errorResponseData: Data,
+                                      errorType: E.Type,
+                                      statusCode: Int,
+                                      completion: @escaping (Result<T, Error>) -> Void) {
+        do {
+            let result: E = try decode(data: errorResponseData)
+            DispatchQueue.main.async { completion(Result.failure(DataTransferError.networkDecodedError(code: statusCode, result))) }
+        } catch {
+            DispatchQueue.main.async { completion(Result.failure(DataTransferError.parsingJSON)) }
+        }
+    }
+    
+    private func decode<T: Decodable>(data: Data) throws -> T {
+        return try JSONDecoder().decode(T.self, from: data)
     }
 }

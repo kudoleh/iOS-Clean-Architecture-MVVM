@@ -11,6 +11,10 @@ private struct MockModel: Decodable {
     let name: String
 }
 
+private struct MockErrorModel: Error & Decodable {
+    let errorName: String
+}
+
 class DataTransferServiceTests: XCTestCase {
     
     private enum DataTransferErrorMock: Error {
@@ -37,6 +41,41 @@ class DataTransferServiceTests: XCTestCase {
                 expectation.fulfill()
             } catch {
                 XCTFail("Failed decoding MockObject")
+            }
+        }
+        //then
+        wait(for: [expectation], timeout: 0.1)
+    }
+    
+    func test_whenReceivedValidErrorJsonInResponse_shouldDecodeErrorResponseToDecodableErrorObject() {
+        //given
+        let config = NetworkConfigurableMock()
+        let expectation = self.expectation(description: "Should decode mock object")
+        
+        let responseData = #"{"errorName": "fieldErrorName"}"#.data(using: .utf8)
+        let response = HTTPURLResponse(url: URL(string: "test_url")!,
+                                       statusCode: 400,
+                                       httpVersion: "1.1",
+                                       headerFields: nil)
+        let networkService = DefaultNetworkService(session: NetworkSessionMock(response: response,
+                                                                               data: responseData,
+                                                                               error: NSError(domain:"Test", code: 400,
+                                                                                              userInfo: nil)),
+                                                   config: config)
+        
+        let sut = DefaultDataTransferService(with: networkService)
+        //when
+        _ = sut.request(with: DataEndpointErrorable<MockModel, MockErrorModel>(path: "http://mock.endpoint.com", method: .get)) { result in
+            switch result {
+            case .success: XCTFail("Should decode MockErrorModel")
+            case .failure(let error):
+                guard case let DataTransferError.networkDecodedError(_, error) = error,
+                    let decodedError = error as? MockErrorModel else  {
+                        XCTFail("Failed decoding MockErrorModel")
+                        return
+                }
+                XCTAssertEqual(decodedError.errorName, "fieldErrorName")
+                expectation.fulfill()
             }
         }
         //then
@@ -91,7 +130,7 @@ class DataTransferServiceTests: XCTestCase {
                 XCTFail("Should not happen")
             } catch let error {
                 
-                if case DataTransferError.networkFailure(NetworkError.errorStatusCode(statusCode: 500)) = error {
+                if case DataTransferError.networkFailure(NetworkError.error(statusCode: 500, _)) = error {
                     expectation.fulfill()
                 } else {
                     XCTFail("Wrong error")

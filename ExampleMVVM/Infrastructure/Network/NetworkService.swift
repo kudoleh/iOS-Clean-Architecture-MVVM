@@ -13,7 +13,7 @@ public protocol NetworkService {
 }
 
 public enum NetworkError: Error {
-    case errorStatusCode(statusCode: Int)
+    case error(statusCode: Int, responseData: Data?)
     case notConnected
     case cancelled
     case urlGeneration
@@ -25,7 +25,7 @@ extension NetworkError {
     
     public func hasStatusCode(_ codeError: Int) -> Bool {
         switch self {
-        case let .errorStatusCode(code):
+        case let .error(code, _):
             return code == codeError
         default: return false
         }
@@ -73,7 +73,7 @@ final public class DefaultNetworkService {
             if let requestError = requestError {
                 
                 if let response = response as? HTTPURLResponse, (400..<600).contains(response.statusCode) {
-                    error = .errorStatusCode(statusCode: response.statusCode)
+                    error = .error(statusCode: response.statusCode, responseData: data)
                     self?.logger.log(statusCode: response.statusCode)
                 } else if requestError._code == NSURLErrorNotConnectedToInternet {
                     error = .notConnected
