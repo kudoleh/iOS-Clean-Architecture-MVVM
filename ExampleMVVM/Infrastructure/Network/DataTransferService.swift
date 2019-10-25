@@ -75,7 +75,7 @@ extension DefaultDataTransferService: DataTransferService {
                 }
             case .failure(let error):
                 self.errorLogger.log(error: error)
-                let error = self.hande(error: error)
+                let error = self.hande(networkError: error)
                 DispatchQueue.main.async { completion(Result.failure(error)) }
             }
         }
@@ -98,7 +98,7 @@ extension DefaultDataTransferService: DataTransferService {
         }
     }
     
-    private func hande(error: NetworkError) -> DataTransferError {
+    private func hande(networkError error: NetworkError) -> DataTransferError {
         
         if case let NetworkError.error(_, response) = error,
             let resolvedError = self.errorResolver.resolve(response: response,
