@@ -110,7 +110,6 @@ extension DefaultDataTransferService: DataTransferService {
 }
 
 // MARK: - Logger
-
 final public class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
     public init() { }
     
@@ -123,7 +122,6 @@ final public class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
 }
 
 // MARK: - Error Resolver
-
 public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
     public init() { }
     public func resolve(response: NetworkServiceResponse?, error: NetworkError) -> Error? {
@@ -131,8 +129,7 @@ public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
     }
 }
 
-// MARK: - Error Resolver
-
+// MARK: - JSON Response Decoder
 public class JSONResponseDecoder: ResponseDecoder {
     private let jsonDecoder = JSONDecoder()
     public init() { }
