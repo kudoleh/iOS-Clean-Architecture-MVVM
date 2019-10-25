@@ -9,7 +9,7 @@ import Foundation
 
 public enum DataTransferError: Error {
     case noResponse
-    case parsing
+    case parsing(Error)
     case networkFailure(NetworkError)
     case resolvedNetworkFailure(Error)
 }
@@ -68,9 +68,11 @@ extension DefaultDataTransferService: DataTransferService {
             switch result {
             case .success(let response):
                 do {
-                    let result: T = try self.parse(data: response.data)
+                    guard let responseData = response.data else { throw DataTransferError.noResponse }
+                    let result: T = try self.parse(data: responseData)
                     DispatchQueue.main.async { completion(Result.success(result)) }
                 } catch {
+                    self.errorLogger.log(error: error)
                     DispatchQueue.main.async { completion(Result.failure(error)) }
                 }
             case .failure(let error):
@@ -81,25 +83,18 @@ extension DefaultDataTransferService: DataTransferService {
         }
     }
     
-    private func parse<T: Decodable>(data: Data?) throws -> T {
-        
-        if T.self is Data.Type, let data = data as? T {
-            return data
-        }
-        
-        guard let data = data else {
-            throw DataTransferError.noResponse
-        }
+    private func parse<T: Decodable>(data: Data) throws -> T {
         do {
+            if T.self is Data.Type, let data = data as? T {
+                return data
+            }
             return try self.responseDecoder.decode(data)
         } catch {
-            self.errorLogger.log(error: error)
-            throw DataTransferError.parsing
+            throw DataTransferError.parsing(error)
         }
     }
     
     private func hande(networkError error: NetworkError) -> DataTransferError {
-        
         if case let NetworkError.error(_, response) = error,
             let resolvedError = self.errorResolver.resolve(response: response,
                                                            error: error), !(resolvedError is NetworkError) {
