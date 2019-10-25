@@ -11,10 +11,6 @@ private struct MockModel: Decodable {
     let name: String
 }
 
-private struct MockErrorModel: Error & Decodable {
-    let errorName: String
-}
-
 class DataTransferServiceTests: XCTestCase {
     
     private enum DataTransferErrorMock: Error {
@@ -34,48 +30,13 @@ class DataTransferServiceTests: XCTestCase {
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
-        _ = sut.request(with: DataEndpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
+        _ = sut.request(with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
             do {
                 let object = try result.get()
                 XCTAssertEqual(object.name, "Hello")
                 expectation.fulfill()
             } catch {
                 XCTFail("Failed decoding MockObject")
-            }
-        }
-        //then
-        wait(for: [expectation], timeout: 0.1)
-    }
-    
-    func test_whenReceivedValidErrorJsonInResponse_shouldDecodeErrorResponseToDecodableErrorObject() {
-        //given
-        let config = NetworkConfigurableMock()
-        let expectation = self.expectation(description: "Should decode mock object")
-        
-        let responseData = #"{"errorName": "fieldErrorName"}"#.data(using: .utf8)
-        let response = HTTPURLResponse(url: URL(string: "test_url")!,
-                                       statusCode: 400,
-                                       httpVersion: "1.1",
-                                       headerFields: nil)
-        let networkService = DefaultNetworkService(session: NetworkSessionMock(response: response,
-                                                                               data: responseData,
-                                                                               error: NSError(domain:"Test", code: 400,
-                                                                                              userInfo: nil)),
-                                                   config: config)
-        
-        let sut = DefaultDataTransferService(with: networkService)
-        //when
-        _ = sut.request(with: DataEndpointErrorable<MockModel, MockErrorModel>(path: "http://mock.endpoint.com", method: .get)) { result in
-            switch result {
-            case .success: XCTFail("Should decode MockErrorModel")
-            case .failure(let error):
-                guard case let DataTransferError.networkDecodedError(_, error) = error,
-                    let decodedError = error as? MockErrorModel else  {
-                        XCTFail("Failed decoding MockErrorModel")
-                        return
-                }
-                XCTAssertEqual(decodedError.errorName, "fieldErrorName")
-                expectation.fulfill()
             }
         }
         //then
@@ -95,7 +56,7 @@ class DataTransferServiceTests: XCTestCase {
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
-        _ = sut.request(with: DataEndpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
+        _ = sut.request(with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
             do {
                 _ = try result.get()
                 XCTFail("Should not happen")
@@ -124,7 +85,7 @@ class DataTransferServiceTests: XCTestCase {
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
-        _ = sut.request(with: DataEndpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
+        _ = sut.request(with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
             do {
                 _ = try result.get()
                 XCTFail("Should not happen")
@@ -157,7 +118,7 @@ class DataTransferServiceTests: XCTestCase {
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
-        _ = sut.request(with: DataEndpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
+        _ = sut.request(with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
             do {
                 _ = try result.get()
                 XCTFail("Should not happen")

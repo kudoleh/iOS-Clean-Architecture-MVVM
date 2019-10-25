@@ -48,11 +48,11 @@ class NetworkServiceTests: XCTestCase {
                                         config: config)
         //when
         _ = sut.request(endpoint: EndpointMock(path: "http://mock.test.com", method: .get)) { result in
-            guard let responseData = try? result.get() else {
+            guard let response = try? result.get() else {
                 XCTFail("Should return proper response")
                 return
             }
-            XCTAssertEqual(responseData, expectedResponseData)
+            XCTAssertEqual(response.data, expectedResponseData)
             expectation.fulfill()
         }
         //then
@@ -190,7 +190,7 @@ class NetworkServiceTests: XCTestCase {
 
     func test_whenhasStatusCodeUsed_shouldReturnCorrectStatusCode_() {
         //when
-        let sut = NetworkError.error(statusCode: 400, responseData: nil)
+        let sut = NetworkError.error(statusCode: 400, response: NetworkServiceResponse(response: nil, data: nil))
         //then
         XCTAssertTrue(sut.hasStatusCode(400))
         XCTAssertFalse(sut.hasStatusCode(399))

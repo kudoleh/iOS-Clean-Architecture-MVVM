@@ -27,6 +27,7 @@
 		1F53E2B623125896008D6A05 /* UIViewController+AddChild.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */; };
 		1F53E2B823125F71008D6A05 /* MoviesQueryListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B723125F71008D6A05 /* MoviesQueryListItemViewModel.swift */; };
 		1F53E2B923125FAD008D6A05 /* MoviesQueryListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B723125F71008D6A05 /* MoviesQueryListItemViewModel.swift */; };
+		1F6B521323630016002FCDE9 /* RepositoryTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6B521223630016002FCDE9 /* RepositoryTask.swift */; };
 		1F77930F222C0DF2004E034C /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F77930E222C0DF2004E034C /* StoryboardInstantiable.swift */; };
 		1F84DECE2300677B00139F73 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEE31612218B17E00C160B9 /* Observable.swift */; };
 		1F84DED023006BDA00139F73 /* FetchRecentMovieQueriesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F84DECF23006BDA00139F73 /* FetchRecentMovieQueriesUseCase.swift */; };
@@ -119,6 +120,7 @@
 		1F474F2122356B1E0092DB4B /* Cancelable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cancelable.swift; sourceTree = "<group>"; };
 		1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AddChild.swift"; sourceTree = "<group>"; };
 		1F53E2B723125F71008D6A05 /* MoviesQueryListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesQueryListItemViewModel.swift; sourceTree = "<group>"; };
+		1F6B521223630016002FCDE9 /* RepositoryTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTask.swift; sourceTree = "<group>"; };
 		1F77930E222C0DF2004E034C /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		1F84DECF23006BDA00139F73 /* FetchRecentMovieQueriesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRecentMovieQueriesUseCase.swift; sourceTree = "<group>"; };
 		1F8D092F2301C2F20061FB6F /* Movies+Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Movies+Decodable.swift"; sourceTree = "<group>"; };
@@ -227,8 +229,8 @@
 		1F1FC48422E3693100BCBA8D /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				1F1FC48522E3693100BCBA8D /* NetworkService.swift */,
 				1F1FC48622E3693100BCBA8D /* DataTransferService.swift */,
+				1F1FC48522E3693100BCBA8D /* NetworkService.swift */,
 				1F1FC48722E3693100BCBA8D /* Endpoint.swift */,
 				1F1FC48822E3693100BCBA8D /* NetworkConfig.swift */,
 			);
@@ -253,6 +255,14 @@
 				FC7408122165557500FE52A5 /* PersistentStorages */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		1F6B52142363002C002FCDE9 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1F6B521223630016002FCDE9 /* RepositoryTask.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		1F84DECD2300673A00139F73 /* DIContainer */ = {
@@ -677,6 +687,7 @@
 				1FFFC82F221B0041007D99D2 /* DefaultMoviesRepository.swift */,
 				1FFFC827221B0041007D99D2 /* DefaultMoviesQueriesRepository.swift */,
 				1FFFC82B221B0041007D99D2 /* DefaultPosterImagesRepository.swift */,
+				1F6B52142363002C002FCDE9 /* Utils */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -857,6 +868,7 @@
 				1FE49D91230AA7C200D1D42E /* MoviesListItemViewModel.swift in Sources */,
 				1F05A6CC2220A2CB001E2801 /* SearchMoviesUseCase.swift in Sources */,
 				1FA533D7201EF2B500747E55 /* AppDIContainer.swift in Sources */,
+				1F6B521323630016002FCDE9 /* RepositoryTask.swift in Sources */,
 				1F9034DF2307464700DEA4BD /* MoviesQueriesStorage.swift in Sources */,
 				1FE49D8A230AA7C200D1D42E /* MoviesListItemCell.swift in Sources */,
 				1F1FC48B22E3693100BCBA8D /* Endpoint.swift in Sources */,

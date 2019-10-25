@@ -13,8 +13,8 @@ struct NetworkSessionMock: NetworkSession {
     let error: Error?
     
     func loadData(from request: URLRequest,
-                  completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> Cancellable {
-        completionHandler(data, response, error)
+                  completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> NetworkCancellable {
+        completion(data, response, error)
         return URLSessionDataTask()
     }
 }

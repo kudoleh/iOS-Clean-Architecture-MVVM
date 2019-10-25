@@ -9,10 +9,10 @@ import Foundation
 
 final class DefaultPosterImagesRepository {
     
-    private let dataTransferService: DataTransfer
+    private let dataTransferService: DataTransferService
     private let imageNotFoundData: Data?
     
-    init(dataTransferService: DataTransfer,
+    init(dataTransferService: DataTransferService,
          imageNotFoundData: Data?) {
         self.dataTransferService = dataTransferService
         self.imageNotFoundData = imageNotFoundData
@@ -24,7 +24,7 @@ extension DefaultPosterImagesRepository: PosterImagesRepository {
     func image(with imagePath: String, width: Int, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
         
         let endpoint = APIEndpoints.moviePoster(path: imagePath, width: width)
-        return dataTransferService.request(with: endpoint) { [weak self] (response: Result<Data, Error>) in
+        let networkTask = dataTransferService.request(with: endpoint) { [weak self] (response: Result<Data, Error>) in
             guard let strongSelf = self else { return }
             
             switch response {
@@ -41,5 +41,6 @@ extension DefaultPosterImagesRepository: PosterImagesRepository {
                 return
             }
         }
+        return RepositoryTask(networkTask: networkTask)
     }
 }

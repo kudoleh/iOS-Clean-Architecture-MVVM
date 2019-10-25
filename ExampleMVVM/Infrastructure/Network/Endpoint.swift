@@ -20,7 +20,9 @@ public enum BodyEncoding {
     case stringEncodingAscii
 }
 
-public class Endpoint: Requestable {
+public class Endpoint<R>: ResponseRequestable {
+    public typealias Response = R
+    
     public var path: String
     public var isFullPath: Bool
     public var method: HTTPMethodType
@@ -56,6 +58,10 @@ public protocol Requestable {
     var bodyEncoding: BodyEncoding { get }
     
     func urlRequest(with networkConfig: NetworkConfigurable) throws -> URLRequest
+}
+
+public protocol ResponseRequestable: Requestable {
+    associatedtype Response
 }
 
 enum RequestGenerationError: Error {

@@ -12,8 +12,8 @@ import UIKit
 final class MoviesSceneDIContainer {
     
     struct Dependencies {
-        let apiDataTransferService: DataTransfer
-        let imageDataTransferService: DataTransfer
+        let apiDataTransferService: DataTransferService
+        let imageDataTransferService: DataTransferService
     }
     
     private let dependencies: Dependencies

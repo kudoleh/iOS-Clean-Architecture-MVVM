@@ -9,9 +9,9 @@ import Foundation
 
 final class DefaultMoviesRepository {
     
-    private let dataTransferService: DataTransfer
+    private let dataTransferService: DataTransferService
     
-    init(dataTransferService: DataTransfer) {
+    init(dataTransferService: DataTransferService) {
         self.dataTransferService = dataTransferService
     }
 }
@@ -21,6 +21,7 @@ extension DefaultMoviesRepository: MoviesRepository {
     public func moviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
         
         let endpoint = APIEndpoints.movies(query: query.query, page: page)
-        return self.dataTransferService.request(with: endpoint, completion: completion)
+        let networkTask = self.dataTransferService.request(with: endpoint, completion: completion)
+        return RepositoryTask(networkTask: networkTask)
     }
 }

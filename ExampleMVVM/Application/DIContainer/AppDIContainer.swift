@@ -13,7 +13,7 @@ final class AppDIContainer {
     lazy var appConfigurations = AppConfigurations()
     
     // MARK: - Network
-    lazy var apiDataTransferService: DataTransfer = {
+    lazy var apiDataTransferService: DataTransferService = {
         let config = ApiDataNetworkConfig(baseURL: URL(string: appConfigurations.apiBaseURL)!,
                                           queryParameters: ["api_key": appConfigurations.apiKey])
         
@@ -21,7 +21,7 @@ final class AppDIContainer {
                                                    config: config)
         return DefaultDataTransferService(with: apiDataNetwork)
     }()
-    lazy var imageDataTransferService: DataTransfer = {
+    lazy var imageDataTransferService: DataTransferService = {
         let config = ApiDataNetworkConfig(baseURL: URL(string: appConfigurations.imagesBaseURL)!)
         let carrierLogosDataNetwork = DefaultNetworkService(session: URLSession.shared,
                                                             config: config)
