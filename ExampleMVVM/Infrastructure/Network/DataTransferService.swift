@@ -9,7 +9,7 @@ import Foundation
 
 public enum DataTransferError: Error {
     case noResponse
-    case parsingJSON
+    case parsing
     case networkFailure(NetworkError)
     case resolvedNetworkFailure(Error)
 }
@@ -64,36 +64,37 @@ extension DefaultDataTransferService: DataTransferService {
     public func request<T: Decodable, E: ResponseRequestable>(with endpoint: E,
                                                               completion: @escaping (Result<T, Error>) -> Void) -> NetworkCancellable? where E.Response == T {
         
-        let task = self.networkService.request(endpoint: endpoint) { result in
+        return self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success(let response):
-                let result: Result<T, Error> = self.parse(data: response.data)
-                DispatchQueue.main.async { completion(result) }
+                do {
+                    let result: T = try self.parse(data: response.data)
+                    DispatchQueue.main.async { completion(Result.success(result)) }
+                } catch {
+                    DispatchQueue.main.async { completion(Result.failure(error)) }
+                }
             case .failure(let error):
                 self.errorLogger.log(error: error)
                 let error = self.hande(error: error)
                 DispatchQueue.main.async { completion(Result.failure(error)) }
             }
         }
-        
-        return task
     }
     
-    private func parse<T: Decodable>(data: Data?) -> Result<T, Error> {
+    private func parse<T: Decodable>(data: Data?) throws -> T {
         
         if T.self is Data.Type, let data = data as? T {
-            return .success(data)
+            return data
         }
         
         guard let data = data else {
-            return .failure(DataTransferError.noResponse)
+            throw DataTransferError.noResponse
         }
         do {
-            let result: T = try self.responseDecoder.decode(data)
-            return .success(result)
+            return try self.responseDecoder.decode(data)
         } catch {
             self.errorLogger.log(error: error)
-            return .failure(DataTransferError.parsingJSON)
+            throw DataTransferError.parsing
         }
     }
     
