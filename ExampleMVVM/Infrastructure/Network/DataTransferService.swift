@@ -13,24 +13,17 @@ public enum DataTransferError: Error {
     case networkFailure(NetworkError)
     case resolvedNetworkFailure(Error)
 }
-extension DataTransferError: ConnectionError {
-    public var isInternetConnectionError: Bool {
-        guard case let DataTransferError.networkFailure(networkError) = self,
-            case .notConnected = networkError else {
-                return false
-        }
-        return true
-    }
-}
 
 public protocol DataTransferService {
+    typealias CompletionHandler<T> = (Result<T, Error>) -> Void
+    
     @discardableResult
     func request<T: Decodable, E: ResponseRequestable>(with endpoint: E,
-                                                       completion: @escaping (Result<T, Error>) -> Void) -> NetworkCancellable? where E.Response == T
+                                                       completion: @escaping CompletionHandler<T>) -> NetworkCancellable? where E.Response == T
 }
 
 public protocol DataTransferErrorResolver {
-    func resolve(response: NetworkServiceResponse?, error: NetworkError) -> Error?
+    func resolve(error: NetworkError) -> Error
 }
 
 public protocol ResponseDecoder {
@@ -62,46 +55,37 @@ public final class DefaultDataTransferService {
 extension DefaultDataTransferService: DataTransferService {
     
     public func request<T: Decodable, E: ResponseRequestable>(with endpoint: E,
-                                                              completion: @escaping (Result<T, Error>) -> Void) -> NetworkCancellable? where E.Response == T {
+                                                              completion: @escaping CompletionHandler<T>) -> NetworkCancellable? where E.Response == T {
         
         return self.networkService.request(endpoint: endpoint) { result in
             switch result {
-            case .success(let response):
-                do {
-                    guard let responseData = response.data else { throw DataTransferError.noResponse }
-                    let result: T = try self.parse(data: responseData)
-                    DispatchQueue.main.async { completion(Result.success(result)) }
-                } catch {
-                    self.errorLogger.log(error: error)
-                    DispatchQueue.main.async { completion(Result.failure(error)) }
-                }
+            case .success(let data):
+                let result: Result<T, Error> = self.parse(data: data)
+                DispatchQueue.main.async { return completion(result) }
             case .failure(let error):
                 self.errorLogger.log(error: error)
-                let error = self.hande(networkError: error)
-                DispatchQueue.main.async { completion(Result.failure(error)) }
+                let error = self.resolve(networkError: error)
+                DispatchQueue.main.async { return completion(.failure(error)) }
             }
         }
     }
     
-    private func parse<T: Decodable>(data: Data) throws -> T {
+    private func parse<T: Decodable>(data: Data?) -> Result<T, Error> {
+        
+        guard let data = data else { return .failure(DataTransferError.noResponse) }
+        if T.self is Data.Type, let data = data as? T { return .success(data) }
+
         do {
-            if T.self is Data.Type, let data = data as? T {
-                return data
-            }
-            return try self.responseDecoder.decode(data)
+            let result: T = try self.responseDecoder.decode(data)
+            return .success(result)
         } catch {
-            throw DataTransferError.parsing(error)
+            return .failure(DataTransferError.parsing(error))
         }
     }
     
-    private func hande(networkError error: NetworkError) -> DataTransferError {
-        if case let NetworkError.error(_, response) = error,
-            let resolvedError = self.errorResolver.resolve(response: response,
-                                                           error: error), !(resolvedError is NetworkError) {
-            return DataTransferError.resolvedNetworkFailure(resolvedError)
-        } else {
-            return DataTransferError.networkFailure(error)
-        }
+    private func resolve(networkError error: NetworkError) -> DataTransferError {
+        let resolvedError = self.errorResolver.resolve(error: error)
+        return resolvedError is NetworkError ? .networkFailure(error) : .resolvedNetworkFailure(resolvedError)
     }
 }
 
@@ -120,8 +104,8 @@ final public class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
 // MARK: - Error Resolver
 public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
     public init() { }
-    public func resolve(response: NetworkServiceResponse?, error: NetworkError) -> Error? {
-        return nil
+    public func resolve(error: NetworkError) -> Error {
+        return error
     }
 }
 

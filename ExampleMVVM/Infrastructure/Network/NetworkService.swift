@@ -7,37 +7,41 @@
 
 import Foundation
 
+public enum NetworkError: Error {
+    case error(statusCode: Int, data: Data?)
+    case notConnected
+    case cancelled
+    case generic(Error)
+    case urlGeneration
+}
+
 public protocol NetworkCancellable {
     func cancel()
 }
 
-public struct NetworkServiceResponse {
-    public let response: HTTPURLResponse?
-    public let data: Data?
-}
-
 public protocol NetworkService {
+    typealias CompletionHandler = (Result<Data?, NetworkError>) -> Void
     
-    func request(endpoint: Requestable, completion: @escaping (Result<NetworkServiceResponse, NetworkError>) -> Void) -> NetworkCancellable?
+    func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancellable?
 }
 
-public enum NetworkError: Error {
-    case error(statusCode: Int, response: NetworkServiceResponse)
-    case notConnected
-    case cancelled
-    case urlGeneration
-    case requestError(Error?)
+public protocol NetworkSession {
+    typealias CompletionHandler = (Data?, URLResponse?, Error?) -> Void
+    
+    func loadData(from request: URLRequest,
+                  completion: @escaping CompletionHandler) -> NetworkCancellable
 }
 
-extension NetworkError {
-    public var isNotFoundError: Bool { return hasStatusCode(404) }
-    
-    public func hasStatusCode(_ codeError: Int) -> Bool {
-        switch self {
-        case let .error(code, _):
-            return code == codeError
-        default: return false
+extension URLSessionTask: NetworkCancellable { }
+
+extension URLSession: NetworkSession {
+    public func loadData(from request: URLRequest,
+                         completion: @escaping CompletionHandler) -> NetworkCancellable {
+        let task = dataTask(with: request) { data, response, error in
+            completion(data, response, error)
         }
+        task.resume()
+        return task
     }
 }
 
@@ -45,25 +49,6 @@ public protocol NetworkErrorLogger {
     func log(request: URLRequest)
     func log(responseData data: Data?, response: URLResponse?)
     func log(error: Error)
-    func log(statusCode: Int)
-}
-
-public protocol NetworkSession {
-    func loadData(from request: URLRequest,
-                  completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> NetworkCancellable
-}
-
-extension URLSessionTask: NetworkCancellable { }
-
-extension URLSession: NetworkSession {
-    public func loadData(from request: URLRequest,
-                         completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> NetworkCancellable {
-        let task = dataTask(with: request) { data, response, error in
-            completion(data, response, error)
-        }
-        task.resume()
-        return task
-    }
 }
 
 // MARK: - Implementation
@@ -82,45 +67,49 @@ final public class DefaultNetworkService {
         self.logger = logger
     }
     
-    private func request(request: URLRequest, completion: @escaping (Result<NetworkServiceResponse, NetworkError>) -> Void) -> NetworkCancellable {
+    private func request(request: URLRequest, completion: @escaping CompletionHandler) -> NetworkCancellable {
         
-        let sessionDataTask = session.loadData(from: request) { [weak self] data, response, requestError in
-            var error: NetworkError
+        let sessionDataTask = session.loadData(from: request) { data, response, requestError in
+            
             if let requestError = requestError {
-                
-                if let response = response as? HTTPURLResponse, (400..<600).contains(response.statusCode) {
-                    error = .error(statusCode: response.statusCode, response: NetworkServiceResponse(response: response, data: data))
-                    self?.logger.log(statusCode: response.statusCode)
-                } else if requestError._code == NSURLErrorNotConnectedToInternet {
-                    error = .notConnected
-                } else if requestError._code == NSURLErrorCancelled {
-                    error = .cancelled
+                var error: NetworkError
+                if let response = response as? HTTPURLResponse {
+                    error = .error(statusCode: response.statusCode, data: data)
                 } else {
-                    error = .requestError(requestError)
+                    error = self.resolve(error: requestError)
                 }
-                self?.logger.log(error: requestError)
                 
+                self.logger.log(error: error)
                 completion(.failure(error))
             } else {
-                self?.logger.log(responseData: data, response: response)
-                completion(.success(NetworkServiceResponse(response: response as? HTTPURLResponse, data: data)))
+                self.logger.log(responseData: data, response: response)
+                completion(.success(data))
             }
         }
-        
+    
         logger.log(request: request)
-        
+
         return sessionDataTask
+    }
+    
+    private func resolve(error: Error) -> NetworkError {
+        let code = URLError.Code(rawValue: (error as NSError).code)
+        switch code {
+        case .notConnectedToInternet: return .notConnected
+        case .cancelled: return .cancelled
+        default: return .generic(error)
+        }
     }
 }
 
 extension DefaultNetworkService: NetworkService {
     
-    public func request(endpoint: Requestable, completion: @escaping (Result<NetworkServiceResponse, NetworkError>) -> Void) -> NetworkCancellable? {
+    public func request(endpoint: Requestable, completion: @escaping CompletionHandler) -> NetworkCancellable? {
         do {
             let urlRequest = try endpoint.urlRequest(with: config)
             return request(request: urlRequest, completion: completion)
         } catch {
-            completion(.failure(NetworkError.urlGeneration))
+            completion(.failure(.urlGeneration))
             return nil
         }
     }
@@ -160,10 +149,18 @@ final public class DefaultNetworkErrorLogger: NetworkErrorLogger {
         print("error: \(error)")
         #endif
     }
+}
+
+// MARK: - NetworkError extension
+
+extension NetworkError {
+    public var isNotFoundError: Bool { return hasStatusCode(404) }
     
-    public func log(statusCode: Int) {
-        #if DEBUG
-        print("status code: \(statusCode)")
-        #endif
+    public func hasStatusCode(_ codeError: Int) -> Bool {
+        switch self {
+        case let .error(code, _):
+            return code == codeError
+        default: return false
+        }
     }
 }

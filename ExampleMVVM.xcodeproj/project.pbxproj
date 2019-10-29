@@ -78,6 +78,7 @@
 		1FE49D9D230AEC5D00D1D42E /* MoviesQueryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE49D7E230AA7C200D1D42E /* MoviesQueryListViewModel.swift */; };
 		1FEE31622218B17E00C160B9 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEE31612218B17E00C160B9 /* Observable.swift */; };
 		1FEED0F02023576A000F4EAA /* Alertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEED0EF2023576A000F4EAA /* Alertable.swift */; };
+		1FF53EB423688893008D6CCC /* DataTransferError+ConnectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF53EB323688893008D6CCC /* DataTransferError+ConnectionError.swift */; };
 		1FFFC831221B0041007D99D2 /* DefaultMoviesQueriesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC827221B0041007D99D2 /* DefaultMoviesQueriesRepository.swift */; };
 		1FFFC832221B0041007D99D2 /* MoviesQueriesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC828221B0041007D99D2 /* MoviesQueriesRepository.swift */; };
 		1FFFC833221B0041007D99D2 /* DefaultPosterImagesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFC82B221B0041007D99D2 /* DefaultPosterImagesRepository.swift */; };
@@ -164,6 +165,7 @@
 		1FE49D83230AA7C200D1D42E /* MoviesListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesListViewModel.swift; sourceTree = "<group>"; };
 		1FEE31612218B17E00C160B9 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		1FEED0EF2023576A000F4EAA /* Alertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alertable.swift; sourceTree = "<group>"; };
+		1FF53EB323688893008D6CCC /* DataTransferError+ConnectionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataTransferError+ConnectionError.swift"; sourceTree = "<group>"; };
 		1FFFC827221B0041007D99D2 /* DefaultMoviesQueriesRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultMoviesQueriesRepository.swift; sourceTree = "<group>"; };
 		1FFFC828221B0041007D99D2 /* MoviesQueriesRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesQueriesRepository.swift; sourceTree = "<group>"; };
 		1FFFC82B221B0041007D99D2 /* DefaultPosterImagesRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultPosterImagesRepository.swift; sourceTree = "<group>"; };
@@ -500,6 +502,7 @@
 				1FEED0EE2023575C000F4EAA /* Protocols */,
 				1FEE31612218B17E00C160B9 /* Observable.swift */,
 				1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */,
+				1FF53EB323688893008D6CCC /* DataTransferError+ConnectionError.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -856,6 +859,7 @@
 				1FA533E2201EF5F700747E55 /* APIEndpoints.swift in Sources */,
 				1F77930F222C0DF2004E034C /* StoryboardInstantiable.swift in Sources */,
 				1FE49D84230AA7C200D1D42E /* MoviesQueriesItemCell.swift in Sources */,
+				1FF53EB423688893008D6CCC /* DataTransferError+ConnectionError.swift in Sources */,
 				1F53E2B623125896008D6A05 /* UIViewController+AddChild.swift in Sources */,
 				1F84DED023006BDA00139F73 /* FetchRecentMovieQueriesUseCase.swift in Sources */,
 				1FC2C9632301FEC0001AE47E /* MovieQueryUDS+Mappings.swift in Sources */,
