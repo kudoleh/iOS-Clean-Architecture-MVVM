@@ -20,6 +20,7 @@ struct APIEndpoints {
         
         let sizes = [92, 185, 500, 780]
         let availableWidth = sizes.sorted().first { width <= $0 } ?? sizes.last
-        return Endpoint(path: "t/p/w\(availableWidth!)\(path)")
+        return Endpoint(path: "t/p/w\(availableWidth!)\(path)",
+                        responseDecoder: RawDataResponseDecoder())
     }
 }

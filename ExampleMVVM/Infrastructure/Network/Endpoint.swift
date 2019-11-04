@@ -21,6 +21,7 @@ public enum BodyEncoding {
 }
 
 public class Endpoint<R>: ResponseRequestable {
+    
     public typealias Response = R
     
     public var path: String
@@ -30,6 +31,7 @@ public class Endpoint<R>: ResponseRequestable {
     public var headerParamaters: [String: String]
     public var bodyParamaters: [String: Any]
     public var bodyEncoding: BodyEncoding
+    public var responseDecoder: ResponseDecoder
     
     init(path: String,
          isFullPath: Bool = false,
@@ -37,7 +39,8 @@ public class Endpoint<R>: ResponseRequestable {
          queryParameters: [String: Any] = [:],
          headerParamaters: [String: String] = [:],
          bodyParamaters: [String: Any] = [:],
-         bodyEncoding: BodyEncoding = .jsonSerializationData) {
+         bodyEncoding: BodyEncoding = .jsonSerializationData,
+         responseDecoder: ResponseDecoder = JSONResponseDecoder()) {
         self.path = path
         self.isFullPath = isFullPath
         self.method = method
@@ -45,6 +48,7 @@ public class Endpoint<R>: ResponseRequestable {
         self.headerParamaters = headerParamaters
         self.bodyParamaters = bodyParamaters
         self.bodyEncoding = bodyEncoding
+        self.responseDecoder = responseDecoder
     }
 }
 
@@ -62,6 +66,8 @@ public protocol Requestable {
 
 public protocol ResponseRequestable: Requestable {
     associatedtype Response
+    
+    var responseDecoder: ResponseDecoder { get }
 }
 
 enum RequestGenerationError: Error {

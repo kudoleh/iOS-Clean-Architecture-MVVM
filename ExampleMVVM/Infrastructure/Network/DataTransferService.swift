@@ -37,16 +37,13 @@ public protocol DataTransferErrorLogger {
 public final class DefaultDataTransferService {
     
     private let networkService: NetworkService
-    private let responseDecoder: ResponseDecoder
     private let errorResolver: DataTransferErrorResolver
     private let errorLogger: DataTransferErrorLogger
     
     public init(with networkService: NetworkService,
-                responseDecoder: ResponseDecoder = JSONResponseDecoder(),
                 errorResolver: DataTransferErrorResolver = DefaultDataTransferErrorResolver(),
                 errorLogger: DataTransferErrorLogger = DefaultDataTransferErrorLogger()) {
         self.networkService = networkService
-        self.responseDecoder = responseDecoder
         self.errorResolver = errorResolver
         self.errorLogger = errorLogger
     }
@@ -56,11 +53,11 @@ extension DefaultDataTransferService: DataTransferService {
     
     public func request<T: Decodable, E: ResponseRequestable>(with endpoint: E,
                                                               completion: @escaping CompletionHandler<T>) -> NetworkCancellable? where E.Response == T {
-        
+
         return self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success(let data):
-                let result: Result<T, Error> = self.parse(data: data)
+                let result: Result<T, Error> = self.decode(data: data, decoder: endpoint.responseDecoder)
                 DispatchQueue.main.async { return completion(result) }
             case .failure(let error):
                 self.errorLogger.log(error: error)
@@ -70,15 +67,13 @@ extension DefaultDataTransferService: DataTransferService {
         }
     }
     
-    private func parse<T: Decodable>(data: Data?) -> Result<T, Error> {
-        
-        guard let data = data else { return .failure(DataTransferError.noResponse) }
-        if T.self is Data.Type, let data = data as? T { return .success(data) }
-
+    private func decode<T: Decodable>(data: Data?, decoder: ResponseDecoder) -> Result<T, Error> {
         do {
-            let result: T = try self.responseDecoder.decode(data)
+            guard let data = data else { return .failure(DataTransferError.noResponse) }
+            let result: T = try decoder.decode(data)
             return .success(result)
         } catch {
+            self.errorLogger.log(error: error)
             return .failure(DataTransferError.parsing(error))
         }
     }
@@ -109,11 +104,27 @@ public class DefaultDataTransferErrorResolver: DataTransferErrorResolver {
     }
 }
 
-// MARK: - JSON Response Decoder
+// MARK: - Response Decoders
 public class JSONResponseDecoder: ResponseDecoder {
     private let jsonDecoder = JSONDecoder()
     public init() { }
     public func decode<T: Decodable>(_ data: Data) throws -> T {
         return try jsonDecoder.decode(T.self, from: data)
+    }
+}
+
+public class RawDataResponseDecoder: ResponseDecoder {
+    public init() { }
+    
+    enum CodingKeys: String, CodingKey {
+        case `default` = ""
+    }
+    public func decode<T: Decodable>(_ data: Data) throws -> T {
+        if T.self is Data.Type, let data = data as? T {
+            return data
+        } else {
+            let context = DecodingError.Context(codingPath: [CodingKeys.`default`], debugDescription: "Expected Data type")
+            throw Swift.DecodingError.typeMismatch(T.self, context)
+        }
     }
 }
