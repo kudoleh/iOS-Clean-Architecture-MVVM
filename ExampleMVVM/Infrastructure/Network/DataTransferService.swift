@@ -123,7 +123,7 @@ public class RawDataResponseDecoder: ResponseDecoder {
         if T.self is Data.Type, let data = data as? T {
             return data
         } else {
-            let context = DecodingError.Context(codingPath: [CodingKeys.`default`], debugDescription: "Expected Data type")
+            let context = DecodingError.Context(codingPath: [CodingKeys.default], debugDescription: "Expected Data type")
             throw Swift.DecodingError.typeMismatch(T.self, context)
         }
     }
