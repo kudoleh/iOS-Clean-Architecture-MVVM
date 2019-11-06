@@ -7,8 +7,6 @@
 
 import Foundation
 
-typealias MovieId = String
-
 struct MoviesPage {
     let page: Int
     let totalPages: Int
@@ -16,7 +14,9 @@ struct MoviesPage {
 }
 
 struct Movie {
-    let id: MovieId
+    typealias Id = String
+    
+    let id: Id
     let title: String
     let posterPath: String?
     let overview: String

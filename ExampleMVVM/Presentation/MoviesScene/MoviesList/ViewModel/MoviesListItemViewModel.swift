@@ -24,7 +24,7 @@ protocol MoviesListItemViewModel: MoviesListItemViewModelInput, MoviesListItemVi
 
 final class DefaultMoviesListItemViewModel: MoviesListItemViewModel {
     
-    private(set) var id: MovieId
+    private(set) var id: Movie.Id
 
     // MARK: - OUTPUT
     let title: String
