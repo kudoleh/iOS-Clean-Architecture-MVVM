@@ -89,28 +89,29 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         emptyDataLabel.isHidden = true
         moviesListContainer.isHidden = true
         suggestionsListContainer.isHidden = true
-        moviesTableViewController?.update(isLoadingNextPage: false)
         
-        if viewModel.loadingType.value == .fullScreen {
-            loadingView.isHidden = false
-        } else if viewModel.loadingType.value == .nextPage {
-            moviesTableViewController?.update(isLoadingNextPage: true)
-            moviesListContainer.isHidden = false
-        } else if viewModel.isEmpty {
-            emptyDataLabel.isHidden = false
-        } else {
-            moviesListContainer.isHidden = false
+        switch viewModel.loadingType.value {
+        case .none: updateMoviesListVisibility()
+        case .fullScreen: loadingView.isHidden = false
+        case .nextPage: moviesListContainer.isHidden = false
         }
-        
         updateQueriesSuggestionsVisibility()
     }
     
-    private func updateQueriesSuggestionsVisibility() {
-        if searchController.searchBar.isFirstResponder {
-            viewModel.showQueriesSuggestions()
-        } else {
-            viewModel.closeQueriesSuggestions()
+    private func updateMoviesListVisibility() {
+        guard !viewModel.isEmpty else {
+            emptyDataLabel.isHidden = false
+            return
         }
+        moviesListContainer.isHidden = false
+    }
+
+    private func updateQueriesSuggestionsVisibility() {
+        guard searchController.searchBar.isFirstResponder else {
+            viewModel.closeQueriesSuggestions()
+            return
+        }
+        viewModel.showQueriesSuggestions()
     }
 }
 
@@ -192,9 +193,7 @@ extension MoviesListViewController {
 }
 
 protocol MoviesListViewControllersFactory {
-    
     func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController
-    
     func makeMoviesDetailsViewController(title: String,
                                          overview: String,
                                          posterPlaceholderImage: Data?,

@@ -20,6 +20,13 @@ final class MoviesListTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.estimatedRowHeight = MoviesListItemCell.height
         tableView.rowHeight = UITableView.automaticDimension
+        bind(to: viewModel)
+    }
+    
+    func bind(to viewModel: MoviesListViewModel) {
+        viewModel.loadingType.observe(on: self) { [weak self] loadingType in
+            self?.update(isLoadingNextPage: loadingType == .nextPage)
+        }
     }
     
     func reload() {
