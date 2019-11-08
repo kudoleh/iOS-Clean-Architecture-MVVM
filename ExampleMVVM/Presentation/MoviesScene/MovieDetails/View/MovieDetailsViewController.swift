@@ -31,15 +31,9 @@ final class MovieDetailsViewController: UIViewController, StoryboardInstantiable
     }
     
     func bind(to viewModel: MovieDetailsViewModel) {
-        viewModel.title.observe(on: self) { [weak self] title in
-            self?.title = title
-        }
-        viewModel.posterImage.observe(on: self) { [weak self] image in
-            self?.posterImageView.image = image.flatMap { UIImage(data: $0) }
-        }
-        viewModel.overview.observe(on: self) { [weak self] text in
-            self?.overviewTextView.text = text
-        }
+        viewModel.title.observe(on: self) { [weak self] in self?.title = $0 }
+        viewModel.posterImage.observe(on: self) { [weak self] in self?.posterImageView.image = $0.flatMap { UIImage(data: $0) } }
+        viewModel.overview.observe(on: self) { [weak self] in self?.overviewTextView.text = $0 }
     }
     
     override func viewWillLayoutSubviews() {

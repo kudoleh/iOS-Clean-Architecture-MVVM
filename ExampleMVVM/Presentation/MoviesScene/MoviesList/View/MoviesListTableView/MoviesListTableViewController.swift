@@ -24,9 +24,7 @@ final class MoviesListTableViewController: UITableViewController {
     }
     
     func bind(to viewModel: MoviesListViewModel) {
-        viewModel.loadingType.observe(on: self) { [weak self] loadingType in
-            self?.update(isLoadingNextPage: loadingType == .nextPage)
-        }
+        viewModel.loadingType.observe(on: self) { [weak self] in self?.update(isLoadingNextPage: $0 == .nextPage) }
     }
     
     func reload() {

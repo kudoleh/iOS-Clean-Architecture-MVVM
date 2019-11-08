@@ -30,9 +30,7 @@ final class MoviesListItemCell: UITableViewCell {
     }
     
     func bind(to viewModel: MoviesListItemViewModel) {
-        viewModel.posterImage.observe(on: self) { [weak self] (data: Data?) in
-            self?.posterImageView.image = data.flatMap { UIImage(data: $0) }
-        }
+        viewModel.posterImage.observe(on: self) { [weak self] in self?.posterImageView.image = $0.flatMap { UIImage(data: $0) } }
     }
     
     private func unbind(from item: MoviesListItemViewModel?) {
