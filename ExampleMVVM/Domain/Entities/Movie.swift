@@ -13,10 +13,10 @@ struct MoviesPage {
     let movies: [Movie]
 }
 
+typealias MovieId = String
+
 struct Movie {
-    typealias Id = String
-    
-    let id: Id
+    let id: MovieId
     let title: String
     let posterPath: String?
     let overview: String

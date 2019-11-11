@@ -36,7 +36,7 @@ extension Movie: Decodable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = Id(try container.decode(Int.self, forKey: .id))
+        self.id = MovieId(try container.decode(Int.self, forKey: .id))
         self.title = try container.decode(String.self, forKey: .title)
         self.posterPath = try container.decodeIfPresent(String.self, forKey: .posterPath)
         self.overview = try container.decode(String.self, forKey: .overview)
