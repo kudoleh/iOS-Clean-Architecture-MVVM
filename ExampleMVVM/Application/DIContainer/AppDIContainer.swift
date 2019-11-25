@@ -23,9 +23,9 @@ final class AppDIContainer {
     }()
     lazy var imageDataTransferService: DataTransferService = {
         let config = ApiDataNetworkConfig(baseURL: URL(string: appConfigurations.imagesBaseURL)!)
-        let carrierLogosDataNetwork = DefaultNetworkService(sessionManager: networkSessionManager,
-                                                            config: config)
-        return DefaultDataTransferService(with: carrierLogosDataNetwork)
+        let imagesDataNetwork = DefaultNetworkService(sessionManager: networkSessionManager,
+                                                      config: config)
+        return DefaultDataTransferService(with: imagesDataNetwork)
     }()
     lazy var networkSessionManager = DefaultNetworkSessionManager()
     
