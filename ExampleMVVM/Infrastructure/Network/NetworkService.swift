@@ -44,12 +44,12 @@ public protocol NetworkErrorLogger {
 
 final public class DefaultNetworkService {
     
-    private let sessionManager: NetworkSessionManager
     private let config: NetworkConfigurable
+    private let sessionManager: NetworkSessionManager
     private let logger: NetworkErrorLogger
     
-    public init(sessionManager: NetworkSessionManager,
-                config: NetworkConfigurable,
+    public init(config: NetworkConfigurable,
+                sessionManager: NetworkSessionManager = DefaultNetworkSessionManager(),
                 logger: NetworkErrorLogger = DefaultNetworkErrorLogger()) {
         self.sessionManager = sessionManager
         self.config = config

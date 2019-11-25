@@ -23,10 +23,9 @@ class DataTransferServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should decode mock object")
         
         let responseData = #"{"name": "Hello"}"#.data(using: .utf8)
-        let networkService = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
-                                                                                                    data: responseData,
-                                                                                                    error: nil),
-                                                   config: config)
+        let networkService = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                                             data: responseData,
+                                                                                                             error: nil))
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
@@ -49,10 +48,9 @@ class DataTransferServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should not decode mock object")
         
         let responseData = #"{"age": 20}"#.data(using: .utf8)
-        let networkService = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
-                                                                                                    data: responseData,
-                                                                                                    error: nil),
-                                                   config: config)
+        let networkService = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                                             data: responseData,
+                                                                                                             error: nil))
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
@@ -78,10 +76,9 @@ class DataTransferServiceTests: XCTestCase {
                                        statusCode: 500,
                                        httpVersion: "1.1",
                                        headerFields: nil)
-        let networkService = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: response,
-                                                                                                    data: responseData,
-                                                                                                    error: DataTransferErrorMock.someError),
-                                                   config: config)
+        let networkService = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: response,
+                                                                                                             data: responseData,
+                                                                                                             error: DataTransferErrorMock.someError))
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
@@ -111,10 +108,9 @@ class DataTransferServiceTests: XCTestCase {
                                        statusCode: 200,
                                        httpVersion: "1.1",
                                        headerFields: [:])
-        let networkService = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: response,
-                                                                                                    data: nil,
-                                                                                                    error: nil),
-                                                   config: config)
+        let networkService = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: response,
+                                                                                                             data: nil,
+                                                                                                             error: nil))
         
         let sut = DefaultDataTransferService(with: networkService)
         //when

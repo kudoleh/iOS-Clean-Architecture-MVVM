@@ -41,10 +41,10 @@ class NetworkServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should return correct data")
         
         let expectedResponseData = "Response data".data(using: .utf8)!
-        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
-                                                                                         data: expectedResponseData,
-                                                                                         error: nil),
-                                        config: config)
+        let sut = DefaultNetworkService(config: config,
+                                        sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                  data: expectedResponseData,
+                                                                                  error: nil))
         //when
         _ = sut.request(endpoint: EndpointMock(path: "http://mock.test.com", method: .get)) { result in
             guard let responseData = try? result.get() else {
@@ -64,10 +64,9 @@ class NetworkServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should return hasStatusCode error")
         
         let cancelledError = NSError(domain: "network", code: NSURLErrorCancelled, userInfo: nil)
-        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
-                                                                                         data: nil,
-                                                                                         error: cancelledError as Error),
-                                        config: config)
+        let sut = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                                  data: nil,
+                                                                                                  error: cancelledError as Error))
         //when
         _ = sut.request(endpoint: EndpointMock(path: "http://mock.test.com", method: .get)) { result in
             do {
@@ -92,10 +91,9 @@ class NetworkServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should return correct data")
         
         let expectedResponseData = "Response data".data(using: .utf8)!
-        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
-                                                                                         data: expectedResponseData,
-                                                                                         error: nil),
-                                        config: config)
+        let sut = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                                  data: expectedResponseData,
+                                                                                                  error: nil))
         //when
         _ = sut.request(endpoint: EndpointMock(path: "-;@,?:ą", method: .get)) { result in
             do {
@@ -123,10 +121,9 @@ class NetworkServiceTests: XCTestCase {
                                        statusCode: 500,
                                        httpVersion: "1.1",
                                        headerFields: [:])
-        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: response,
-                                                                                         data: nil,
-                                                                                         error: NetworkErrorMock.someError),
-                                        config: config)
+        let sut = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: response,
+                                                                                                  data: nil,
+                                                                                                  error: NetworkErrorMock.someError))
         //when
         _ = sut.request(endpoint: EndpointMock(path: "http://mock.test.com", method: .get)) { result in
             do {
@@ -149,10 +146,9 @@ class NetworkServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should return hasStatusCode error")
         
         let error = NSError(domain: "network", code: NSURLErrorNotConnectedToInternet, userInfo: nil)
-        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
-                                                                                         data: nil,
-                                                                                         error: error as Error),
-                                        config: config)
+        let sut = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                                  data: nil,
+                                                                                                  error: error as Error))
         
         //when
         _ = sut.request(endpoint: EndpointMock(path: "http://mock.test.com", method: .get)) { result in
@@ -195,10 +191,9 @@ class NetworkServiceTests: XCTestCase {
         
         let error = NSError(domain: "network", code: NSURLErrorNotConnectedToInternet, userInfo: nil)
         let networkErrorLogger = NetworkErrorLoggerMock()
-        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
-                                                                                         data: nil,
-                                                                                         error: error as Error),
-                                        config: config,
+        let sut = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                                  data: nil,
+                                                                                                  error: error as Error),
                                         logger: networkErrorLogger)
         //when
         _ = sut.request(endpoint: EndpointMock(path: "http://mock.test.com", method: .get)) { result in
