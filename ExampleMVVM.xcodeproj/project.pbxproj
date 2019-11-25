@@ -39,7 +39,7 @@
 		1F9034C82306FF2D00DEA4BD /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1FC48822E3693100BCBA8D /* NetworkConfig.swift */; };
 		1F9034CE230713FC00DEA4BD /* DataTransferServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9034CD230713FC00DEA4BD /* DataTransferServiceTests.swift */; };
 		1F9034D1230714B900DEA4BD /* NetworkConfigurableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9034D0230714B900DEA4BD /* NetworkConfigurableMock.swift */; };
-		1F9034D32307161D00DEA4BD /* NetworkSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9034D22307161D00DEA4BD /* NetworkSessionMock.swift */; };
+		1F9034D32307161D00DEA4BD /* NetworkSessionManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9034D22307161D00DEA4BD /* NetworkSessionManagerMock.swift */; };
 		1F9034DA2307238C00DEA4BD /* MoviesQueriesListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9034D92307238C00DEA4BD /* MoviesQueriesListViewModelTests.swift */; };
 		1F9034DC2307291800DEA4BD /* FetchRecentMovieQueriesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F84DECF23006BDA00139F73 /* FetchRecentMovieQueriesUseCase.swift */; };
 		1F9034DF2307464700DEA4BD /* MoviesQueriesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9034DE2307464700DEA4BD /* MoviesQueriesStorage.swift */; };
@@ -128,7 +128,7 @@
 		1F9034C32306FDFE00DEA4BD /* NetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
 		1F9034CD230713FC00DEA4BD /* DataTransferServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTransferServiceTests.swift; sourceTree = "<group>"; };
 		1F9034D0230714B900DEA4BD /* NetworkConfigurableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfigurableMock.swift; sourceTree = "<group>"; };
-		1F9034D22307161D00DEA4BD /* NetworkSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSessionMock.swift; sourceTree = "<group>"; };
+		1F9034D22307161D00DEA4BD /* NetworkSessionManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSessionManagerMock.swift; sourceTree = "<group>"; };
 		1F9034D92307238C00DEA4BD /* MoviesQueriesListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesQueriesListViewModelTests.swift; sourceTree = "<group>"; };
 		1F9034DE2307464700DEA4BD /* MoviesQueriesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesQueriesStorage.swift; sourceTree = "<group>"; };
 		1F9035262307528F00DEA4BD /* CoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
@@ -307,7 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				1F9034D0230714B900DEA4BD /* NetworkConfigurableMock.swift */,
-				1F9034D22307161D00DEA4BD /* NetworkSessionMock.swift */,
+				1F9034D22307161D00DEA4BD /* NetworkSessionManagerMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -919,7 +919,7 @@
 				1F474F2B22356C7F0092DB4B /* MovieQuery.swift in Sources */,
 				1F474F2D22356C7F0092DB4B /* SearchMoviesUseCase.swift in Sources */,
 				1F9034C52306FF2D00DEA4BD /* NetworkService.swift in Sources */,
-				1F9034D32307161D00DEA4BD /* NetworkSessionMock.swift in Sources */,
+				1F9034D32307161D00DEA4BD /* NetworkSessionManagerMock.swift in Sources */,
 				1F84DECE2300677B00139F73 /* Observable.swift in Sources */,
 				1F474F3022356C7F0092DB4B /* MoviesQueriesRepository.swift in Sources */,
 				1F9034D1230714B900DEA4BD /* NetworkConfigurableMock.swift in Sources */,

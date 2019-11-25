@@ -1,5 +1,5 @@
 //
-//  NetworkSessionMock.swift
+//  NetworkSessionManagerMock.swift
 //  ExampleMVVMTests
 //
 //  Created by Oleh Kudinov on 16.08.19.
@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct NetworkSessionMock: NetworkSession {
+struct NetworkSessionManagerMock: NetworkSessionManager {
     let response: HTTPURLResponse?
     let data: Data?
     let error: Error?
     
-    func loadData(from request: URLRequest,
-                  completion: @escaping (Data?, URLResponse?, Error?) -> Void) -> NetworkCancellable {
+    func request(_ request: URLRequest,
+                 completion: @escaping CompletionHandler) -> NetworkCancellable {
         completion(data, response, error)
         return URLSessionDataTask()
     }

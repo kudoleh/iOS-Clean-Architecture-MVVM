@@ -41,9 +41,9 @@ class NetworkServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should return correct data")
         
         let expectedResponseData = "Response data".data(using: .utf8)!
-        let sut = DefaultNetworkService(session: NetworkSessionMock(response: nil,
-                                                                    data: expectedResponseData,
-                                                                    error: nil),
+        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                         data: expectedResponseData,
+                                                                                         error: nil),
                                         config: config)
         //when
         _ = sut.request(endpoint: EndpointMock(path: "http://mock.test.com", method: .get)) { result in
@@ -64,9 +64,9 @@ class NetworkServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should return hasStatusCode error")
         
         let cancelledError = NSError(domain: "network", code: NSURLErrorCancelled, userInfo: nil)
-        let sut = DefaultNetworkService(session: NetworkSessionMock(response: nil,
-                                                                    data: nil,
-                                                                    error: cancelledError as Error),
+        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                         data: nil,
+                                                                                         error: cancelledError as Error),
                                         config: config)
         //when
         _ = sut.request(endpoint: EndpointMock(path: "http://mock.test.com", method: .get)) { result in
@@ -92,9 +92,9 @@ class NetworkServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should return correct data")
         
         let expectedResponseData = "Response data".data(using: .utf8)!
-        let sut = DefaultNetworkService(session: NetworkSessionMock(response: nil,
-                                                                    data: expectedResponseData,
-                                                                    error: nil),
+        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                         data: expectedResponseData,
+                                                                                         error: nil),
                                         config: config)
         //when
         _ = sut.request(endpoint: EndpointMock(path: "-;@,?:ą", method: .get)) { result in
@@ -123,9 +123,9 @@ class NetworkServiceTests: XCTestCase {
                                        statusCode: 500,
                                        httpVersion: "1.1",
                                        headerFields: [:])
-        let sut = DefaultNetworkService(session: NetworkSessionMock(response: response,
-                                                                    data: nil,
-                                                                    error: NetworkErrorMock.someError),
+        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: response,
+                                                                                         data: nil,
+                                                                                         error: NetworkErrorMock.someError),
                                         config: config)
         //when
         _ = sut.request(endpoint: EndpointMock(path: "http://mock.test.com", method: .get)) { result in
@@ -149,9 +149,9 @@ class NetworkServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should return hasStatusCode error")
         
         let error = NSError(domain: "network", code: NSURLErrorNotConnectedToInternet, userInfo: nil)
-        let sut = DefaultNetworkService(session: NetworkSessionMock(response: nil,
-                                                                    data: nil,
-                                                                    error: error as Error),
+        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                         data: nil,
+                                                                                         error: error as Error),
                                         config: config)
         
         //when
@@ -195,9 +195,9 @@ class NetworkServiceTests: XCTestCase {
         
         let error = NSError(domain: "network", code: NSURLErrorNotConnectedToInternet, userInfo: nil)
         let networkErrorLogger = NetworkErrorLoggerMock()
-        let sut = DefaultNetworkService(session: NetworkSessionMock(response: nil,
-                                                                    data: nil,
-                                                                    error: error as Error),
+        let sut = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                         data: nil,
+                                                                                         error: error as Error),
                                         config: config,
                                         logger: networkErrorLogger)
         //when

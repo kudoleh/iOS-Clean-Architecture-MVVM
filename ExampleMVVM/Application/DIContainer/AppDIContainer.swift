@@ -17,16 +17,17 @@ final class AppDIContainer {
         let config = ApiDataNetworkConfig(baseURL: URL(string: appConfigurations.apiBaseURL)!,
                                           queryParameters: ["api_key": appConfigurations.apiKey])
         
-        let apiDataNetwork = DefaultNetworkService(session: URLSession.shared,
+        let apiDataNetwork = DefaultNetworkService(sessionManager: networkSessionManager,
                                                    config: config)
         return DefaultDataTransferService(with: apiDataNetwork)
     }()
     lazy var imageDataTransferService: DataTransferService = {
         let config = ApiDataNetworkConfig(baseURL: URL(string: appConfigurations.imagesBaseURL)!)
-        let carrierLogosDataNetwork = DefaultNetworkService(session: URLSession.shared,
+        let carrierLogosDataNetwork = DefaultNetworkService(sessionManager: networkSessionManager,
                                                             config: config)
         return DefaultDataTransferService(with: carrierLogosDataNetwork)
     }()
+    lazy var networkSessionManager = DefaultNetworkSessionManager()
     
     // DIContainers of scenes
     func makeMoviesSceneDIContainer() -> MoviesSceneDIContainer {

@@ -23,9 +23,9 @@ class DataTransferServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should decode mock object")
         
         let responseData = #"{"name": "Hello"}"#.data(using: .utf8)
-        let networkService = DefaultNetworkService(session: NetworkSessionMock(response: nil,
-                                                                               data: responseData,
-                                                                               error: nil),
+        let networkService = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                                    data: responseData,
+                                                                                                    error: nil),
                                                    config: config)
         
         let sut = DefaultDataTransferService(with: networkService)
@@ -49,9 +49,9 @@ class DataTransferServiceTests: XCTestCase {
         let expectation = self.expectation(description: "Should not decode mock object")
         
         let responseData = #"{"age": 20}"#.data(using: .utf8)
-        let networkService = DefaultNetworkService(session: NetworkSessionMock(response: nil,
-                                                                               data: responseData,
-                                                                               error: nil),
+        let networkService = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: nil,
+                                                                                                    data: responseData,
+                                                                                                    error: nil),
                                                    config: config)
         
         let sut = DefaultDataTransferService(with: networkService)
@@ -78,9 +78,9 @@ class DataTransferServiceTests: XCTestCase {
                                        statusCode: 500,
                                        httpVersion: "1.1",
                                        headerFields: nil)
-        let networkService = DefaultNetworkService(session: NetworkSessionMock(response: response,
-                                                                               data: responseData,
-                                                                               error: DataTransferErrorMock.someError),
+        let networkService = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: response,
+                                                                                                    data: responseData,
+                                                                                                    error: DataTransferErrorMock.someError),
                                                    config: config)
         
         let sut = DefaultDataTransferService(with: networkService)
@@ -111,9 +111,9 @@ class DataTransferServiceTests: XCTestCase {
                                        statusCode: 200,
                                        httpVersion: "1.1",
                                        headerFields: [:])
-        let networkService = DefaultNetworkService(session: NetworkSessionMock(response: response,
-                                                                               data: nil,
-                                                                               error: nil),
+        let networkService = DefaultNetworkService(sessionManager: NetworkSessionManagerMock(response: response,
+                                                                                                    data: nil,
+                                                                                                    error: nil),
                                                    config: config)
         
         let sut = DefaultDataTransferService(with: networkService)
