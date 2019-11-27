@@ -412,7 +412,7 @@
 		1FA533A0201E1FDE00747E55 /* ExampleMVVMTests */ = {
 			isa = PBXGroup;
 			children = (
-				1FA53A3622F45C4F009A104C /* Damain */,
+				1FA53A3622F45C4F009A104C /* Domain */,
 				1F9034D52307231000DEA4BD /* Presentation */,
 				1F9034CB2307138400DEA4BD /* Infrastructure */,
 				1FFFC83D221B02BA007D99D2 /* Info.plist */,
@@ -479,13 +479,13 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		1FA53A3622F45C4F009A104C /* Damain */ = {
+		1FA53A3622F45C4F009A104C /* Domain */ = {
 			isa = PBXGroup;
 			children = (
 				1FA53A3722F45C4F009A104C /* UseCases */,
 			);
-			name = Damain;
-			path = ExampleMVVMTests/Damain;
+			name = Domain;
+			path = ExampleMVVMTests/Domain;
 			sourceTree = SOURCE_ROOT;
 		};
 		1FA53A3722F45C4F009A104C /* UseCases */ = {
