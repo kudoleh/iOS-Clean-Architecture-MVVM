@@ -102,6 +102,10 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         }
         viewModel.showQueriesSuggestions()
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 }
 
 extension MoviesListViewController: UISearchBarDelegate {
