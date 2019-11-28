@@ -142,11 +142,7 @@ extension MoviesListViewController {
         searchController.delegate = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = NSLocalizedString("Search Movies", comment: "")
-        if #available(iOS 9.1, *) {
-            searchController.obscuresBackgroundDuringPresentation = false
-        } else {
-            searchController.dimsBackgroundDuringPresentation = true
-        }
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.translatesAutoresizingMaskIntoConstraints = true
         searchController.searchBar.barStyle = .black
         searchController.hidesNavigationBarDuringPresentation = false
