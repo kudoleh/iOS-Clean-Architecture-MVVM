@@ -82,7 +82,8 @@ final class MoviesSceneDIContainer {
     // MARK: - Movies Queries Suggestions List
     func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController {
         if #available(iOS 13.0, *) { // SwiftUI
-            return UIHostingController(rootView: MoviesQueryListView(viewModelWrapper: makeMoviesQueryListViewModelWrapper(delegate: delegate)))
+            let view = MoviesQueryListView(viewModelWrapper: makeMoviesQueryListViewModelWrapper(delegate: delegate))
+            return UIHostingController(rootView: view)
         } else { // UIKit
             return MoviesQueriesTableViewController.create(with: makeMoviesQueryListViewModel(delegate: delegate))
         }
