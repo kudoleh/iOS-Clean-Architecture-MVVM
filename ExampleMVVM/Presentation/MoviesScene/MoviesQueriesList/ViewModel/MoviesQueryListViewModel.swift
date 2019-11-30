@@ -23,7 +23,7 @@ protocol MoviesQueryListViewModelDelegate: class {
     func moviesQueriesListDidSelect(movieQuery: MovieQuery)
 }
 
-class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
+final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
 
     private let numberOfQueriesToShow: Int
     private let fetchRecentMovieQueriesUseCase: FetchRecentMovieQueriesUseCase

@@ -6,8 +6,7 @@
 //
 
 import UIKit
-// SwiftUI
-//import SwiftUI
+import SwiftUI
 
 final class MoviesSceneDIContainer {
     
@@ -82,12 +81,11 @@ final class MoviesSceneDIContainer {
     
     // MARK: - Movies Queries Suggestions List
     func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController {
-//        if #available(iOS 13.0, *) { // SwiftUI
-//
-//            return UIHostingController(rootView: MoviesQueryListView(viewModel: makeMoviesQueryListViewModelWrapper(delegate: delegate)))
-//        } else { // UIKit
+        if #available(iOS 13.0, *) { // SwiftUI
+            return UIHostingController(rootView: MoviesQueryListView(viewModelWrapper: makeMoviesQueryListViewModelWrapper(delegate: delegate)))
+        } else { // UIKit
             return MoviesQueriesTableViewController.create(with: makeMoviesQueryListViewModel(delegate: delegate))
-//        }
+        }
     }
     
     func makeMoviesQueryListViewModel(delegate: MoviesQueryListViewModelDelegate) -> MoviesQueryListViewModel {
@@ -95,13 +93,11 @@ final class MoviesSceneDIContainer {
                                                fetchRecentMovieQueriesUseCase: makeFetchRecentMovieQueriesUseCase(),
                                                delegate: delegate)
     }
-// SwiftUI
-//    @available(iOS 13.0, *)
-//    func makeMoviesQueryListViewModelWrapper(delegate: MoviesQueryListViewModelDelegate) -> MoviesQueryListViewModelWrapper {
-//        return MoviesQueryListViewModelWrapper(numberOfQueriesToShow: 10,
-//                                        fetchRecentMovieQueriesUseCase: makeFetchRecentMovieQueriesUseCase(),
-//                                        delegate: delegate)
-//    }
+
+    @available(iOS 13.0, *)
+    func makeMoviesQueryListViewModelWrapper(delegate: MoviesQueryListViewModelDelegate) -> MoviesQueryListViewModelWrapper {
+        return MoviesQueryListViewModelWrapper(viewModel: makeMoviesQueryListViewModel(delegate: delegate))
+    }
 }
 
 extension MoviesSceneDIContainer: MoviesListViewControllersFactory {}
