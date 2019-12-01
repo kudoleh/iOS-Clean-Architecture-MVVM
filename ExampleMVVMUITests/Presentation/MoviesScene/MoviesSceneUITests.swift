@@ -22,19 +22,23 @@ class MoviesSceneUITests: XCTestCase {
         let app = XCUIApplication()
         
         // Search for Batman
-        app.searchFields["Search Movies"].tap()
+        app.searchFields[localized("Search Movies")].tap()
         if !app.keys["A"].waitForExistence(timeout: 5) {
-            XCTFail("The simulator keyboard could not be found. Use keyboard shortcut COMMAND + SHIFT + K while simulator has focus on text input")
+            XCTFail("The keyboard could not be found. Use keyboard shortcut COMMAND + SHIFT + K while simulator has focus on text input")
         }
-        app.searchFields["Search Movies"].typeText("Batman Begins")
-        app/*@START_MENU_TOKEN@*/.buttons["Search"]/*[[".keyboards.buttons[\"Search\"]",".buttons[\"Search\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        app.searchFields[localized("Search Movies")].typeText("Batman Begins")
+        app.buttons["Search"].tap()
         
         // Tap on first result row
-        _ = app.cells[String(format: NSLocalizedString("Result row %d", comment: ""), 1)].waitForExistence(timeout: 10)
-        app.cells[String(format: NSLocalizedString("Result row %d", comment: ""), 1)].tap()
+        _ = app.cells[String(format:localized("Result row %d"), 1)].waitForExistence(timeout: 10)
+        app.cells[String(format: localized("Result row %d"), 1)].tap()
         
         // Make sure movie details view
-        XCTAssertTrue(app.otherElements[NSLocalizedString("Movie details view", comment: "")].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.navigationBars["Batman Begins"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements[localized("Movie details view")].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars[localized("Batman Begins")].waitForExistence(timeout: 5))
+    }
+    
+    private func localized(_ key: String) -> String {
+        return NSLocalizedString(key, bundle: Bundle(for: Self.self), comment: "")
     }
 }
