@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  App
+
+  Created by Oleh Kudinov on 01.12.19.
+  
+*/
+
+"Movies" = "Películas";
+"Search results" = "Resultados de búsqueda";
+"Release Date" = "Fecha de lanzamiento";
+"To be announced" = "Para ser anunciado";
+"Error" = "Error";
+"No internet connection" = "Sin conexión a internet";
+"Failed loading movies" = "Error al descargar películas";
+"Search Movies" = "Buscar películas";
+"Result row %d" = "Resultado fila% d";
+"Movie details view" = "Vista de detalles de la película";

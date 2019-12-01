@@ -35,7 +35,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         super.viewDidLoad()
         
         title = NSLocalizedString("Movies", comment: "")
-        emptyDataLabel.text = NSLocalizedString("Search results ", comment: "")
+        emptyDataLabel.text = NSLocalizedString("Search results", comment: "")
         setupSearchController()
         
         bind(to: viewModel)
