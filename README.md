@@ -15,7 +15,7 @@ Medium post with detail description about this project: https://tech.olx.com/cle
 * Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService(Infrastructure Layer)
 * UI test with XCUITests
 * Size Classes in Detail view
-* SwiftUI + Combine example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
+* SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 
 
 ## Requirements: 

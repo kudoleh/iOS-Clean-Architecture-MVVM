@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import Combine
 
 @available(iOS 13.0, *)
 extension DefaultMoviesQueryListItemViewModel: Identifiable { }
