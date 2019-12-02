@@ -3,6 +3,8 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 
 Medium post with detail description about this project: https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3
 
+![Alt text](README_FILES/CleanArchitecture+MVVM.png?raw=true "Modules Dependencies")
+
 ## Architecture concepts used here:
 * Clean Layered Architecture https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
 * Advanced iOS App Architecture https://www.raywenderlich.com/8477-introducing-advanced-ios-app-architecture
