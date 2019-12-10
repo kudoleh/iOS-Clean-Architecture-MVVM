@@ -7,13 +7,15 @@
 
 import Foundation
 
-public final class Observable<Value> {
+final public class Observable<Value> {
     
-    struct Observer<Value> {
+    private struct Observer<Value> {
         weak var observer: AnyObject?
         let block: (Value) -> Void
     }
     
+    // To make observers array Thread Safe
+    private let queue = DispatchQueue(label: "ObservableQueue", attributes: .concurrent)
     private var observers = [Observer<Value>]()
     
     public var value: Value {
@@ -25,17 +27,23 @@ public final class Observable<Value> {
     }
     
     public func observe(on observer: AnyObject, observerBlock: @escaping (Value) -> Void) {
-        observers.append(Observer(observer: observer, block: observerBlock))
-        DispatchQueue.main.async { observerBlock(self.value) }
+        queue.async(flags: .barrier) {
+            self.observers.append(Observer(observer: observer, block: observerBlock))
+            DispatchQueue.main.async { observerBlock(self.value) }
+        }
     }
     
     public func remove(observer: AnyObject) {
-        observers = observers.filter { $0.observer !== observer }
+        queue.async(flags: .barrier) {
+            self.observers = self.observers.filter { $0.observer !== observer }
+        }
     }
     
     private func notifyObservers() {
-        for observer in observers {
-            DispatchQueue.main.async { observer.block(self.value) }
+        queue.sync() {
+            for observer in self.observers {
+                DispatchQueue.main.async { observer.block(self.value) }
+            }
         }
     }
 }
