@@ -85,7 +85,7 @@ extension DefaultDataTransferService: DataTransferService {
 }
 
 // MARK: - Logger
-final public class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
+public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
     public init() { }
     
     public func log(error: Error) {

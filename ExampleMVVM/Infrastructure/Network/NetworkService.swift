@@ -42,7 +42,7 @@ public protocol NetworkErrorLogger {
 
 // MARK: - Implementation
 
-final public class DefaultNetworkService {
+public final class DefaultNetworkService {
     
     private let config: NetworkConfigurable
     private let sessionManager: NetworkSessionManager
@@ -121,7 +121,7 @@ public class DefaultNetworkSessionManager: NetworkSessionManager {
 
 // MARK: - Logger
 
-final public class DefaultNetworkErrorLogger: NetworkErrorLogger {
+public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
     public init() { }
     
     public func log(request: URLRequest) {

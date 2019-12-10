@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let moviesListViewController = appDIContainer.makeMoviesSceneDIContainer().makeMoviesListViewController()
         window?.rootViewController = UINavigationController(rootViewController: moviesListViewController)
         window?.makeKeyAndVisible()
-
+    
         return true
     }
 }

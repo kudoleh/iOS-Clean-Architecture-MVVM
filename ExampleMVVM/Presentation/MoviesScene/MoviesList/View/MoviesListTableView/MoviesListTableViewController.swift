@@ -23,7 +23,7 @@ final class MoviesListTableViewController: UITableViewController {
         bind(to: viewModel)
     }
     
-    func bind(to viewModel: MoviesListViewModel) {
+    private func bind(to viewModel: MoviesListViewModel) {
         viewModel.loadingType.observe(on: self) { [weak self] in self?.update(isLoadingNextPage: $0 == .nextPage) }
     }
     

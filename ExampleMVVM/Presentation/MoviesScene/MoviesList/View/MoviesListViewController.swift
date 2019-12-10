@@ -42,7 +42,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         viewModel.viewDidLoad()
     }
     
-    func bind(to viewModel: MoviesListViewModel) {
+    private func bind(to viewModel: MoviesListViewModel) {
         viewModel.route.observe(on: self) { [weak self] in self?.handle($0) }
         viewModel.items.observe(on: self) { [weak self] in self?.moviesTableViewController?.items = $0 }
         viewModel.query.observe(on: self) { [weak self] in self?.updateSearchController(query: $0) }
