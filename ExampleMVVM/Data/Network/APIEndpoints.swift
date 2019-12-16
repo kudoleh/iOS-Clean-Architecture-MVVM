@@ -19,8 +19,9 @@ struct APIEndpoints {
     static func moviePoster(path: String, width: Int) -> Endpoint<Data> {
         
         let sizes = [92, 185, 500, 780]
-        let availableWidth = sizes.sorted().first { width <= $0 } ?? sizes.last
-        return Endpoint(path: "t/p/w\(availableWidth!)\(path)",
+        let closestWidth = sizes.enumerated().min { abs($0.1 - width) < abs($1.1 - width) }?.element ?? sizes.first!
+        
+        return Endpoint(path: "t/p/w\(closestWidth)\(path)",
                         responseDecoder: RawDataResponseDecoder())
     }
 }
