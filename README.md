@@ -1,7 +1,7 @@
-# iOS App using Clean Architecture and MVVM <br>(Sample and Template project)
+# Sample/Template iOS App using Clean Architecture and MVVM
 iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used as Template project by replacing item name “Movie”)
 
-Medium post with detail description about this project: <br> https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3
+Medium post with detail description about this project: https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3
 
 ![Alt text](README_FILES/CleanArchitecture+MVVM.png?raw=true "Modules Dependencies")
 
