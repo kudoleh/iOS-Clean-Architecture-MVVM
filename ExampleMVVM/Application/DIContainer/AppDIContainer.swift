@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 final class AppDIContainer {
     
