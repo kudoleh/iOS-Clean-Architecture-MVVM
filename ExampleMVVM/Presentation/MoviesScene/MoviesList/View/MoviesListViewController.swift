@@ -23,7 +23,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     private var moviesTableViewController: MoviesListTableViewController?
     private var searchController = UISearchController(searchResultsController: nil)
     
-    final class func create(with viewModel: MoviesListViewModel,
+    static func create(with viewModel: MoviesListViewModel,
                             moviesListViewControllersFactory: MoviesListViewControllersFactory) -> MoviesListViewController {
         let view = MoviesListViewController.instantiateViewController()
         view.viewModel = viewModel

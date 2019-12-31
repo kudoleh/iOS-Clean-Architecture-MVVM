@@ -11,7 +11,7 @@ final class MoviesQueriesTableViewController: UITableViewController, StoryboardI
     
     private var viewModel: MoviesQueryListViewModel!
     
-    final class func create(with viewModel: MoviesQueryListViewModel) -> MoviesQueriesTableViewController {
+    static func create(with viewModel: MoviesQueryListViewModel) -> MoviesQueriesTableViewController {
         let view = MoviesQueriesTableViewController.instantiateViewController()
         view.viewModel = viewModel
         return view

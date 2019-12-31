@@ -17,7 +17,7 @@ final class MovieDetailsViewController: UIViewController, StoryboardInstantiable
     
     var viewModel: MovieDetailsViewModel!
     
-    final class func create(with viewModel: MovieDetailsViewModel) -> MovieDetailsViewController {
+    static func create(with viewModel: MovieDetailsViewModel) -> MovieDetailsViewController {
         let view = MovieDetailsViewController.instantiateViewController()
         view.viewModel = viewModel
         return view
