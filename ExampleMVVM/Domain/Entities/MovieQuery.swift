@@ -11,4 +11,4 @@ struct MovieQuery {
     let query: String
 }
 
-extension MovieQuery: Hashable {}
+extension MovieQuery: Equatable {}

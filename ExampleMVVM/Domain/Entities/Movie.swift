@@ -22,5 +22,3 @@ struct Movie {
     let overview: String
     let releaseDate: Date?
 }
-
-extension Movie: Hashable, Identifiable {}
