@@ -11,8 +11,4 @@ struct MovieQuery {
     let query: String
 }
 
-extension MovieQuery: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(query)
-    }
-}
+extension MovieQuery: Hashable {}

@@ -23,8 +23,4 @@ struct Movie {
     let releaseDate: Date?
 }
 
-extension Movie: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
+extension Movie: Hashable, Identifiable {}
