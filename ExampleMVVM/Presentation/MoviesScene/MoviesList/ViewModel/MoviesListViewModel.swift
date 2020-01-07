@@ -61,7 +61,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     
     // MARK: - OUTPUT
     let route: Observable<MoviesListViewModelRoute> = Observable(.initial)
-    let items: Observable<[MoviesListItemViewModel]> = Observable([MoviesListItemViewModel]())
+    let items: Observable<[MoviesListItemViewModel]> = Observable([])
     let loadingType: Observable<MoviesListViewModelLoading> = Observable(.none)
     let query: Observable<String> = Observable("")
     let error: Observable<String> = Observable("")
