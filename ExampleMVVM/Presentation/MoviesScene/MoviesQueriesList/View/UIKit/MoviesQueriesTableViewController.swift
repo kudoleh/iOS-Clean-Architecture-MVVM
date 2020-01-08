@@ -19,7 +19,7 @@ final class MoviesQueriesTableViewController: UITableViewController, StoryboardI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableFooterView = UIView()
+        tableView.tableFooterView = UIView
         tableView.backgroundColor = .clear
         tableView.estimatedRowHeight = MoviesQueriesItemCell.height
         tableView.rowHeight = UITableView.automaticDimension
