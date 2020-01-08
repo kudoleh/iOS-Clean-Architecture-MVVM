@@ -67,8 +67,6 @@ extension MoviesListTableViewController {
             viewModel.didLoadNextPage()
         }
         
-        cell.accessibilityIdentifier = String(format: AccessibilityIdentifier.searchResultRow, indexPath.row + 1)
-        
         return cell
     }
     
