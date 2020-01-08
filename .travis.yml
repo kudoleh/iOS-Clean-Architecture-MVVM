@@ -2,4 +2,4 @@ os: osx
 osx_image: xcode11.2
 language: swift
 script:
- - fastlane scan --scheme ExampleMVVM --device "iPhone 11 Pro Max" --verbose
+ - fastlane scan --scheme ExampleMVVM --device "iPhone 11 Pro Max"
