@@ -67,7 +67,7 @@ extension MoviesListTableViewController {
             viewModel.didLoadNextPage()
         }
         
-        cell.accessibilityLabel = String(format: NSLocalizedString("Result row %d", comment: ""), indexPath.row + 1)
+        cell.accessibilityLabel = String(format: "Result row %d", indexPath.row + 1)
         
         return cell
     }
