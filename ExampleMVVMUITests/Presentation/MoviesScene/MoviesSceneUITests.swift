@@ -22,16 +22,16 @@ class MoviesSceneUITests: XCTestCase {
         let app = XCUIApplication()
         
         // Search for Batman
-        app.searchFields[localized("Search Movies")].forceTapElement()
+        app.searchFields[localized("Search Movies")].tap()
         if !app.keys["A"].waitForExistence(timeout: 5) {
             XCTFail("The keyboard could not be found. Use keyboard shortcut COMMAND + SHIFT + K while simulator has focus on text input")
         }
         app.searchFields[localized("Search Movies")].typeText("Batman Begins")
-        app.buttons["Search"].forceTapElement()
+        app.buttons["search"].tap()
         
         // Tap on first result row
         _ = app.cells[String(format:localized("Result row %d"), 1)].waitForExistence(timeout: 10)
-        app.cells[String(format: localized("Result row %d"), 1)].forceTapElement()
+        app.cells[String(format: localized("Result row %d"), 1)].tap()
         
         // Make sure movie details view
         XCTAssertTrue(app.otherElements[localized("Movie details view")].waitForExistence(timeout: 5))
@@ -40,17 +40,5 @@ class MoviesSceneUITests: XCTestCase {
     
     private func localized(_ key: String) -> String {
         return NSLocalizedString(key, bundle: Bundle(for: Self.self), comment: "")
-    }
-}
-
-extension XCUIElement {
-    func forceTapElement() {
-        if self.isHittable {
-            self.tap()
-        }
-        else {
-            let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(dx:0.0, dy:0.0))
-            coordinate.tap()
-        }
     }
 }
