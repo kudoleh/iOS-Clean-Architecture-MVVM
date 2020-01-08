@@ -27,11 +27,11 @@ class MoviesSceneUITests: XCTestCase {
             XCTFail("The keyboard could not be found. Use keyboard shortcut COMMAND + SHIFT + K while simulator has focus on text input")
         }
         app.searchFields[AccessibilityIdentifier.searchField].typeText("Batman Begins")
-        app.buttons["search"].tap()
+        app.buttons["search"].forceTapElement()
         
         // Tap on first result row
         _ = app.cells[String(format: AccessibilityIdentifier.searchResultRow, 1)].waitForExistence(timeout: 10)
-        app.cells[String(format: AccessibilityIdentifier.searchResultRow, 1)].tap()
+        app.cells[String(format: AccessibilityIdentifier.searchResultRow, 1)].forceTapElement()
         
         // Make sure movie details view
         XCTAssertTrue(app.otherElements[AccessibilityIdentifier.movieDetailsView].waitForExistence(timeout: 5))
