@@ -3,4 +3,4 @@ osx_image: swift
 language: swift
 xcode_project: ExampleMVVM.xcodeproj # path to your xcodeproj folder
 xcode_scheme: ExampleMVVM
-xcode_destination: platform=iOS Simulator,OS:11.4,name=iPhone X
+xcode_destination: platform=iOS Simulator,OS=11.4,name=iPhone X
