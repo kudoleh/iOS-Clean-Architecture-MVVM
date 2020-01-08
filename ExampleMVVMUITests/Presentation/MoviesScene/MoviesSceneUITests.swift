@@ -22,7 +22,7 @@ class MoviesSceneUITests: XCTestCase {
         let app = XCUIApplication()
         
         // Search for Batman
-        app.searchFields[AccessibilityIdentifier.searchField].tap()
+        app.searchFields[AccessibilityIdentifier.searchField].forceTapElement()
         if !app.keys["A"].waitForExistence(timeout: 5) {
             XCTFail("The keyboard could not be found. Use keyboard shortcut COMMAND + SHIFT + K while simulator has focus on text input")
         }
@@ -36,5 +36,17 @@ class MoviesSceneUITests: XCTestCase {
         // Make sure movie details view
         XCTAssertTrue(app.otherElements[AccessibilityIdentifier.movieDetailsView].waitForExistence(timeout: 5))
         XCTAssertTrue(app.navigationBars["Batman Begins"].waitForExistence(timeout: 5))
+    }
+}
+
+extension XCUIElement {
+    func forceTapElement() {
+        if self.isHittable {
+            self.tap()
+        }
+        else {
+            let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(dx:0.0, dy:0.0))
+            coordinate.tap()
+        }
     }
 }
