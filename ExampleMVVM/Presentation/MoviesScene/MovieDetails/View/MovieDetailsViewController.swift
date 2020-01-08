@@ -27,7 +27,7 @@ final class MovieDetailsViewController: UIViewController, StoryboardInstantiable
         super.viewDidLoad()
 
         bind(to: viewModel)
-        view.accessibilityLabel = NSLocalizedString("Movie details view", comment: "")
+        view.accessibilityIdentifier = AccessibilityIdentifier.movieDetailsView
     }
     
     private func bind(to viewModel: MovieDetailsViewModel) {

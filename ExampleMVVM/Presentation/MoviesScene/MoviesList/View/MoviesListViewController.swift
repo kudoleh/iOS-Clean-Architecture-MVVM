@@ -150,7 +150,7 @@ extension MoviesListViewController {
         searchController.searchBar.autoresizingMask = [.flexibleWidth]
         searchBarContainer.addSubview(searchController.searchBar)
         definesPresentationContext = true
-        searchController.accessibilityLabel = NSLocalizedString("Search Movies", comment: "")
+        searchController.searchBar.searchTextField.accessibilityIdentifier = AccessibilityIdentifier.searchField
     }
 }
 
