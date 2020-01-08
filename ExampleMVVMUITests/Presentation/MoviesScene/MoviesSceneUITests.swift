@@ -23,30 +23,18 @@ class MoviesSceneUITests: XCTestCase {
         
         // Search for Batman
         let searchText = "Batman Begins"
-        app.searchFields[AccessibilityIdentifier.searchField].forceTapElement()
+        app.searchFields[AccessibilityIdentifier.searchField].tap()
         if !app.keys["A"].waitForExistence(timeout: 5) {
             XCTFail("The keyboard could not be found. Use keyboard shortcut COMMAND + SHIFT + K while simulator has focus on text input")
         }
         app.searchFields[AccessibilityIdentifier.searchField].typeText(searchText)
-        app.buttons["search"].forceTapElement()
+        app.buttons["search"].tap()
         
         // Tap on first result row
-        app.tables.cells.staticTexts[searchText].forceTapElement()
+        app.tables.cells.staticTexts[searchText].tap()
         
         // Make sure movie details view
         XCTAssertTrue(app.otherElements[AccessibilityIdentifier.movieDetailsView].waitForExistence(timeout: 5))
         XCTAssertTrue(app.navigationBars[searchText].waitForExistence(timeout: 5))
-    }
-}
-
-extension XCUIElement {
-    func forceTapElement() {
-        if self.isHittable {
-            self.tap()
-        }
-        else {
-            let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(dx:0.0, dy:0.0))
-            coordinate.tap()
-        }
     }
 }
