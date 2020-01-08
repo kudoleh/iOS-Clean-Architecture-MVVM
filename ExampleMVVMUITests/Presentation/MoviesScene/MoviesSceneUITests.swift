@@ -22,19 +22,20 @@ class MoviesSceneUITests: XCTestCase {
         let app = XCUIApplication()
         
         // Search for Batman
+        let searchText = "Batman Begins"
         app.searchFields[AccessibilityIdentifier.searchField].forceTapElement()
         if !app.keys["A"].waitForExistence(timeout: 5) {
             XCTFail("The keyboard could not be found. Use keyboard shortcut COMMAND + SHIFT + K while simulator has focus on text input")
         }
-        app.searchFields[AccessibilityIdentifier.searchField].typeText("Batman Begins")
+        app.searchFields[AccessibilityIdentifier.searchField].typeText(searchText)
         app.buttons["search"].forceTapElement()
         
         // Tap on first result row
-        app.tables.cells.staticTexts["Batman Begins"].tap()
+        app.tables.cells.staticTexts[searchText].forceTapElement()
         
         // Make sure movie details view
         XCTAssertTrue(app.otherElements[AccessibilityIdentifier.movieDetailsView].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.navigationBars["Batman Begins"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars[searchText].waitForExistence(timeout: 5))
     }
 }
 
