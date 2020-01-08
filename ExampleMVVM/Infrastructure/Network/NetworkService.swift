@@ -150,7 +150,7 @@ public final class DefaultNetworkErrorLogger: NetworkErrorLogger {
     
     public func log(error: Error) {
         #if DEBUG
-        print("error: \(error)")
+        print("\(error)")
         #endif
     }
 }
