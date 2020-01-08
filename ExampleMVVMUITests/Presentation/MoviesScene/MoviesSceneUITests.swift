@@ -31,7 +31,7 @@ class MoviesSceneUITests: XCTestCase {
         
         // Tap on first result row
         _ = app.cells[String(format: AccessibilityIdentifier.searchResultRow, 1)].waitForExistence(timeout: 10)
-        app.cells[String(format: AccessibilityIdentifier.searchResultRow, 1)].forceTapElement()
+        app.cells[String(format: AccessibilityIdentifier.searchResultRow, 1)].tap()
         
         // Make sure movie details view
         XCTAssertTrue(app.otherElements[AccessibilityIdentifier.movieDetailsView].waitForExistence(timeout: 5))
