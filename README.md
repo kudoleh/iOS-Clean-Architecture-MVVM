@@ -18,6 +18,7 @@ iOS Project implemented with Clean Architecture and MVVM. (Can be used as Templa
 * Data Binding
 * Dependency Injection
 * SwiftUI and UKit view implementations by reusing same ViewModel (at least Xcode 11 required)
+* CI Pipeline (Travis CI + Fastlane)
 
 ## Includes
 * Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService(Infrastructure Layer)
