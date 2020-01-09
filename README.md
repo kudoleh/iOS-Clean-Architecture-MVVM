@@ -14,16 +14,17 @@ iOS Project implemented with Clean Architecture and MVVM. (Can be used as Templa
 ## Architecture concepts used here
 * Clean Architecture https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
 * Advanced iOS App Architecture https://www.raywenderlich.com/8477-introducing-advanced-ios-app-architecture
-* MVVM
-* Data Binding
-* Dependency Injection
-* SwiftUI and UKit view implementations by reusing same ViewModel (at least Xcode 11 required)
-* CI Pipeline (Travis CI + Fastlane)
-
+* [MVVM](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList) 
+* Data Binding using [Observable](ExampleMVVM/Presentation/Utils/Observable.swift) without 3rd party libraries 
+* [Dependency Injection](ExampleMVVM/Application/DIContainer/AppDIContainer.swift)
+* [SwiftUI and UKit view](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/View/SwiftUI/MoviesQueryListView.swift) implementations by reusing same [ViewModel](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/ViewModel/MoviesQueryListViewModel.swift) (at least Xcode 11 required)
+* CI Pipeline ([Travis CI + Fastlane](.travis.yml))
+ 
 ## Includes
 * Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService(Infrastructure Layer)
 * UI test with XCUITests
 * Size Classes in Detail view
+* Dark Mode
 * SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 
 
