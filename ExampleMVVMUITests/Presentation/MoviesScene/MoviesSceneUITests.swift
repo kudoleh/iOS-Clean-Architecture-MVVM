@@ -27,6 +27,7 @@ class MoviesSceneUITests: XCTestCase {
         if !app.keys["A"].waitForExistence(timeout: 5) {
             XCTFail("The keyboard could not be found. Use keyboard shortcut COMMAND + SHIFT + K while simulator has focus on text input")
         }
+        _ = app.searchFields[AccessibilityIdentifier.searchField].waitForExistence(timeout: 10)
         app.searchFields[AccessibilityIdentifier.searchField].typeText(searchText)
         app.buttons["search"].tap()
         
