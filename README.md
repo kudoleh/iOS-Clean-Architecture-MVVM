@@ -1,7 +1,7 @@
 # Template iOS App using Clean Architecture and MVVM
 iOS Project implemented with Clean Architecture and MVVM. (Can be used as Template project by replacing item name “Movie”). **More information in medium post**: <a href="https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3">Medium Post about Clean Architecture + MVVM</a>
 
-![Alt text](README_FILES/CleanArchitecture+MVVM.png?raw=true "Modules Dependencies")
+![Alt text](README_FILES/CleanArchitecture+MVVM.png?raw=true "Clean Architecture Layers")
 
 ## Layers
 * **Domain Layer** = Entities + Use Cases + Repositories Interfaces
@@ -9,7 +9,9 @@ iOS Project implemented with Clean Architecture and MVVM. (Can be used as Templa
 * **Presentation Layer (MVVM)** = ViewModels + Views
 
 ### Dependency Direction
-**Presentation Layer -> Domain Layer <- Data Repositories Layer**
+![Alt text](README_FILES/CleanArchitectureDependencies.png?raw=true "Modules Dependencies")
+
+**Note:** **Domain Layer** should not include anything from other layers(e.g Presentation — UIKit or SwiftUI or Data Layer — Mapping Codable)
 
 ## Architecture concepts used here
 * Clean Architecture https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
