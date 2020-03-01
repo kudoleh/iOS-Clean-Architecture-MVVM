@@ -22,7 +22,7 @@ final class MoviesListItemCell: UITableViewCell {
     func fill(with viewModel: MoviesListItemViewModel) {
         self.viewModel = viewModel
         titleLabel.text = viewModel.title
-        dateLabel.text = "\(NSLocalizedString("Release Date", comment: "")): \(viewModel.releaseDate)"
+        dateLabel.text = viewModel.releaseDate
         overviewLabel.text = viewModel.overview
         viewModel.updatePosterImage(width: Int(posterImageView.frame.size.width * UIScreen.main.scale))
         

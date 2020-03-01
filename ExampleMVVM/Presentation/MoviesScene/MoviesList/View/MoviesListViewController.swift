@@ -34,8 +34,8 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = NSLocalizedString("Movies", comment: "")
-        emptyDataLabel.text = NSLocalizedString("Search results", comment: "")
+        title = viewModel.screenTitle
+        emptyDataLabel.text = viewModel.emptyDataTitle
         setupSearchController()
         
         bind(to: viewModel)
@@ -70,7 +70,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
 
     func showError(_ error: String) {
         guard !error.isEmpty else { return }
-        showAlert(title: NSLocalizedString("Error", comment: ""), message: error)
+        showAlert(title: viewModel.errorTitle, message: error)
     }
     
     private func updateViewsVisibility() {
@@ -141,7 +141,7 @@ extension MoviesListViewController {
     private func setupSearchController() {
         searchController.delegate = self
         searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = NSLocalizedString("Search Movies", comment: "")
+        searchController.searchBar.placeholder = viewModel.searchBarPlaceholder
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.translatesAutoresizingMaskIntoConstraints = true
         searchController.searchBar.barStyle = .black
@@ -162,9 +162,9 @@ extension MoviesListViewController {
         case .initial: break
         case .showMovieDetail(let title, let overview, let posterPlaceholderImage, let posterPath):
             let vc = moviesListViewControllersFactory.makeMoviesDetailsViewController(title: title,
-                                                                                                                      overview: overview,
-                                                                                                                      posterPlaceholderImage: posterPlaceholderImage,
-                                                                                                                      posterPath: posterPath)
+                                                                                      overview: overview,
+                                                                                      posterPlaceholderImage: posterPlaceholderImage,
+                                                                                      posterPath: posterPath)
             navigationController?.pushViewController(vc, animated: true)
         case .showMovieQueriesSuggestions(let delegate):
             guard let view = view else { return }

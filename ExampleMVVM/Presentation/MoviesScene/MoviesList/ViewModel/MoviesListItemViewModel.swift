@@ -42,8 +42,12 @@ final class DefaultMoviesListItemViewModel: MoviesListItemViewModel {
         self.title = movie.title
         self.posterPath = movie.posterPath
         self.overview = movie.overview
-        self.releaseDate = movie.releaseDate != nil ? dateFormatter.string(from: movie.releaseDate!) : NSLocalizedString("To be announced", comment: "")
         self.posterImagesRepository = posterImagesRepository
+        if let releaseDate = movie.releaseDate {
+            self.releaseDate = "\(NSLocalizedString("Release Date", comment: "")): \(dateFormatter.string(from: releaseDate))"
+        } else {
+            self.releaseDate = NSLocalizedString("To be announced", comment: "")
+        }
     }
 }
 
