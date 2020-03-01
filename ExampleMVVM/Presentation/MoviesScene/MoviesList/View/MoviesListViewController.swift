@@ -7,6 +7,14 @@
 
 import UIKit
 
+protocol MoviesListViewControllersFactory {
+    func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController
+    func makeMoviesDetailsViewController(title: String,
+                                         overview: String,
+                                         posterPlaceholderImage: Data?,
+                                         posterPath: String?) -> UIViewController
+}
+
 final class MoviesListViewController: UIViewController, StoryboardInstantiable, Alertable {
     
     @IBOutlet private var contentView: UIView!
@@ -180,12 +188,4 @@ extension MoviesListViewController {
             suggestionsListContainer.isHidden = true
         }
     }
-}
-
-protocol MoviesListViewControllersFactory {
-    func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController
-    func makeMoviesDetailsViewController(title: String,
-                                         overview: String,
-                                         posterPlaceholderImage: Data?,
-                                         posterPath: String?) -> UIViewController
 }
