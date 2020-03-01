@@ -23,32 +23,40 @@ protocol MoviesQueryListViewModelDelegate: class {
     func moviesQueriesListDidSelect(movieQuery: MovieQuery)
 }
 
+typealias FetchRecentMovieQueriesUseCaseFactory = (
+    FetchRecentMovieQueriesUseCase.RequestValue,
+    @escaping (FetchRecentMovieQueriesUseCase.ResultValue) -> Void
+    ) -> UseCase
+
 final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
 
     private let numberOfQueriesToShow: Int
-    private let fetchRecentMovieQueriesUseCase: FetchRecentMovieQueriesUseCase
+    private let fetchRecentMovieQueriesUseCaseFactory: FetchRecentMovieQueriesUseCaseFactory
     private weak var delegate: MoviesQueryListViewModelDelegate?
     
     // MARK: - OUTPUT
     let items: Observable<[MoviesQueryListItemViewModel]> = Observable([])
     
     init(numberOfQueriesToShow: Int,
-         fetchRecentMovieQueriesUseCase: FetchRecentMovieQueriesUseCase,
+         fetchRecentMovieQueriesUseCaseFactory: @escaping FetchRecentMovieQueriesUseCaseFactory,
          delegate: MoviesQueryListViewModelDelegate? = nil) {
         self.numberOfQueriesToShow = numberOfQueriesToShow
-        self.fetchRecentMovieQueriesUseCase = fetchRecentMovieQueriesUseCase
+        self.fetchRecentMovieQueriesUseCaseFactory = fetchRecentMovieQueriesUseCaseFactory
         self.delegate = delegate
     }
     
     private func updateMoviesQueries() {
-        let request = FetchRecentMovieQueriesUseCaseRequestValue(number: numberOfQueriesToShow)
-        _ = fetchRecentMovieQueriesUseCase.execute(requestValue: request) { [weak self] result in
+        let request = FetchRecentMovieQueriesUseCase.RequestValue(number: numberOfQueriesToShow)
+        let completion: (FetchRecentMovieQueriesUseCase.ResultValue) -> Void = { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let items):
-                self?.items.value = items.map { $0.query }.map ( DefaultMoviesQueryListItemViewModel.init )
+                self.items.value = items.map { $0.query }.map ( DefaultMoviesQueryListItemViewModel.init )
             case .failure: break
             }
         }
+        let useCase = fetchRecentMovieQueriesUseCaseFactory(request, completion)
+        useCase.start()
     }
 }
 

@@ -30,8 +30,12 @@ final class MoviesSceneDIContainer {
                                           moviesQueriesRepository: makeMoviesQueriesRepository())
     }
     
-    func makeFetchRecentMovieQueriesUseCase() -> FetchRecentMovieQueriesUseCase {
-        return DefaultFetchRecentMovieQueriesUseCase(moviesQueriesRepository: makeMoviesQueriesRepository())
+    func makeFetchRecentMovieQueriesUseCase(requestValue: FetchRecentMovieQueriesUseCase.RequestValue,
+                                            completion: @escaping (FetchRecentMovieQueriesUseCase.ResultValue) -> Void) -> UseCase {
+        return FetchRecentMovieQueriesUseCase(requestValue: requestValue,
+                                              completion: completion,
+                                              moviesQueriesRepository: makeMoviesQueriesRepository()
+        )
     }
     
     // MARK: - Repositories
@@ -91,7 +95,7 @@ final class MoviesSceneDIContainer {
     
     func makeMoviesQueryListViewModel(delegate: MoviesQueryListViewModelDelegate) -> MoviesQueryListViewModel {
         return DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 10,
-                                               fetchRecentMovieQueriesUseCase: makeFetchRecentMovieQueriesUseCase(),
+                                               fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase,
                                                delegate: delegate)
     }
 

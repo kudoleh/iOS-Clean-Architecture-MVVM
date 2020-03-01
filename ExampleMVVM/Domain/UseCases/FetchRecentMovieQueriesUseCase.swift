@@ -7,26 +7,35 @@
 
 import Foundation
 
-protocol FetchRecentMovieQueriesUseCase {
-    func execute(requestValue: FetchRecentMovieQueriesUseCaseRequestValue,
-                 completion: @escaping (Result<[MovieQuery], Error>) -> Void) -> Cancellable?
-}
+final class FetchRecentMovieQueriesUseCase: UseCase {
 
-final class DefaultFetchRecentMovieQueriesUseCase: FetchRecentMovieQueriesUseCase {
-    
+    struct RequestValue {
+        let number: Int
+    }
+    typealias ResultValue = (Result<[MovieQuery], Error>)
+
+    private let requestValue: RequestValue
+    private let completion: (ResultValue) -> Void
     private let moviesQueriesRepository: MoviesQueriesRepository
-    
-    init(moviesQueriesRepository: MoviesQueriesRepository) {
+
+    init(requestValue: RequestValue,
+         completion: @escaping (ResultValue) -> Void,
+         moviesQueriesRepository: MoviesQueriesRepository) {
+        self.requestValue = requestValue
+        self.completion = completion
         self.moviesQueriesRepository = moviesQueriesRepository
     }
     
-    func execute(requestValue: FetchRecentMovieQueriesUseCaseRequestValue,
-                 completion: @escaping (Result<[MovieQuery], Error>) -> Void) -> Cancellable? {
-        moviesQueriesRepository.recentsQueries(number: requestValue.number, completion: completion)
+    func start() -> Cancellable? {
+        moviesQueriesRepository.recentsQueries(number: requestValue.number) { result in
+            // Note: here self must be strong because we will create use case every time we use it, without holding reference to it
+            switch result {
+            case .success(let movieQueries):
+                self.completion(.success(movieQueries))
+            case .failure(let error):
+                self.completion(.failure(error))
+            }
+        }
         return nil
     }
-}
-
-struct FetchRecentMovieQueriesUseCaseRequestValue {
-    let number: Int
 }

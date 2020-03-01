@@ -27,13 +27,14 @@ class MoviesQueriesListViewModelTests: XCTestCase {
             expectation?.fulfill()
         }
     }
-    
-    class FetchRecentMovieQueriesUseCaseMock: FetchRecentMovieQueriesUseCase {
+
+    class FetchRecentMovieQueriesUseCaseMock: UseCase {
         var expectation: XCTestExpectation?
         var error: Error?
         var movieQueries: [MovieQuery] = []
-        
-        func execute(requestValue: FetchRecentMovieQueriesUseCaseRequestValue, completion: @escaping (Result<[MovieQuery], Error>) -> Void) -> Cancellable? {
+        var completion: (Result<[MovieQuery], Error>) -> Void = { _ in }
+
+        func start() -> Cancellable? {
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -43,6 +44,14 @@ class MoviesQueriesListViewModelTests: XCTestCase {
             return nil
         }
     }
+
+    func makeFetchRecentMovieQueriesUseCase(_ mock: FetchRecentMovieQueriesUseCaseMock) -> FetchRecentMovieQueriesUseCaseFactory {
+        return { _, completion in
+            mock.completion = completion
+            return mock
+        }
+    }
+    
     
     func test_whenFetchRecentMovieQueriesUseCaseReturnsQueries_thenShowTheseQueries() {
         // given
@@ -50,7 +59,7 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         useCase.expectation = self.expectation(description: "Recent query fetched")
         useCase.movieQueries = movieQueries
         let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
-                                                    fetchRecentMovieQueriesUseCase: useCase)
+                                                        fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(useCase))
 
         // when
         viewModel.viewWillAppear()
@@ -66,7 +75,7 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         useCase.expectation = self.expectation(description: "Recent query fetched")
         useCase.error = FetchRecentQueriedUseCase.someError
         let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
-                                                        fetchRecentMovieQueriesUseCase: useCase)
+                                                        fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(useCase))
         
         // when
         viewModel.viewWillAppear()
@@ -83,7 +92,7 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         delegate.expectation = self.expectation(description: "Delegate notified")
         
         let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
-                                                        fetchRecentMovieQueriesUseCase: FetchRecentMovieQueriesUseCaseMock(),
+                                                        fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(FetchRecentMovieQueriesUseCaseMock()),
                                                         delegate: delegate)
         
         // when
