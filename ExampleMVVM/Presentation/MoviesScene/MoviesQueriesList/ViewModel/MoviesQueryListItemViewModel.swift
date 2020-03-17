@@ -7,21 +7,16 @@
 
 import Foundation
 
-protocol MoviesQueryListItemViewModelInput { }
-
-protocol MoviesQueryListItemViewModelOutput {
-    var query: String { get }
-}
-
-protocol MoviesQueryListItemViewModel: MoviesQueryListItemViewModelInput, MoviesQueryListItemViewModelOutput { }
-
-final class DefaultMoviesQueryListItemViewModel: MoviesQueryListItemViewModel, Equatable {
+class MoviesQueryListItemViewModel {
     let query: String
+
     init(query: String) {
         self.query = query
     }
 }
 
-func == (lhs: DefaultMoviesQueryListItemViewModel, rhs: DefaultMoviesQueryListItemViewModel) -> Bool {
-    return (lhs.query == rhs.query)
+extension MoviesQueryListItemViewModel: Equatable {
+    static func == (lhs: MoviesQueryListItemViewModel, rhs: MoviesQueryListItemViewModel) -> Bool {
+        return lhs.query == rhs.query
+    }
 }

@@ -51,7 +51,7 @@ final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
             guard let self = self else { return }
             switch result {
             case .success(let items):
-                self.items.value = items.map { $0.query }.map(DefaultMoviesQueryListItemViewModel.init)
+                self.items.value = items.map { $0.query }.map(MoviesQueryListItemViewModel.init)
             case .failure: break
             }
         }

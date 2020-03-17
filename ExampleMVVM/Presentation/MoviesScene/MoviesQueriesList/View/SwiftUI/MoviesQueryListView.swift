@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 @available(iOS 13.0, *)
-extension DefaultMoviesQueryListItemViewModel: Identifiable { }
+extension MoviesQueryListItemViewModel: Identifiable { }
 
 @available(iOS 13.0, *)
 struct MoviesQueryListView: View {
@@ -32,13 +32,11 @@ struct MoviesQueryListView: View {
 @available(iOS 13.0, *)
 final class MoviesQueryListViewModelWrapper: ObservableObject {
     var viewModel: MoviesQueryListViewModel?
-    @Published var items: [DefaultMoviesQueryListItemViewModel] = []
+    @Published var items: [MoviesQueryListItemViewModel] = []
     
     init(viewModel: MoviesQueryListViewModel?) {
         self.viewModel = viewModel
-        viewModel?.items.observe(on: self) { [weak self] values in
-            self?.items = values as! [DefaultMoviesQueryListItemViewModel]
-        }
+        viewModel?.items.observe(on: self) { [weak self] values in self?.items = values }
     }
 }
 
@@ -51,8 +49,8 @@ struct MoviesQueryListView_Previews: PreviewProvider {
     
     static var previewViewModelWrapper: MoviesQueryListViewModelWrapper = {
         var viewModel = MoviesQueryListViewModelWrapper(viewModel: nil)
-        viewModel.items = [DefaultMoviesQueryListItemViewModel(query: "item 1"),
-                           DefaultMoviesQueryListItemViewModel(query: "item 2")
+        viewModel.items = [MoviesQueryListItemViewModel(query: "item 1"),
+                           MoviesQueryListItemViewModel(query: "item 2")
         ]
         return viewModel
     }()
