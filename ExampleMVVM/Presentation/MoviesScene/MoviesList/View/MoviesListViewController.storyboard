@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cGq-gd-62K">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cGq-gd-62K">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -138,16 +138,15 @@
                                     <constraints>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="yeA-yy-sWx" secondAttribute="bottom" constant="11" id="CBD-py-SWw"/>
                                         <constraint firstItem="4Z1-DO-pfb" firstAttribute="leading" secondItem="we8-9y-ZfZ" secondAttribute="leading" id="DeM-eN-2gT"/>
-                                        <constraint firstAttribute="trailing" secondItem="gc0-V9-HRA" secondAttribute="trailing" constant="16" id="EUL-2O-t48"/>
-                                        <constraint firstItem="gc0-V9-HRA" firstAttribute="top" secondItem="OzQ-03-uhC" secondAttribute="top" constant="11" id="GMG-Tu-78r"/>
-                                        <constraint firstAttribute="trailing" secondItem="gc0-V9-HRA" secondAttribute="trailing" constant="16" id="Hcb-Gy-7HQ"/>
+                                        <constraint firstItem="gc0-V9-HRA" firstAttribute="top" secondItem="OzQ-03-uhC" secondAttribute="topMargin" id="Ei4-8m-USb"/>
                                         <constraint firstItem="gc0-V9-HRA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4Z1-DO-pfb" secondAttribute="trailing" constant="8" id="If5-B2-yDd"/>
-                                        <constraint firstItem="we8-9y-ZfZ" firstAttribute="leading" secondItem="OzQ-03-uhC" secondAttribute="leading" constant="16" id="KUo-lr-Oxa"/>
+                                        <constraint firstItem="gc0-V9-HRA" firstAttribute="trailing" secondItem="OzQ-03-uhC" secondAttribute="trailingMargin" id="LEQ-TK-k21"/>
                                         <constraint firstItem="gc0-V9-HRA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="we8-9y-ZfZ" secondAttribute="trailing" constant="8" id="Udg-mR-BZC"/>
                                         <constraint firstItem="4Z1-DO-pfb" firstAttribute="top" secondItem="we8-9y-ZfZ" secondAttribute="bottom" constant="3.5" id="Uf3-N1-G6V"/>
                                         <constraint firstItem="yeA-yy-sWx" firstAttribute="leading" secondItem="we8-9y-ZfZ" secondAttribute="leading" id="V7H-mQ-iCw"/>
                                         <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="gc0-V9-HRA" secondAttribute="bottom" priority="999" constant="9" id="X2Z-FY-fjL"/>
                                         <constraint firstItem="gc0-V9-HRA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="yeA-yy-sWx" secondAttribute="trailing" constant="8" id="cbP-rC-azG"/>
+                                        <constraint firstItem="we8-9y-ZfZ" firstAttribute="leading" secondItem="OzQ-03-uhC" secondAttribute="leadingMargin" id="dmO-KZ-qcT"/>
                                         <constraint firstItem="we8-9y-ZfZ" firstAttribute="top" secondItem="OzQ-03-uhC" secondAttribute="top" constant="11" id="vBj-AF-CTE"/>
                                         <constraint firstItem="yeA-yy-sWx" firstAttribute="top" secondItem="4Z1-DO-pfb" secondAttribute="bottom" constant="6" id="wvj-a3-OK7"/>
                                     </constraints>

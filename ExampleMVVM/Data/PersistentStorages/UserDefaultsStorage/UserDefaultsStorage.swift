@@ -17,14 +17,14 @@ final class UserDefaultsStorage {
             if let queriesData = userDefaults.object(forKey: recentsMoviesQueriesKey) as? Data {
                 let decoder = JSONDecoder()
                 if let movieQueryList = try? decoder.decode(MovieQueriesListUDS.self, from: queriesData) {
-                    return movieQueryList.list.map ( MovieQuery.init )
+                    return movieQueryList.list.map(MovieQuery.init)
                 }
             }
             return []
         }
         set {
             let encoder = JSONEncoder()
-            if let encoded = try? encoder.encode(MovieQueriesListUDS(list: newValue.map ( MovieQueryUDS.init ))) {
+            if let encoded = try? encoder.encode(MovieQueriesListUDS(list: newValue.map(MovieQueryUDS.init))) {
                 userDefaults.set(encoded, forKey: recentsMoviesQueriesKey)
             }
         }

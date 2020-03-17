@@ -8,11 +8,12 @@
 import UIKit
 
 final class MoviesListTableViewController: UITableViewController {
-    
+
+    var posterImagesRepository: PosterImagesRepository?
     var nextPageLoadingSpinner: UIActivityIndicatorView?
     
     var viewModel: MoviesListViewModel!
-    var items: [MoviesListItemViewModel]! {
+    var items: [MoviesListCellItemViewModel]! {
         didSet { reload() }
     }
     
@@ -60,9 +61,12 @@ extension MoviesListTableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MoviesListItemCell.reuseIdentifier, for: indexPath) as? MoviesListItemCell else {
             fatalError("Cannot dequeue reusable cell \(MoviesListItemCell.self) with reuseIdentifier: \(MoviesListItemCell.reuseIdentifier)")
         }
-        
-        cell.fill(with: viewModel.items.value[indexPath.row])
-        
+
+        switch viewModel.items.value[indexPath.row] {
+        case let .movie(_, itemViewModel):
+            cell.fill(with: itemViewModel, posterImagesRepository: posterImagesRepository)
+        }
+
         if indexPath.row == viewModel.items.value.count - 1 {
             viewModel.didLoadNextPage()
         }
@@ -75,11 +79,6 @@ extension MoviesListTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelect(item: items[indexPath.row])
-    }
-    
-    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard indexPath.row < viewModel.items.value.count else { return }
-        viewModel.items.value[indexPath.row].didEndDisplaying()
+        viewModel.didSelect(item: viewModel.items.value[indexPath.row])
     }
 }

@@ -53,33 +53,22 @@ final class MoviesSceneDIContainer {
     
     // MARK: - Movies List
     func makeMoviesListViewController() -> UIViewController {
-        return MoviesListViewController.create(with: makeMoviesListViewModel(), moviesListViewControllersFactory: self)
+        return MoviesListViewController.create(with: makeMoviesListViewModel(),
+                                               moviesListViewControllersFactory: self,
+                                               posterImagesRepository: makePosterImagesRepository())
     }
     
     func makeMoviesListViewModel() -> MoviesListViewModel {
-        return DefaultMoviesListViewModel(searchMoviesUseCase: makeSearchMoviesUseCase(),
-                                          posterImagesRepository: makePosterImagesRepository())
+        return DefaultMoviesListViewModel(searchMoviesUseCase: makeSearchMoviesUseCase())
     }
     
     // MARK: - Movie Details
-    func makeMoviesDetailsViewController(title: String,
-                                         overview: String,
-                                         posterPlaceholderImage: Data?,
-                                         posterPath: String?) -> UIViewController {
-        return MovieDetailsViewController.create(with: makeMoviesDetailsViewModel(title: title,
-                                                                                  overview: overview,
-                                                                                  posterPlaceholderImage: posterPlaceholderImage,
-                                                                                  posterPath: posterPath))
+    func makeMoviesDetailsViewController(movie: Movie) -> UIViewController {
+        return MovieDetailsViewController.create(with: makeMoviesDetailsViewModel(movie: movie))
     }
     
-    func makeMoviesDetailsViewModel(title: String,
-                                    overview: String,
-                                    posterPlaceholderImage: Data?,
-                                    posterPath: String?) -> MovieDetailsViewModel {
-        return DefaultMovieDetailsViewModel(title: title,
-                                            overview: overview,
-                                            posterPlaceholderImage: posterPlaceholderImage,
-                                            posterPath: posterPath,
+    func makeMoviesDetailsViewModel(movie: Movie) -> MovieDetailsViewModel {
+        return DefaultMovieDetailsViewModel(movie: movie,
                                             posterImagesRepository: makePosterImagesRepository())
     }
     

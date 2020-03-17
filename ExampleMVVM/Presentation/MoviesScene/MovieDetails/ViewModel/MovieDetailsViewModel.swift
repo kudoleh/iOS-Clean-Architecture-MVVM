@@ -22,7 +22,7 @@ protocol MovieDetailsViewModel: MovieDetailsViewModelInput, MovieDetailsViewMode
 
 final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     
-    private let posterPath: String?
+    private let posterImagePath: String?
     private let posterImagesRepository: PosterImagesRepository
     private var imageLoadTask: Cancellable? { willSet { imageLoadTask?.cancel() } }
     private var alreadyLoadedImageWidth: Int?
@@ -32,15 +32,11 @@ final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     let posterImage: Observable<Data?> = Observable(nil)
     let overview: Observable<String> = Observable("")
     
-    init(title: String,
-         overview: String,
-         posterPlaceholderImage: Data?,
-         posterPath: String?,
+    init(movie: Movie,
          posterImagesRepository: PosterImagesRepository) {
-        self.title.value = title
-        self.overview.value = overview
-        self.posterImage.value = posterPlaceholderImage
-        self.posterPath = posterPath
+        self.title.value = movie.title
+        self.overview.value = movie.overview
+        self.posterImagePath = movie.posterPath
         self.posterImagesRepository = posterImagesRepository
     }
 }
@@ -49,11 +45,11 @@ final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
 extension DefaultMovieDetailsViewModel {
     
     func updatePosterImage(width: Int) {
-        guard let posterPath = posterPath, alreadyLoadedImageWidth != width  else { return }
+        guard let posterImagePath = posterImagePath, alreadyLoadedImageWidth != width  else { return }
         alreadyLoadedImageWidth = width
         
-        imageLoadTask = posterImagesRepository.image(with: posterPath, width: width) { [weak self] result in
-            guard self?.posterPath == posterPath else { return }
+        imageLoadTask = posterImagesRepository.image(with: posterImagePath, width: width) { [weak self] result in
+            guard self?.posterImagePath == posterImagePath else { return }
             switch result {
             case .success(let data):
                 self?.posterImage.value = data

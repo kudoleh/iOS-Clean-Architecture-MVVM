@@ -7,18 +7,18 @@
 
 import Foundation
 
-struct MoviesPage {
-    let page: Int
-    let totalPages: Int
-    let movies: [Movie]
-}
-
 typealias MovieId = String
 
-struct Movie {
+struct Movie: Equatable, Identifiable {
     let id: MovieId
     let title: String
     let posterPath: String?
     let overview: String
     let releaseDate: Date?
+}
+
+struct MoviesPage: Equatable {
+    let page: Int
+    let totalPages: Int
+    let movies: [Movie]
 }

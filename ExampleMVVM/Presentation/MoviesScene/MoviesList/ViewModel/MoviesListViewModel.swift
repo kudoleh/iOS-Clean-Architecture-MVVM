@@ -9,7 +9,7 @@ import Foundation
 
 enum MoviesListViewModelRoute {
     case initial
-    case showMovieDetail(title: String, overview: String, posterPlaceholderImage: Data?, posterPath: String?)
+    case showMovieDetails(movie: Movie)
     case showMovieQueriesSuggestions(delegate: MoviesQueryListViewModelDelegate)
     case closeMovieQueriesSuggestions
 }
@@ -20,6 +20,10 @@ enum MoviesListViewModelLoading {
     case nextPage
 }
 
+enum MoviesListCellItemViewModel {
+    case movie(Movie, MoviesListItemViewModel)
+}
+
 protocol MoviesListViewModelInput {
     func viewDidLoad()
     func didLoadNextPage()
@@ -27,12 +31,12 @@ protocol MoviesListViewModelInput {
     func didCancelSearch()
     func showQueriesSuggestions()
     func closeQueriesSuggestions()
-    func didSelect(item: MoviesListItemViewModel)
+    func didSelect(item: MoviesListCellItemViewModel)
 }
 
 protocol MoviesListViewModelOutput {
     var route: Observable<MoviesListViewModelRoute> { get }
-    var items: Observable<[MoviesListItemViewModel]> { get }
+    var items: Observable<[MoviesListCellItemViewModel]> { get }
     var loadingType: Observable<MoviesListViewModelLoading> { get }
     var query: Observable<String> { get }
     var error: Observable<String> { get }
@@ -46,10 +50,11 @@ protocol MoviesListViewModelOutput {
 protocol MoviesListViewModel: MoviesListViewModelInput, MoviesListViewModelOutput {}
 
 final class DefaultMoviesListViewModel: MoviesListViewModel {
-    
+
+    private let searchMoviesUseCase: SearchMoviesUseCase
+
     private(set) var currentPage: Int = 0
     private var totalPageCount: Int = 1
-    
     var hasMorePages: Bool {
         return currentPage < totalPageCount
     }
@@ -57,15 +62,11 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         guard hasMorePages else { return currentPage }
         return currentPage + 1
     }
-    
-    private let searchMoviesUseCase: SearchMoviesUseCase
-    private let posterImagesRepository: PosterImagesRepository
-    
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
     
     // MARK: - OUTPUT
     let route: Observable<MoviesListViewModelRoute> = Observable(.initial)
-    let items: Observable<[MoviesListItemViewModel]> = Observable([])
+    let items: Observable<[MoviesListCellItemViewModel]> = Observable([])
     let loadingType: Observable<MoviesListViewModelLoading> = Observable(.none)
     let query: Observable<String> = Observable("")
     let error: Observable<String> = Observable("")
@@ -76,19 +77,14 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
 
     @discardableResult
-    init(searchMoviesUseCase: SearchMoviesUseCase,
-         posterImagesRepository: PosterImagesRepository) {
+    init(searchMoviesUseCase: SearchMoviesUseCase) {
         self.searchMoviesUseCase = searchMoviesUseCase
-        self.posterImagesRepository = posterImagesRepository
     }
     
     private func appendPage(moviesPage: MoviesPage) {
         self.currentPage = moviesPage.page
         self.totalPageCount = moviesPage.totalPages
-        self.items.value = items.value + moviesPage.movies.map {
-            DefaultMoviesListItemViewModel(movie: $0,
-                                           posterImagesRepository: posterImagesRepository)
-        }
+        self.items.value = items.value + moviesPage.movies.map { .movie($0, MoviesListItemViewModel(movie: $0)) }
     }
     
     private func resetPages() {
@@ -154,11 +150,11 @@ extension DefaultMoviesListViewModel {
         route.value = .closeMovieQueriesSuggestions
     }
     
-    func didSelect(item: MoviesListItemViewModel) {
-        route.value = .showMovieDetail(title: item.title,
-                                       overview: item.overview,
-                                       posterPlaceholderImage: item.posterImage.value,
-                                       posterPath: item.posterPath)
+    func didSelect(item: MoviesListCellItemViewModel) {
+        switch item {
+        case let .movie(movie, _):
+            route.value = .showMovieDetails(movie: movie)
+        }
     }
 }
 

@@ -57,14 +57,11 @@ extension CoreDataStorage: MoviesQueriesStorage {
                 request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
                                                             ascending: false)]
                 request.fetchLimit = number
-                let resut = try context.fetch(request).map ( MovieQuery.init )
-                DispatchQueue.global(qos: .background).async {
-                    completion(.success(resut))
-                }
+                let resut = try context.fetch(request).map(MovieQuery.init)
+
+                completion(.success(resut))
             } catch {
-                DispatchQueue.global(qos: .background).async {
-                    completion(.failure(CoreDataStorageError.readError(error)))
-                }
+                completion(.failure(CoreDataStorageError.readError(error)))
                 print(error)
             }
         }
@@ -78,13 +75,10 @@ extension CoreDataStorage: MoviesQueriesStorage {
                 try strongSelf.cleanUpQueries(for: query, inContext: context)
                 let entity = MovieQueryEntity(movieQuery: query, insertInto: context)
                 try context.save()
-                DispatchQueue.global(qos: .background).async {
-                    completion(.success(MovieQuery(movieQueryEntity: entity)))
-                }
+
+                completion(.success(MovieQuery(movieQueryEntity: entity)))
             } catch {
-                DispatchQueue.global(qos: .background).async {
-                    completion(.failure(CoreDataStorageError.writeError(error)))
-                }
+                completion(.failure(CoreDataStorageError.writeError(error)))
                 print(error)
             }
         }

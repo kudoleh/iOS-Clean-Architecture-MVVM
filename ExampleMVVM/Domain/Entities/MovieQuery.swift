@@ -7,8 +7,6 @@
 
 import Foundation
 
-struct MovieQuery {
+struct MovieQuery: Equatable {
     let query: String
 }
-
-extension MovieQuery: Equatable {}

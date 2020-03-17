@@ -9,10 +9,7 @@ import UIKit
 
 protocol MoviesListViewControllersFactory {
     func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController
-    func makeMoviesDetailsViewController(title: String,
-                                         overview: String,
-                                         posterPlaceholderImage: Data?,
-                                         posterPath: String?) -> UIViewController
+    func makeMoviesDetailsViewController(movie: Movie) -> UIViewController
 }
 
 final class MoviesListViewController: UIViewController, StoryboardInstantiable, Alertable {
@@ -26,16 +23,19 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     
     private(set) var viewModel: MoviesListViewModel!
     private var moviesListViewControllersFactory: MoviesListViewControllersFactory!
+    private var posterImagesRepository: PosterImagesRepository?
     
     private var moviesQueriesSuggestionsView: UIViewController?
     private var moviesTableViewController: MoviesListTableViewController?
     private var searchController = UISearchController(searchResultsController: nil)
     
     static func create(with viewModel: MoviesListViewModel,
-                            moviesListViewControllersFactory: MoviesListViewControllersFactory) -> MoviesListViewController {
+                       moviesListViewControllersFactory: MoviesListViewControllersFactory,
+                       posterImagesRepository: PosterImagesRepository?) -> MoviesListViewController {
         let view = MoviesListViewController.instantiateViewController()
         view.viewModel = viewModel
         view.moviesListViewControllersFactory = moviesListViewControllersFactory
+        view.posterImagesRepository = posterImagesRepository
         return view
     }
 
@@ -73,6 +73,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
             let destinationVC = segue.destination as? MoviesListTableViewController {
             moviesTableViewController = destinationVC
             moviesTableViewController?.viewModel = viewModel
+            moviesTableViewController?.posterImagesRepository = posterImagesRepository
         }
     }
 
@@ -168,11 +169,8 @@ extension MoviesListViewController {
     func handle(_ route: MoviesListViewModelRoute) {
         switch route {
         case .initial: break
-        case .showMovieDetail(let title, let overview, let posterPlaceholderImage, let posterPath):
-            let vc = moviesListViewControllersFactory.makeMoviesDetailsViewController(title: title,
-                                                                                      overview: overview,
-                                                                                      posterPlaceholderImage: posterPlaceholderImage,
-                                                                                      posterPath: posterPath)
+        case .showMovieDetails(let movie):
+            let vc = moviesListViewControllersFactory.makeMoviesDetailsViewController(movie: movie)
             navigationController?.pushViewController(vc, animated: true)
         case .showMovieQueriesSuggestions(let delegate):
             guard let view = view else { return }
