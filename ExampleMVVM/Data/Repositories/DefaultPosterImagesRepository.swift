@@ -32,7 +32,8 @@ extension DefaultPosterImagesRepository: PosterImagesRepository {
                 completion(.success(data))
                 return
             case .failure(let error):
-                if case let DataTransferError.networkFailure(networkError) = error, networkError.isNotFoundError,
+                if case let DataTransferError.networkFailure(networkError) = error,
+                    networkError.isNotFoundError,
                     let imageNotFoundData = self.imageNotFoundData {
                     completion(.success(imageNotFoundData))
                     return
