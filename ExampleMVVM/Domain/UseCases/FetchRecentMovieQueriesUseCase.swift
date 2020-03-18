@@ -7,6 +7,7 @@
 
 import Foundation
 
+// This is another option to create Use Case using more generic way
 final class FetchRecentMovieQueriesUseCase: UseCase {
 
     struct RequestValue {

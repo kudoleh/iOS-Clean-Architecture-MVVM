@@ -25,11 +25,11 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
     func execute(requestValue: SearchMoviesUseCaseRequestValue,
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
         return moviesRepository.moviesList(query: requestValue.query, page: requestValue.page) { [weak self] result in
-            guard let strongSelf = self else { return }
+            guard let self = self else { return }
             
             switch result {
             case .success:
-                strongSelf.moviesQueriesRepository.saveRecentQuery(query: requestValue.query) { _ in }
+                self.moviesQueriesRepository.saveRecentQuery(query: requestValue.query) { _ in }
                 completion(result)
             case .failure:
                 completion(result)

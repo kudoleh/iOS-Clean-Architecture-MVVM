@@ -25,7 +25,7 @@ extension DefaultPosterImagesRepository: PosterImagesRepository {
         
         let endpoint = APIEndpoints.moviePoster(path: imagePath, width: width)
         let networkTask = dataTransferService.request(with: endpoint) { [weak self] (response: Result<Data, Error>) in
-            guard let strongSelf = self else { return }
+            guard let self = self else { return }
             
             switch response {
             case .success(let data):
@@ -33,7 +33,7 @@ extension DefaultPosterImagesRepository: PosterImagesRepository {
                 return
             case .failure(let error):
                 if case let DataTransferError.networkFailure(networkError) = error, networkError.isNotFoundError,
-                    let imageNotFoundData = strongSelf.imageNotFoundData {
+                    let imageNotFoundData = self.imageNotFoundData {
                     completion(.success(imageNotFoundData))
                     return
                 }

@@ -70,9 +70,9 @@ extension CoreDataStorage: MoviesQueriesStorage {
     func saveRecentQuery(query: MovieQuery, completion: @escaping (Result<MovieQuery, Error>) -> Void) {
 
         persistentContainer.performBackgroundTask { [weak self] context in
-            guard let strongSelf = self else { return }
+            guard let self = self else { return }
             do {
-                try strongSelf.cleanUpQueries(for: query, inContext: context)
+                try self.cleanUpQueries(for: query, inContext: context)
                 let entity = MovieQueryEntity(movieQuery: query, insertInto: context)
                 try context.save()
 

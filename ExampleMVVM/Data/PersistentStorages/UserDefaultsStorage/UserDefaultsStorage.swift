@@ -42,19 +42,19 @@ final class UserDefaultsStorage {
 extension UserDefaultsStorage: MoviesQueriesStorage {
     func recentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
         DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let strongSelf = self else { return }
-            var queries = strongSelf.moviesQuries
-            queries = queries.count < strongSelf.maxStorageLimit ? queries : Array(queries[0..<number])
+            guard let self = self else { return }
+            var queries = self.moviesQuries
+            queries = queries.count < self.maxStorageLimit ? queries : Array(queries[0..<number])
             completion(.success(queries))
         }
     }
     func saveRecentQuery(query: MovieQuery, completion: @escaping (Result<MovieQuery, Error>) -> Void) {
         DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let strongSelf = self else { return }
-            var queries = strongSelf.moviesQuries
+            guard let self = self else { return }
+            var queries = self.moviesQuries
             queries = queries.filter { $0 != query }
             queries.insert(query, at: 0)
-            strongSelf.moviesQuries = strongSelf.removeOldQueries(queries)
+            self.moviesQuries = self.removeOldQueries(queries)
             completion(.success(query))
         }
     }
