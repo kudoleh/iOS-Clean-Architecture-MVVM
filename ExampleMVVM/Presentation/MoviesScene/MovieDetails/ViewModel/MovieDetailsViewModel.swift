@@ -48,7 +48,7 @@ extension DefaultMovieDetailsViewModel {
         guard let posterImagePath = posterImagePath, alreadyLoadedImageWidth != width  else { return }
         alreadyLoadedImageWidth = width
         
-        imageLoadTask = posterImagesRepository.image(with: posterImagePath, width: width) { [weak self] result in
+        imageLoadTask = posterImagesRepository.fetchImage(with: posterImagePath, width: width) { [weak self] result in
             guard self?.posterImagePath == posterImagePath else { return }
             switch result {
             case .success(let data):

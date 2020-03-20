@@ -21,8 +21,8 @@ final class DefaultMoviesQueriesRepository {
 
 extension DefaultMoviesQueriesRepository: MoviesQueriesRepository {
     
-    func recentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
-        return moviesQueriesPersistentStorage.recentsQueries(number: number, completion: completion)
+    func fetchRecentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
+        return moviesQueriesPersistentStorage.fetchRecentsQueries(number: number, completion: completion)
     }
     
     func saveRecentQuery(query: MovieQuery, completion: @escaping (Result<MovieQuery, Error>) -> Void) {

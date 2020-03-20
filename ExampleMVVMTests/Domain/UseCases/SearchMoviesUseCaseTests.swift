@@ -25,7 +25,7 @@ class SearchMoviesUseCaseTests: XCTestCase {
     class MoviesQueriesRepositoryMock: MoviesQueriesRepository {
         var recentQueries: [MovieQuery] = []
         
-        func recentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
+        func fetchRecentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
             completion(.success(recentQueries))
         }
         func saveRecentQuery(query: MovieQuery, completion: @escaping (Result<MovieQuery, Error>) -> Void) {
@@ -34,14 +34,14 @@ class SearchMoviesUseCaseTests: XCTestCase {
     }
     
     class MoviesRepositorySuccessMock: MoviesRepository {
-        func moviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
+        func fetchMoviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
             completion(.success(SearchMoviesUseCaseTests.moviesPages[0]))
             return nil
         }
     }
     
     class MoviesRepositoryFailureMock: MoviesRepository {
-        func moviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
+        func fetchMoviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
             completion(.failure(MoviesRepositorySuccessTestError.failedFetching))
             return nil
         }
@@ -63,7 +63,7 @@ class SearchMoviesUseCaseTests: XCTestCase {
         }
         // then
         var recents = [MovieQuery]()
-        moviesQueriesRepository.recentsQueries(number: 1) { result in
+        moviesQueriesRepository.fetchRecentsQueries(number: 1) { result in
             recents = (try? result.get()) ?? []
             expectation.fulfill()
         }
@@ -87,7 +87,7 @@ class SearchMoviesUseCaseTests: XCTestCase {
         }
         // then
         var recents = [MovieQuery]()
-        moviesQueriesRepository.recentsQueries(number: 1) { result in
+        moviesQueriesRepository.fetchRecentsQueries(number: 1) { result in
             recents = (try? result.get()) ?? []
             expectation.fulfill()
         }

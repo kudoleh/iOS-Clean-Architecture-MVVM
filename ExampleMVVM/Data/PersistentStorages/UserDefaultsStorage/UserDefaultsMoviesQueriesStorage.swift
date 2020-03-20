@@ -40,7 +40,7 @@ final class UserDefaultsMoviesQueriesStorage {
 }
 
 extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
-    func recentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
+    func fetchRecentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             var queries = self.fetchMoviesQuries()

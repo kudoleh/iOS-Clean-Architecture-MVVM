@@ -18,9 +18,9 @@ final class DefaultMoviesRepository {
 
 extension DefaultMoviesRepository: MoviesRepository {
     
-    public func moviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
+    public func fetchMoviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
         
-        let endpoint = APIEndpoints.movies(query: query.query, page: page)
+        let endpoint = APIEndpoints.getMovies(query: query.query, page: page)
         let networkTask = self.dataTransferService.request(with: endpoint, completion: completion)
         return RepositoryTask(networkTask: networkTask)
     }

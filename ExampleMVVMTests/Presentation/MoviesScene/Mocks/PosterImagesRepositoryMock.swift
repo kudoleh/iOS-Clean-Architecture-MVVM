@@ -14,7 +14,7 @@ class PosterImagesRepositoryMock: PosterImagesRepository {
     var image = Data()
     var validateInput: ((String, Int) -> Void)?
     
-    func image(with imagePath: String, width: Int, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
+    func fetchImage(with imagePath: String, width: Int, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
         validateInput?(imagePath, width)
         if let error = error {
             completion(.failure(error))

@@ -9,5 +9,5 @@ import Foundation
 
 protocol MoviesRepository {
     @discardableResult
-    func moviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable?
+    func fetchMoviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable?
 }

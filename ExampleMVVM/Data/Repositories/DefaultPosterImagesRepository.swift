@@ -21,9 +21,9 @@ final class DefaultPosterImagesRepository {
 
 extension DefaultPosterImagesRepository: PosterImagesRepository {
     
-    func image(with imagePath: String, width: Int, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
+    func fetchImage(with imagePath: String, width: Int, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
         
-        let endpoint = APIEndpoints.moviePoster(path: imagePath, width: width)
+        let endpoint = APIEndpoints.getMoviePoster(path: imagePath, width: width)
         let networkTask = dataTransferService.request(with: endpoint) { [weak self] (response: Result<Data, Error>) in
             guard let self = self else { return }
             

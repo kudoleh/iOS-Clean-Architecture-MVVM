@@ -28,7 +28,7 @@ final class FetchRecentMovieQueriesUseCase: UseCase {
     }
     
     func start() -> Cancellable? {
-        moviesQueriesRepository.recentsQueries(number: requestValue.number) { result in
+        moviesQueriesRepository.fetchRecentsQueries(number: requestValue.number) { result in
             // Note: here self must be strong because we will create use case every time we use it, without holding reference to it
             switch result {
             case .success(let movieQueries):

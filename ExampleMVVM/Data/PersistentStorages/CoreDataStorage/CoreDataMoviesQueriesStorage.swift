@@ -62,7 +62,7 @@ final class CoreDataMoviesQueriesStorage {
 
 extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
     
-    func recentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
+    func fetchRecentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
         
         persistentContainer.performBackgroundTask { context in
             do {
