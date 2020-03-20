@@ -35,7 +35,7 @@ public class Endpoint<R>: ResponseRequestable {
     
     init(path: String,
          isFullPath: Bool = false,
-         method: HTTPMethodType = .get,
+         method: HTTPMethodType,
          queryParameters: [String: Any] = [:],
          headerParamaters: [String: String] = [:],
          bodyParamaters: [String: Any] = [:],
