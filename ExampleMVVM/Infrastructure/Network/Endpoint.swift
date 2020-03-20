@@ -110,7 +110,7 @@ extension Requestable {
         return urlRequest
     }
     
-    fileprivate func encodeBody(bodyParamaters: [String: Any], bodyEncoding: BodyEncoding) -> Data? {
+    private func encodeBody(bodyParamaters: [String: Any], bodyEncoding: BodyEncoding) -> Data? {
         switch bodyEncoding {
         case .jsonSerializationData:
             return try? JSONSerialization.data(withJSONObject: bodyParamaters)

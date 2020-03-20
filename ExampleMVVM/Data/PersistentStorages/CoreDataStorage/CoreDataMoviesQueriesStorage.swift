@@ -1,5 +1,5 @@
 //
-//  CoreDataStorage.swift
+//  CoreDataMoviesQueriesStorage.swift
 //  ExampleMVVM
 //
 //  Created by Oleh Kudinov on 16.08.19.
@@ -8,13 +8,13 @@
 import Foundation
 import CoreData
 
-enum CoreDataStorageError: Error {
+enum CoreDataMoviesQueriesStorageError: Error {
     case readError(Error)
     case writeError(Error)
     case deleteError(Error)
 }
 
-final class CoreDataStorage {
+final class CoreDataMoviesQueriesStorage {
 
     private let maxStorageLimit: Int
 
@@ -45,9 +45,22 @@ final class CoreDataStorage {
             }
         }
     }
+
+    // MARK: - Private
+    private func cleanUpQueries(for query: MovieQuery, inContext context: NSManagedObjectContext) throws {
+
+        let request: NSFetchRequest<MovieQueryEntity> = MovieQueryEntity.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
+                                                    ascending: false)]
+        let resut = try context.fetch(request)
+        resut.filter { $0.query == query.query }.forEach { context.delete($0) }
+        if resut.count > maxStorageLimit - 1 {
+            Array(resut[maxStorageLimit - 1..<resut.count]).forEach { context.delete($0) }
+        }
+    }
 }
 
-extension CoreDataStorage: MoviesQueriesStorage {
+extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
     
     func recentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
         
@@ -61,7 +74,7 @@ extension CoreDataStorage: MoviesQueriesStorage {
 
                 completion(.success(resut))
             } catch {
-                completion(.failure(CoreDataStorageError.readError(error)))
+                completion(.failure(CoreDataMoviesQueriesStorageError.readError(error)))
                 print(error)
             }
         }
@@ -78,21 +91,9 @@ extension CoreDataStorage: MoviesQueriesStorage {
 
                 completion(.success(MovieQuery(movieQueryEntity: entity)))
             } catch {
-                completion(.failure(CoreDataStorageError.writeError(error)))
+                completion(.failure(CoreDataMoviesQueriesStorageError.writeError(error)))
                 print(error)
             }
-        }
-    }
-    
-    fileprivate func cleanUpQueries(for query: MovieQuery, inContext context: NSManagedObjectContext) throws {
-    
-        let request: NSFetchRequest<MovieQueryEntity> = MovieQueryEntity.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
-                                                    ascending: false)]
-        let resut = try context.fetch(request)
-        resut.filter { $0.query == query.query }.forEach { context.delete($0) }
-        if resut.count > maxStorageLimit - 1 {
-            Array(resut[maxStorageLimit - 1..<resut.count]).forEach { context.delete($0) }
         }
     }
 }

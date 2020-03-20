@@ -18,7 +18,7 @@ final class MoviesSceneDIContainer {
     private let dependencies: Dependencies
 
     // MARK: - Persistent Storage
-    lazy var moviesQueriesStorage: MoviesQueriesStorage = CoreDataStorage(maxStorageLimit: 10)
+    lazy var moviesQueriesStorage: MoviesQueriesStorage = CoreDataMoviesQueriesStorage(maxStorageLimit: 10)
     
     init(dependencies: Dependencies) {
         self.dependencies = dependencies        
