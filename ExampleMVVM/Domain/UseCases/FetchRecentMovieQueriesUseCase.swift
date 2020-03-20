@@ -11,7 +11,7 @@ import Foundation
 final class FetchRecentMovieQueriesUseCase: UseCase {
 
     struct RequestValue {
-        let number: Int
+        let maxCount: Int
     }
     typealias ResultValue = (Result<[MovieQuery], Error>)
 
@@ -28,7 +28,7 @@ final class FetchRecentMovieQueriesUseCase: UseCase {
     }
     
     func start() -> Cancellable? {
-        moviesQueriesRepository.fetchRecentsQueries(number: requestValue.number) { result in
+        moviesQueriesRepository.fetchRecentsQueries(maxCount: requestValue.maxCount) { result in
             // Note: here self must be strong because we will create use case every time we use it, without holding reference to it
             switch result {
             case .success(let movieQueries):

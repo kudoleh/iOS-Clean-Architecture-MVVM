@@ -46,7 +46,7 @@ final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
     }
     
     private func updateMoviesQueries() {
-        let request = FetchRecentMovieQueriesUseCase.RequestValue(number: numberOfQueriesToShow)
+        let request = FetchRecentMovieQueriesUseCase.RequestValue(maxCount: numberOfQueriesToShow)
         let completion: (FetchRecentMovieQueriesUseCase.ResultValue) -> Void = { [weak self] result in
             guard let self = self else { return }
             switch result {

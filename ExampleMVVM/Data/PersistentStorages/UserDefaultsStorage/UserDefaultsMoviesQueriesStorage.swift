@@ -40,11 +40,11 @@ final class UserDefaultsMoviesQueriesStorage {
 }
 
 extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
-    func fetchRecentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
+    func fetchRecentsQueries(maxCount: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             var queries = self.fetchMoviesQuries()
-            queries = queries.count < self.maxStorageLimit ? queries : Array(queries[0..<number])
+            queries = queries.count < self.maxStorageLimit ? queries : Array(queries[0..<maxCount])
             completion(.success(queries))
         }
     }

@@ -62,14 +62,14 @@ final class CoreDataMoviesQueriesStorage {
 
 extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
     
-    func fetchRecentsQueries(number: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
+    func fetchRecentsQueries(maxCount: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
         
         persistentContainer.performBackgroundTask { context in
             do {
                 let request: NSFetchRequest<MovieQueryEntity> = MovieQueryEntity.fetchRequest()
                 request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
                                                             ascending: false)]
-                request.fetchLimit = number
+                request.fetchLimit = maxCount
                 let resut = try context.fetch(request).map(MovieQuery.init)
 
                 completion(.success(resut))
