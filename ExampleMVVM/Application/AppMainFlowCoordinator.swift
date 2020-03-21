@@ -18,7 +18,7 @@ class AppMainFlowCoordinator {
         self.appDIContainer = appDIContainer
     }
     
-    func start() {
+    func startMoviesSearchFlow() {
         let makeMoviesSceneDIContainer = appDIContainer.makeMoviesSceneDIContainer()
         let flow = MoviesSearchFlowCoordinator(navigationController: navigationController,
                                                dependencies: makeMoviesSceneDIContainer)

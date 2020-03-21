@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navigationController
         appFlowCoordinator = AppMainFlowCoordinator(navigationController: navigationController,
                                                     appDIContainer: appDIContainer)
-        appFlowCoordinator?.start()
+        appFlowCoordinator?.startMoviesSearchFlow()
         window?.makeKeyAndVisible()
     
         return true
