@@ -9,13 +9,11 @@
 import UIKit
 
 final class MovieDetailsViewController: UIViewController, StoryboardInstantiable {
-    
-    private static let fadeTransitionDuration: CFTimeInterval = 0.4
-    
+
     @IBOutlet private var posterImageView: UIImageView!
     @IBOutlet private var overviewTextView: UITextView!
     
-    var viewModel: MovieDetailsViewModel!
+    private var viewModel: MovieDetailsViewModel!
     
     static func create(with viewModel: MovieDetailsViewModel) -> MovieDetailsViewController {
         let view = MovieDetailsViewController.instantiateViewController()
@@ -31,15 +29,14 @@ final class MovieDetailsViewController: UIViewController, StoryboardInstantiable
     }
     
     private func bind(to viewModel: MovieDetailsViewModel) {
-        viewModel.title.observe(on: self) { [weak self] in self?.title = $0 }
-        viewModel.overview.observe(on: self) { [weak self] in self?.overviewTextView.text = $0 }
-        viewModel.posterImage.observe(on: self) { [weak self] in
-            self?.posterImageView.image = $0.flatMap { UIImage(data: $0)}
-        }
+        title = viewModel.title
+        overviewTextView.text = viewModel.overview
+        viewModel.posterImage.observe(on: self) { [weak self] in self?.posterImageView.image = $0.flatMap(UIImage.init) }
+        posterImageView.isHidden = viewModel.isPosterImageHidden
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        viewModel.updatePosterImage(width: Int(self.posterImageView.bounds.width))
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        viewModel.updatePosterImage(width: Int(posterImageView.imageSizeAfterAspectFit.scaledSize.width))
     }
 }

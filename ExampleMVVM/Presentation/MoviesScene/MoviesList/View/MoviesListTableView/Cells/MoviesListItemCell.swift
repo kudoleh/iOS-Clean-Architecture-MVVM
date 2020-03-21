@@ -28,7 +28,7 @@ final class MoviesListItemCell: UITableViewCell {
         titleLabel.text = viewModel.title
         dateLabel.text = viewModel.releaseDate
         overviewLabel.text = viewModel.overview
-        updatePosterImage(width: Int(posterImageView.frame.size.width * UIScreen.main.scale))
+        updatePosterImage(width: Int(posterImageView.imageSizeAfterAspectFit.scaledSize.width))
     }
 
     private func updatePosterImage(width: Int) {
@@ -39,7 +39,7 @@ final class MoviesListItemCell: UITableViewCell {
             guard self?.viewModel.posterImagePath == posterImagePath else { return }
             switch result {
             case .success(let data):
-                self?.posterImageView.image =  UIImage(data: data)
+                self?.posterImageView.image = UIImage(data: data)
             case .failure: break
             }
             self?.imageLoadTask = nil
