@@ -27,7 +27,7 @@
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="200" id="cwI-A4-qw8"/>
-                                            <constraint firstAttribute="height" constant="300" id="rSU-l9-oYs"/>
+                                            <constraint firstAttribute="height" priority="999" constant="300" id="rSU-l9-oYs"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
@@ -54,6 +54,9 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="eZX-So-dqC" firstAttribute="height" relation="lessThanOrEqual" secondItem="L03-0n-S3Y" secondAttribute="height" multiplier="0.5" id="tsh-xC-8ee"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>

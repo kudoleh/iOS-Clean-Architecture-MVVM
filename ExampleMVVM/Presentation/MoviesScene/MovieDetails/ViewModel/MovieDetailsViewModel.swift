@@ -25,8 +25,7 @@ final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     private let posterImagePath: String?
     private let posterImagesRepository: PosterImagesRepository
     private var imageLoadTask: Cancellable? { willSet { imageLoadTask?.cancel() } }
-    private var alreadyLoadedImageWidth: Int?
-    
+
     // MARK: - OUTPUT
     let title: Observable<String> = Observable("")
     let posterImage: Observable<Data?> = Observable(nil)
@@ -45,9 +44,8 @@ final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
 extension DefaultMovieDetailsViewModel {
     
     func updatePosterImage(width: Int) {
-        guard let posterImagePath = posterImagePath, alreadyLoadedImageWidth != width  else { return }
-        alreadyLoadedImageWidth = width
-        
+        guard let posterImagePath = posterImagePath else { return }
+
         imageLoadTask = posterImagesRepository.fetchImage(with: posterImagePath, width: width) { [weak self] result in
             guard self?.posterImagePath == posterImagePath else { return }
             switch result {
