@@ -93,4 +93,4 @@ final class MoviesSceneDIContainer {
     }
 }
 
-extension MoviesSceneDIContainer: MoviesListFlowCoordinatorDependencies {}
+extension MoviesSceneDIContainer: MoviesFlowCoordinatorDependencies {}

@@ -1,5 +1,5 @@
 //
-//  MoviesListFlowCoordinator.swift
+//  MoviesFlowCoordinator.swift
 //  ExampleMVVM
 //
 //  Created by Oleh Kudinov on 03.03.19.
@@ -7,23 +7,22 @@
 
 import UIKit
 
-protocol MoviesListFlowCoordinatorDependencies  {
+protocol MoviesFlowCoordinatorDependencies  {
     func makeMoviesListViewController() -> MoviesListViewController
     func makeMoviesDetailsViewController(movie: Movie) -> UIViewController
     func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController
 }
 
-class MoviesListFlowCoordinator {
+class MoviesFlowCoordinator {
     
-    var navigationController: UINavigationController
-    
-    private let dependencies: MoviesListFlowCoordinatorDependencies
-    
+    private let navigationController: UINavigationController
+    private let dependencies: MoviesFlowCoordinatorDependencies
+
     private weak var moviesListViewController: MoviesListViewController?
-    private var moviesQueriesSuggestionsView: UIViewController?
+    private weak var moviesQueriesSuggestionsView: UIViewController?
 
     init(navigationController: UINavigationController,
-         dependencies: MoviesListFlowCoordinatorDependencies) {
+         dependencies: MoviesFlowCoordinatorDependencies) {
         self.navigationController = navigationController
         self.dependencies = dependencies
     }
