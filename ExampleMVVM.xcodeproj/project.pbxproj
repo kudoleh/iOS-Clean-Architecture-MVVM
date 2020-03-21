@@ -533,13 +533,21 @@
 		1FC8B6E4230AF89A005DBF44 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				1FD2696524261A24005236FB /* Extensions */,
 				1FEED0EE2023575C000F4EAA /* Protocols */,
 				1FEE31612218B17E00C160B9 /* Observable.swift */,
-				1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */,
-				1FF53EB323688893008D6CCC /* DataTransferError+ConnectionError.swift */,
 				1F57F8D123C656F600981E09 /* AccessibilityIdentifier.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		1FD2696524261A24005236FB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */,
+				1FF53EB323688893008D6CCC /* DataTransferError+ConnectionError.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		1FE49D63230AA7C200D1D42E /* Presentation */ = {
