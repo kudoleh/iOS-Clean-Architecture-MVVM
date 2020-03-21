@@ -24,22 +24,16 @@ extension DefaultPosterImagesRepository: PosterImagesRepository {
     func fetchImage(with imagePath: String, width: Int, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
         
         let endpoint = APIEndpoints.getMoviePoster(path: imagePath, width: width)
-        let networkTask = dataTransferService.request(with: endpoint) { [weak self] (response: Result<Data, Error>) in
+        let networkTask = dataTransferService.request(with: endpoint) { [weak self] (result: Result<Data, Error>) in
             guard let self = self else { return }
-            
-            switch response {
-            case .success(let data):
-                completion(.success(data))
-                return
-            case .failure(let error):
-                if case let DataTransferError.networkFailure(networkError) = error,
-                    networkError.isNotFoundError,
-                    let imageNotFoundData = self.imageNotFoundData {
-                    completion(.success(imageNotFoundData))
-                    return
-                }
-                completion(.failure(error))
-                return
+
+            if case .failure(let error) = result,
+                case let DataTransferError.networkFailure(networkError) = error,
+                let imageNotFoundData = self.imageNotFoundData,
+                networkError.isNotFoundError {
+                DispatchQueue.main.async { completion(.success(imageNotFoundData)) }
+            } else {
+                DispatchQueue.main.async { completion(result) }
             }
         }
         return RepositoryTask(networkTask: networkTask)

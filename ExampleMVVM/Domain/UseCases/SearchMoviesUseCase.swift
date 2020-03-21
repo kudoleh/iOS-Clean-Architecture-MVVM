@@ -26,14 +26,12 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
         return moviesRepository.fetchMoviesList(query: requestValue.query, page: requestValue.page) { [weak self] result in
             guard let self = self else { return }
-            
-            switch result {
-            case .success:
+
+            if case .success = result {
                 self.moviesQueriesRepository.saveRecentQuery(query: requestValue.query) { _ in }
-                completion(result)
-            case .failure:
-                completion(result)
             }
+
+            DispatchQueue.main.async { completion(result) }
         }
     }
 }

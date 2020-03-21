@@ -30,12 +30,7 @@ final class FetchRecentMovieQueriesUseCase: UseCase {
     func start() -> Cancellable? {
         moviesQueriesRepository.fetchRecentsQueries(maxCount: requestValue.maxCount) { result in
             // Note: here self must be strong because we will create use case every time we use it, without holding reference to it
-            switch result {
-            case .success(let movieQueries):
-                self.completion(.success(movieQueries))
-            case .failure(let error):
-                self.completion(.failure(error))
-            }
+            DispatchQueue.main.async { self.completion(result) }
         }
         return nil
     }
