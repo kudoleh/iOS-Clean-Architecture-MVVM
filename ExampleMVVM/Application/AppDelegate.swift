@@ -11,6 +11,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let appDIContainer = AppDIContainer()
+    var mainFlowCoordinator: AppMainFlowCoordinator?
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -18,8 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AppAppearance.setupAppearance()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        let moviesListViewController = appDIContainer.makeMoviesSceneDIContainer().makeMoviesListViewController()
-        window?.rootViewController = UINavigationController(rootViewController: moviesListViewController)
+        let navigationController = UINavigationController()
+
+        window?.rootViewController = navigationController
+        mainFlowCoordinator = AppMainFlowCoordinator(navigationController: navigationController,
+                                             appDIContainer: appDIContainer)
+        mainFlowCoordinator?.start()
         window?.makeKeyAndVisible()
     
         return true

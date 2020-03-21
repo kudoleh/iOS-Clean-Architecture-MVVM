@@ -52,9 +52,8 @@ final class MoviesSceneDIContainer {
     }
     
     // MARK: - Movies List
-    func makeMoviesListViewController() -> UIViewController {
+    func makeMoviesListViewController() -> MoviesListViewController {
         return MoviesListViewController.create(with: makeMoviesListViewModel(),
-                                               moviesListViewControllersFactory: self,
                                                posterImagesRepository: makePosterImagesRepository())
     }
     
@@ -94,4 +93,4 @@ final class MoviesSceneDIContainer {
     }
 }
 
-extension MoviesSceneDIContainer: MoviesListViewControllersFactory {}
+extension MoviesSceneDIContainer: MoviesListFlowCoordinatorDependencies {}
