@@ -562,9 +562,9 @@
 			isa = PBXGroup;
 			children = (
 				1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */,
-				1FF53EB323688893008D6CCC /* DataTransferError+ConnectionError.swift */,
 				1FC5B7CF242634EB0086FA8C /* UIImageView+ImageSizeAfterAspectFit.swift */,
 				1FC5B7D1242635CB0086FA8C /* CGSize+ScaledSize.swift */,
+				1FF53EB323688893008D6CCC /* DataTransferError+ConnectionError.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
