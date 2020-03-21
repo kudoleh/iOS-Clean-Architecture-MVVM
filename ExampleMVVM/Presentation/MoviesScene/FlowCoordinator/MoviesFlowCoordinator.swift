@@ -36,7 +36,7 @@ class MoviesSearchFlowCoordinator {
         moviesListViewController = vc
     }
 
-    func handle(_ route: MoviesListViewModelRoute) {
+    private func handle(_ route: MoviesListViewModelRoute) {
         switch route {
         case .initial: break
 
