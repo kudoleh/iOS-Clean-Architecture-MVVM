@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="mrg-aK-cPW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mrg-aK-cPW">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -11,19 +12,15 @@
         <scene sceneID="wNu-vz-AgM">
             <objects>
                 <viewController storyboardIdentifier="MovieDetailsViewControllerID" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mrg-aK-cPW" customClass="MovieDetailsViewController" customModule="ExampleMVVM" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lNf-Tp-JWb"/>
-                        <viewControllerLayoutGuide type="bottom" id="PXa-7e-hdt"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xRA-Nz-89m">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="L03-0n-S3Y">
-                                <rect key="frame" x="20" y="96" width="374" height="780"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="788"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eZX-So-dqC">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="200"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="200" id="cwI-A4-qw8"/>
@@ -47,7 +44,7 @@
                                         </variation>
                                     </imageView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5TO-D8-T2j">
-                                        <rect key="frame" x="0.0" y="208" width="374" height="572"/>
+                                        <rect key="frame" x="0.0" y="208" width="414" height="580"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -61,11 +58,12 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="L03-0n-S3Y" secondAttribute="trailing" constant="20" symbolic="YES" id="Wzy-3M-6tt"/>
+                            <constraint firstItem="yc2-xp-frT" firstAttribute="trailing" secondItem="L03-0n-S3Y" secondAttribute="trailing" constant="20" symbolic="YES" id="Wzy-3M-6tt"/>
                             <constraint firstAttribute="bottom" secondItem="L03-0n-S3Y" secondAttribute="bottom" constant="20" symbolic="YES" id="bdd-Ng-82G"/>
-                            <constraint firstItem="L03-0n-S3Y" firstAttribute="top" secondItem="lNf-Tp-JWb" secondAttribute="bottom" constant="8" symbolic="YES" id="oxj-dX-m1f"/>
-                            <constraint firstItem="L03-0n-S3Y" firstAttribute="leading" secondItem="xRA-Nz-89m" secondAttribute="leading" constant="20" symbolic="YES" id="ujq-cd-I1C"/>
+                            <constraint firstItem="L03-0n-S3Y" firstAttribute="top" secondItem="yc2-xp-frT" secondAttribute="top" constant="8" symbolic="YES" id="oxj-dX-m1f"/>
+                            <constraint firstItem="L03-0n-S3Y" firstAttribute="leading" secondItem="yc2-xp-frT" secondAttribute="leading" constant="20" symbolic="YES" id="ujq-cd-I1C"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="yc2-xp-frT"/>
                     </view>
                     <navigationItem key="navigationItem" id="fO7-ju-87H"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
