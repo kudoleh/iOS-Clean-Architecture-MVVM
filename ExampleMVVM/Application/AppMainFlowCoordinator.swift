@@ -21,7 +21,7 @@ class AppMainFlowCoordinator {
     func start() {
         let makeMoviesSceneDIContainer = appDIContainer.makeMoviesSceneDIContainer()
         let flow = MoviesFlowCoordinator(navigationController: navigationController,
-                                             dependencies: makeMoviesSceneDIContainer)
+                                         dependencies: makeMoviesSceneDIContainer)
         flow.start()
     }
 }
