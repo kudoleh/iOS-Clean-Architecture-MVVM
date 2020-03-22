@@ -21,6 +21,7 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * Data Binding using [Observable](ExampleMVVM/Presentation/Utils/Observable.swift) without 3rd party libraries 
 * [Dependency Injection](ExampleMVVM/Application/DIContainer/AppDIContainer.swift)
 * [Flow Coordinator](ExampleMVVM/Presentation/MoviesScene/FlowCoordinator/MoviesSearchFlowCoordinator.swift)
+* [Data Transfer Object (DTO)](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Network/DataMapping/MoviesResponseDTO%2BMappings.swift)
 * [SwiftUI and UIKit view](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/View/SwiftUI/MoviesQueryListView.swift) implementations by reusing same [ViewModel](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/ViewModel/MoviesQueryListViewModel.swift) (at least Xcode 11 required)
 * CI Pipeline ([Travis CI + Fastlane](.travis.yml))
  
