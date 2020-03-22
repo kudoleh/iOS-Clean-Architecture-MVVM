@@ -133,7 +133,7 @@ private extension Dictionary {
     }
 }
 
-extension Encodable {
+private extension Encodable {
     func toDictionary() throws -> [String: Any]? {
         let data = try JSONEncoder().encode(self)
         let josnData = try JSONSerialization.jsonObject(with: data)
