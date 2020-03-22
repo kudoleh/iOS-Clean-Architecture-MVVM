@@ -9,12 +9,11 @@ import Foundation
 
 struct APIEndpoints {
     
-    static func getMovies(query: String, page: Int) -> Endpoint<MoviesPage> {
-        
+    static func getMovies(moviesRequestDTO: MoviesRequestDTO) -> Endpoint<MoviesResponseDTO> {
+
         return Endpoint(path: "3/search/movie/",
                         method: .get,
-                        queryParameters: ["query": query,
-                                          "page": "\(page)"])
+                        queryParametersEncodable: moviesRequestDTO)
     }
     
     static func getMoviePoster(path: String, width: Int) -> Endpoint<Data> {

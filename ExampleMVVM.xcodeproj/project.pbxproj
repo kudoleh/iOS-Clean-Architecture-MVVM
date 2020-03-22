@@ -18,6 +18,8 @@
 		1F1FC48A22E3693100BCBA8D /* DataTransferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1FC48622E3693100BCBA8D /* DataTransferService.swift */; };
 		1F1FC48B22E3693100BCBA8D /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1FC48722E3693100BCBA8D /* Endpoint.swift */; };
 		1F1FC48C22E3693100BCBA8D /* NetworkConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1FC48822E3693100BCBA8D /* NetworkConfig.swift */; };
+		1F2AB951242789B80010DEEE /* MoviesResponseDTO+Mappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2AB950242789B80010DEEE /* MoviesResponseDTO+Mappings.swift */; };
+		1F2AB95324278CC20010DEEE /* MoviesRequestDTO+Mappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2AB95224278CC20010DEEE /* MoviesRequestDTO+Mappings.swift */; };
 		1F4102F4240BEE6A00EC014A /* UseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4102F3240BEE6A00EC014A /* UseCase.swift */; };
 		1F4102F5240BEE6A00EC014A /* UseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4102F3240BEE6A00EC014A /* UseCase.swift */; };
 		1F474F2222356B1E0092DB4B /* Cancelable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F474F2122356B1E0092DB4B /* Cancelable.swift */; };
@@ -39,7 +41,6 @@
 		1F7C1D19242117910014F011 /* Movie+Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7C1D17242117790014F011 /* Movie+Stub.swift */; };
 		1F84DECE2300677B00139F73 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEE31612218B17E00C160B9 /* Observable.swift */; };
 		1F84DED023006BDA00139F73 /* FetchRecentMovieQueriesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F84DECF23006BDA00139F73 /* FetchRecentMovieQueriesUseCase.swift */; };
-		1F8D09312301C2F20061FB6F /* Movie+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8D092F2301C2F20061FB6F /* Movie+Decodable.swift */; };
 		1F9034C42306FDFE00DEA4BD /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9034C32306FDFE00DEA4BD /* NetworkServiceTests.swift */; };
 		1F9034C52306FF2D00DEA4BD /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1FC48522E3693100BCBA8D /* NetworkService.swift */; };
 		1F9034C62306FF2D00DEA4BD /* DataTransferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1FC48622E3693100BCBA8D /* DataTransferService.swift */; };
@@ -132,6 +133,8 @@
 		1F1FC48622E3693100BCBA8D /* DataTransferService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTransferService.swift; sourceTree = "<group>"; };
 		1F1FC48722E3693100BCBA8D /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		1F1FC48822E3693100BCBA8D /* NetworkConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkConfig.swift; sourceTree = "<group>"; };
+		1F2AB950242789B80010DEEE /* MoviesResponseDTO+Mappings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MoviesResponseDTO+Mappings.swift"; sourceTree = "<group>"; };
+		1F2AB95224278CC20010DEEE /* MoviesRequestDTO+Mappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoviesRequestDTO+Mappings.swift"; sourceTree = "<group>"; };
 		1F4102F3240BEE6A00EC014A /* UseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UseCase.swift; sourceTree = "<group>"; };
 		1F474F2122356B1E0092DB4B /* Cancelable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cancelable.swift; sourceTree = "<group>"; };
 		1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AddChild.swift"; sourceTree = "<group>"; };
@@ -141,7 +144,6 @@
 		1F77930E222C0DF2004E034C /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		1F7C1D17242117790014F011 /* Movie+Stub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Movie+Stub.swift"; sourceTree = "<group>"; };
 		1F84DECF23006BDA00139F73 /* FetchRecentMovieQueriesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRecentMovieQueriesUseCase.swift; sourceTree = "<group>"; };
-		1F8D092F2301C2F20061FB6F /* Movie+Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Movie+Decodable.swift"; sourceTree = "<group>"; };
 		1F9034C32306FDFE00DEA4BD /* NetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
 		1F9034CD230713FC00DEA4BD /* DataTransferServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTransferServiceTests.swift; sourceTree = "<group>"; };
 		1F9034D0230714B900DEA4BD /* NetworkConfigurableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConfigurableMock.swift; sourceTree = "<group>"; };
@@ -326,7 +328,8 @@
 		1F8D092D2301C2F20061FB6F /* DataMapping */ = {
 			isa = PBXGroup;
 			children = (
-				1F8D092F2301C2F20061FB6F /* Movie+Decodable.swift */,
+				1F2AB95224278CC20010DEEE /* MoviesRequestDTO+Mappings.swift */,
+				1F2AB950242789B80010DEEE /* MoviesResponseDTO+Mappings.swift */,
 			);
 			path = DataMapping;
 			sourceTree = "<group>";
@@ -931,8 +934,8 @@
 				1FF53EB423688893008D6CCC /* DataTransferError+ConnectionError.swift in Sources */,
 				1F53E2B623125896008D6A05 /* UIViewController+AddChild.swift in Sources */,
 				1F84DED023006BDA00139F73 /* FetchRecentMovieQueriesUseCase.swift in Sources */,
+				1F2AB951242789B80010DEEE /* MoviesResponseDTO+Mappings.swift in Sources */,
 				1FC2C9632301FEC0001AE47E /* MovieQueryUDS+Mappings.swift in Sources */,
-				1F8D09312301C2F20061FB6F /* Movie+Decodable.swift in Sources */,
 				1FE49D90230AA7C200D1D42E /* MovieDetailsViewModel.swift in Sources */,
 				1F1FC48A22E3693100BCBA8D /* DataTransferService.swift in Sources */,
 				1FEE31622218B17E00C160B9 /* Observable.swift in Sources */,
@@ -963,6 +966,7 @@
 				1FFFC833221B0041007D99D2 /* DefaultPosterImagesRepository.swift in Sources */,
 				FC740818216555C500FE52A5 /* UserDefaultsMoviesQueriesStorage.swift in Sources */,
 				1FCE68A1222C873A00CC3074 /* MoviesSceneDIContainer.swift in Sources */,
+				1F2AB95324278CC20010DEEE /* MoviesRequestDTO+Mappings.swift in Sources */,
 				1F903535230759AC00DEA4BD /* MovieQueryEntity+Mappings.swift in Sources */,
 				1FE49D8F230AA7C200D1D42E /* MoviesQueryListViewModel.swift in Sources */,
 				1F1FC48C22E3693100BCBA8D /* NetworkConfig.swift in Sources */,

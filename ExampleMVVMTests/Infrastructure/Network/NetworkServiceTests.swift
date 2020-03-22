@@ -13,6 +13,7 @@ class NetworkServiceTests: XCTestCase {
         var path: String
         var isFullPath: Bool = false
         var method: HTTPMethodType
+        var queryParametersEncodable: Encodable?
         var queryParameters: [String: Any] = [:]
         var headerParamaters: [String: String] = [:]
         var bodyParamaters: [String: Any] = [:]
