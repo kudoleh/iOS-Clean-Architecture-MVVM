@@ -22,7 +22,7 @@ extension DefaultMoviesRepository: MoviesRepository {
 
         let endpoint = APIEndpoints.getMovies(moviesRequestDTO: .init(query: query.query,
                                                                       page: page))
-        let networkTask = self.dataTransferService.request(with: endpoint) { (response: Result<MoviesResponseDTO, Error>) in
+        let networkTask = dataTransferService.request(with: endpoint) { (response: Result<MoviesResponseDTO, Error>) in
             switch response {
             case .success(let moviesResponseDTO):
                 completion(.success(moviesResponseDTO.mapToDomain()))
