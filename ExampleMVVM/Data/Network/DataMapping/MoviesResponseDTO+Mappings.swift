@@ -58,6 +58,8 @@ extension MoviesResponseDTO.MovieDTO {
     }
 }
 
+// MARK: - Private
+
 private let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
