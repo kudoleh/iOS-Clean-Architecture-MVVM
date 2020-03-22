@@ -38,19 +38,19 @@ extension MoviesResponseDTO {
     }
 }
 
-// MARK: - Mappings into Domain
+// MARK: - Mappings to Domain
 
 extension MoviesResponseDTO {
-    func mapToMoviePage() -> MoviesPage {
-        return MoviesPage(page: page,
-                          totalPages: totalPages,
-                          movies: movies.map { $0.mapToMovie() })
+    func mapToDomain() -> MoviesPage {
+        return .init(page: page,
+                     totalPages: totalPages,
+                     movies: movies.map { $0.mapToDomain() })
     }
 }
 
 extension MoviesResponseDTO.MovieDTO {
-    func mapToMovie() -> Movie {
-        return Movie(id: MovieId(id),
+    func mapToDomain() -> Movie {
+        return .init(id: MovieId(id),
                      title: title,
                      posterPath: posterPath,
                      overview: overview,

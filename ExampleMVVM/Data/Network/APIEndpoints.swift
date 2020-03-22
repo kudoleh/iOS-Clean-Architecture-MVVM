@@ -13,7 +13,7 @@ struct APIEndpoints {
 
         return Endpoint(path: "3/search/movie/",
                         method: .get,
-                        queryParameters: moviesRequestDTO.toDictionary())
+                        queryParametersEncodable: moviesRequestDTO)
     }
     
     static func getMoviePoster(path: String, width: Int) -> Endpoint<Data> {
@@ -24,20 +24,5 @@ struct APIEndpoints {
         return Endpoint(path: "t/p/w\(closestWidth)\(path)",
                         method: .get,
                         responseDecoder: RawDataResponseDecoder())
-    }
-}
-
-extension Encodable {
-    func toDictionary() -> [String: Any] {
-        do {
-            let data = try JSONEncoder().encode(self)
-            let josnData = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-            return josnData ?? [:]
-        } catch {
-             #if DEBUG
-            print("\(error)")
-            #endif
-            return [:]
-        }
     }
 }

@@ -25,7 +25,7 @@ extension DefaultMoviesRepository: MoviesRepository {
         let networkTask = self.dataTransferService.request(with: endpoint) { (response: Result<MoviesResponseDTO, Error>) in
             switch response {
             case .success(let moviesResponseDTO):
-                completion(.success(moviesResponseDTO.mapToMoviePage()))
+                completion(.success(moviesResponseDTO.mapToDomain()))
             case .failure(let error):
                 completion(.failure(error))
             }
