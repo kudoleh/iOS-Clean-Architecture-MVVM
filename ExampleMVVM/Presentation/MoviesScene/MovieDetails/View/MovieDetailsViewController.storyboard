@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="L03-0n-S3Y">
+                            <stackView opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="L03-0n-S3Y">
                                 <rect key="frame" x="0.0" y="88" width="414" height="788"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eZX-So-dqC">
@@ -42,6 +42,11 @@
                                                 <include reference="rSU-l9-oYs"/>
                                             </mask>
                                         </variation>
+                                        <variation key="heightClass=compact-widthClass=regular">
+                                            <mask key="constraints">
+                                                <exclude reference="rSU-l9-oYs"/>
+                                            </mask>
+                                        </variation>
                                     </imageView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5TO-D8-T2j">
                                         <rect key="frame" x="0.0" y="208" width="414" height="580"/>
@@ -52,16 +57,26 @@
                                     </textView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="eZX-So-dqC" firstAttribute="height" relation="lessThanOrEqual" secondItem="L03-0n-S3Y" secondAttribute="height" multiplier="0.5" id="tsh-xC-8ee"/>
+                                    <constraint firstItem="eZX-So-dqC" firstAttribute="width" secondItem="L03-0n-S3Y" secondAttribute="width" multiplier="0.3" id="tIn-Wx-ZXV"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="tIn-Wx-ZXV"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact" axis="horizontal">
+                                    <mask key="constraints">
+                                        <include reference="tIn-Wx-ZXV"/>
+                                    </mask>
+                                </variation>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="yc2-xp-frT" firstAttribute="trailing" secondItem="L03-0n-S3Y" secondAttribute="trailing" constant="20" symbolic="YES" id="Wzy-3M-6tt"/>
+                            <constraint firstItem="yc2-xp-frT" firstAttribute="trailing" secondItem="L03-0n-S3Y" secondAttribute="trailing" symbolic="YES" id="Wzy-3M-6tt"/>
                             <constraint firstAttribute="bottom" secondItem="L03-0n-S3Y" secondAttribute="bottom" constant="20" symbolic="YES" id="bdd-Ng-82G"/>
-                            <constraint firstItem="L03-0n-S3Y" firstAttribute="top" secondItem="yc2-xp-frT" secondAttribute="top" constant="8" symbolic="YES" id="oxj-dX-m1f"/>
-                            <constraint firstItem="L03-0n-S3Y" firstAttribute="leading" secondItem="yc2-xp-frT" secondAttribute="leading" constant="20" symbolic="YES" id="ujq-cd-I1C"/>
+                            <constraint firstItem="L03-0n-S3Y" firstAttribute="top" secondItem="yc2-xp-frT" secondAttribute="top" symbolic="YES" id="oxj-dX-m1f"/>
+                            <constraint firstItem="L03-0n-S3Y" firstAttribute="leading" secondItem="yc2-xp-frT" secondAttribute="leading" symbolic="YES" id="ujq-cd-I1C"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yc2-xp-frT"/>
                     </view>
