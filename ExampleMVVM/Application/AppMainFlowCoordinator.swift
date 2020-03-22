@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AppMainFlowCoordinator {
+class AppMainFlowCoordinator: FlowCoordinator {
 
     var navigationController: UINavigationController
     private let appDIContainer: AppDIContainer
@@ -18,7 +18,7 @@ class AppMainFlowCoordinator {
         self.appDIContainer = appDIContainer
     }
     
-    func startMoviesSearchFlow() {
+    func start() {
         let moviesSceneDIContainer = appDIContainer.makeMoviesSceneDIContainer()
         let flow = moviesSceneDIContainer.makeMoviesSearchFlowCoordinator(navigationController: navigationController)
         flow.start()
