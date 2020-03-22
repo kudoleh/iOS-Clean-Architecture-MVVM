@@ -9,12 +9,11 @@ import Foundation
 
 struct APIEndpoints {
     
-    static func getMovies(query: String, page: Int) -> Endpoint<MoviesPage> {
-        
+    static func getMovies(moviesRequestDTO: MoviesRequestDTO) -> Endpoint<MoviesResponseDTO> {
+
         return Endpoint(path: "3/search/movie/",
                         method: .get,
-                        queryParameters: ["query": query,
-                                          "page": "\(page)"])
+                        queryParameters: moviesRequestDTO.toDictionary())
     }
     
     static func getMoviePoster(path: String, width: Int) -> Endpoint<Data> {
@@ -26,4 +25,13 @@ struct APIEndpoints {
                         method: .get,
                         responseDecoder: RawDataResponseDecoder())
     }
+}
+
+extension Encodable {
+  func toDictionary() -> [String: Any] {
+    guard let data = try? JSONEncoder().encode(self) else { return [:] }
+    return (try? JSONSerialization
+        .jsonObject(with: data, options: .allowFragments))
+        .flatMap { $0 as? [String: Any] } ?? [:]
+  }
 }
