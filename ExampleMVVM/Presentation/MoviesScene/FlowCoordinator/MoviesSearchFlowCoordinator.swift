@@ -13,7 +13,7 @@ protocol MoviesSearchFlowCoordinatorDependencies  {
     func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController
 }
 
-class MoviesSearchFlowCoordinator {
+class MoviesSearchFlowCoordinator: FlowCoordinator {
     
     private let navigationController: UINavigationController
     private let dependencies: MoviesSearchFlowCoordinatorDependencies
