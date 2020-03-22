@@ -20,8 +20,8 @@ extension DefaultMoviesRepository: MoviesRepository {
     
     public func fetchMoviesList(query: MovieQuery, page: Int, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
 
-        let endpoint = APIEndpoints.getMovies(moviesRequestDTO: .init(query: query.query,
-                                                                      page: page))
+        let endpoint = APIEndpoints.getMovies(with: MoviesRequestDTO(query: query.query,
+                                                                     page: page))
         let networkTask = dataTransferService.request(with: endpoint) { (response: Result<MoviesResponseDTO, Error>) in
             switch response {
             case .success(let moviesResponseDTO):
