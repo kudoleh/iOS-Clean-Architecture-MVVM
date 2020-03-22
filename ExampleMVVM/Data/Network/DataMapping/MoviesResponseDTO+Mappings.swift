@@ -8,7 +8,8 @@
 
 import Foundation
 
-// Data Transfer Object
+// MARK: - Data Transfer Object
+
 struct MoviesResponseDTO: Decodable {
     private enum CodingKeys: String, CodingKey {
         case page
@@ -20,20 +21,24 @@ struct MoviesResponseDTO: Decodable {
     let movies: [MovieDTO]
 }
 
-struct MovieDTO: Decodable {
-    private enum CodingKeys: String, CodingKey {
-        case id
-        case title
-        case posterPath = "poster_path"
-        case overview
-        case releaseDate = "release_date"
+extension MoviesResponseDTO {
+    struct MovieDTO: Decodable {
+        private enum CodingKeys: String, CodingKey {
+            case id
+            case title
+            case posterPath = "poster_path"
+            case overview
+            case releaseDate = "release_date"
+        }
+        let id: Int
+        let title: String
+        let posterPath: String?
+        let overview: String
+        let releaseDate: String?
     }
-    let id: Int
-    let title: String
-    let posterPath: String?
-    let overview: String
-    let releaseDate: String?
 }
+
+// MARK: - Mappings into Domain
 
 extension MoviesResponseDTO {
     func mapToMoviePage() -> MoviesPage {
@@ -43,23 +48,21 @@ extension MoviesResponseDTO {
     }
 }
 
-extension MovieDTO {
+extension MoviesResponseDTO.MovieDTO {
     func mapToMovie() -> Movie {
         return Movie(id: MovieId(id),
                      title: title,
                      posterPath: posterPath,
                      overview: overview,
-                     releaseDate: DateFormatter.yyyyMMdd.date(from: releaseDate ?? ""))
+                     releaseDate: dateFormatter.date(from: releaseDate ?? ""))
     }
 }
 
-private extension DateFormatter {
-    static let yyyyMMdd: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter
-    }()
-}
+private let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    formatter.calendar = Calendar(identifier: .iso8601)
+    formatter.timeZone = TimeZone(secondsFromGMT: 0)
+    formatter.locale = Locale(identifier: "en_US_POSIX")
+    return formatter
+}()

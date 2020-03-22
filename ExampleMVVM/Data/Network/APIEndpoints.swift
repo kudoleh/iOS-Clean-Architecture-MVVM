@@ -28,10 +28,16 @@ struct APIEndpoints {
 }
 
 extension Encodable {
-  func toDictionary() -> [String: Any] {
-    guard let data = try? JSONEncoder().encode(self) else { return [:] }
-    return (try? JSONSerialization
-        .jsonObject(with: data, options: .allowFragments))
-        .flatMap { $0 as? [String: Any] } ?? [:]
-  }
+    func toDictionary() -> [String: Any] {
+        do {
+            let data = try JSONEncoder().encode(self)
+            let josnData = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+            return josnData ?? [:]
+        } catch {
+             #if DEBUG
+            print("\(error)")
+            #endif
+            return [:]
+        }
+    }
 }
