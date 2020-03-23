@@ -18,9 +18,8 @@ protocol MoviesQueryListViewModelOutput {
 
 protocol MoviesQueryListViewModel: MoviesQueryListViewModelInput, MoviesQueryListViewModelOutput { }
 
-protocol MoviesQueryListViewModelDelegate: class {
-    
-    func moviesQueriesListDidSelect(movieQuery: MovieQuery)
+struct MoviesQueryListViewModelActions {
+    var selectMovieQuery: (MovieQuery) -> Void
 }
 
 typealias FetchRecentMovieQueriesUseCaseFactory = (
@@ -32,17 +31,17 @@ final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
 
     private let numberOfQueriesToShow: Int
     private let fetchRecentMovieQueriesUseCaseFactory: FetchRecentMovieQueriesUseCaseFactory
-    private weak var delegate: MoviesQueryListViewModelDelegate?
+    private var actions: MoviesQueryListViewModelActions?
     
     // MARK: - OUTPUT
     let items: Observable<[MoviesQueryListItemViewModel]> = Observable([])
     
     init(numberOfQueriesToShow: Int,
          fetchRecentMovieQueriesUseCaseFactory: @escaping FetchRecentMovieQueriesUseCaseFactory,
-         delegate: MoviesQueryListViewModelDelegate? = nil) {
+         actions: MoviesQueryListViewModelActions? = nil) {
         self.numberOfQueriesToShow = numberOfQueriesToShow
         self.fetchRecentMovieQueriesUseCaseFactory = fetchRecentMovieQueriesUseCaseFactory
-        self.delegate = delegate
+        self.actions = actions
     }
     
     private func updateMoviesQueries() {
@@ -68,6 +67,6 @@ extension DefaultMoviesQueryListViewModel {
     }
     
     func didSelect(item: MoviesQueryListItemViewModel) {
-        delegate?.moviesQueriesListDidSelect(movieQuery: MovieQuery(query: item.query))
+        actions?.selectMovieQuery(MovieQuery(query: item.query))
     }
 }

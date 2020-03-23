@@ -5,6 +5,7 @@
 //  Created by Oleh Kudinov on 16.08.19.
 //
 
+@testable import ExampleMVVM
 import XCTest
 
 class MoviesQueriesListViewModelTests: XCTestCase {
@@ -18,15 +19,6 @@ class MoviesQueriesListViewModelTests: XCTestCase {
                         MovieQuery(query: "query3"),
                         MovieQuery(query: "query4"),
                         MovieQuery(query: "query5")]
-    
-    class MoviesQueryListViewModelDelegateMock: MoviesQueryListViewModelDelegate {
-        var expectation: XCTestExpectation?
-        var didNotifiedWithMovieQuery: MovieQuery?
-        func moviesQueriesListDidSelect(movieQuery: MovieQuery) {
-            didNotifiedWithMovieQuery = movieQuery
-            expectation?.fulfill()
-        }
-    }
 
     class FetchRecentMovieQueriesUseCaseMock: UseCase {
         var expectation: XCTestExpectation?
@@ -85,21 +77,25 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.items.value.isEmpty)
     }
     
-    func test_whenDidSelectQueryEventIsReceived_thenNotifyDelegate() {
+    func test_whenDidSelectQueryEventIsReceived_thenCallAction() {
         // given
         let selectedQueryItem = MovieQuery(query: "query1")
-        let delegate = MoviesQueryListViewModelDelegateMock()
-        delegate.expectation = self.expectation(description: "Delegate notified")
+        var actionMovieQuery: MovieQuery?
+        let expectation = self.expectation(description: "Delegate notified")
+        let actions = MoviesQueryListViewModelActions(selectMovieQuery: { movieQuery in
+            actionMovieQuery = movieQuery
+            expectation.fulfill()
+        })
         
         let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
                                                         fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(FetchRecentMovieQueriesUseCaseMock()),
-                                                        delegate: delegate)
+                                                        actions: actions)
         
         // when
         viewModel.didSelect(item: MoviesQueryListItemViewModel(query: selectedQueryItem.query))
         
         // then
         waitForExpectations(timeout: 5, handler: nil)
-        XCTAssertEqual(delegate.didNotifiedWithMovieQuery, selectedQueryItem)
+        XCTAssertEqual(actionMovieQuery, selectedQueryItem)
     }
 }
