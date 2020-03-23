@@ -70,7 +70,6 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     let errorTitle = NSLocalizedString("Error", comment: "")
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
 
-    @discardableResult
     init(searchMoviesUseCase: SearchMoviesUseCase,
          closures: MoviesListViewModelClosures? = nil) {
         self.searchMoviesUseCase = searchMoviesUseCase
