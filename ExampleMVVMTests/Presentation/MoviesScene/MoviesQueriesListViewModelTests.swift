@@ -82,14 +82,14 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         let selectedQueryItem = MovieQuery(query: "query1")
         var actionMovieQuery: MovieQuery?
         let expectation = self.expectation(description: "Delegate notified")
-        let actions = MoviesQueryListViewModelActions(selectMovieQuery: { movieQuery in
+        let closures = MoviesQueryListViewModelClosures(selectMovieQuery: { movieQuery in
             actionMovieQuery = movieQuery
             expectation.fulfill()
         })
         
         let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
                                                         fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(FetchRecentMovieQueriesUseCaseMock()),
-                                                        actions: actions)
+                                                        closures: closures)
         
         // when
         viewModel.didSelect(item: MoviesQueryListItemViewModel(query: selectedQueryItem.query))

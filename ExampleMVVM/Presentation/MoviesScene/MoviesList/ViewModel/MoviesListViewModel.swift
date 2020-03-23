@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MoviesListViewModelActions {
+struct MoviesListViewModelClosures {
     let showMovieDetails: (Movie) -> Void
     let showMovieQueriesSuggestions: (@escaping (_ didSelect: MovieQuery) -> Void) -> Void
     let closeMovieQueriesSuggestions: () -> Void
@@ -58,7 +58,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     }
     private var movies: [Movie] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
-    private var actions: MoviesListViewModelActions?
+    private var closures: MoviesListViewModelClosures?
     
     // MARK: - OUTPUT
     let items: Observable<[MoviesListItemViewModel]> = Observable([])
@@ -73,9 +73,9 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
 
     @discardableResult
     init(searchMoviesUseCase: SearchMoviesUseCase,
-         actions: MoviesListViewModelActions? = nil) {
+         closures: MoviesListViewModelClosures? = nil) {
         self.searchMoviesUseCase = searchMoviesUseCase
-        self.actions = actions
+        self.closures = closures
     }
     
     private func appendPage(moviesPage: MoviesPage) {
@@ -142,16 +142,16 @@ extension DefaultMoviesListViewModel {
     }
 
     func showQueriesSuggestions() {
-        actions?.showMovieQueriesSuggestions { [weak self] query in
+        closures?.showMovieQueriesSuggestions { [weak self] query in
             self?.update(movieQuery: query)
         }
     }
     
     func closeQueriesSuggestions() {
-        actions?.closeMovieQueriesSuggestions()
+        closures?.closeMovieQueriesSuggestions()
     }
     
     func didSelect(at indexPath: IndexPath) {
-        actions?.showMovieDetails(movies[indexPath.row])
+        closures?.showMovieDetails(movies[indexPath.row])
     }
 }

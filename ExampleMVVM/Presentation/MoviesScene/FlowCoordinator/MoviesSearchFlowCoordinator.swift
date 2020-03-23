@@ -8,9 +8,9 @@
 import UIKit
 
 protocol MoviesSearchFlowCoordinatorDependencies  {
-    func makeMoviesListViewController(actions: MoviesListViewModelActions) -> MoviesListViewController
+    func makeMoviesListViewController(closures: MoviesListViewModelClosures) -> MoviesListViewController
     func makeMoviesDetailsViewController(movie: Movie) -> UIViewController
-    func makeMoviesQueriesSuggestionsListViewController(actions: MoviesQueryListViewModelActions) -> UIViewController
+    func makeMoviesQueriesSuggestionsListViewController(closures: MoviesQueryListViewModelClosures) -> UIViewController
 }
 
 class MoviesSearchFlowCoordinator {
@@ -29,10 +29,10 @@ class MoviesSearchFlowCoordinator {
     
     func start() {
         // Note: here we keep strong reference with closures, this way this flow do not need to be strong referenced
-        let actions = MoviesListViewModelActions(showMovieDetails: showMovieDetails,
-                                                 showMovieQueriesSuggestions: showMovieQueriesSuggestions,
-                                                 closeMovieQueriesSuggestions: closeMovieQueriesSuggestions)
-        let vc = dependencies.makeMoviesListViewController(actions: actions)
+        let closures = MoviesListViewModelClosures(showMovieDetails: showMovieDetails,
+                                                   showMovieQueriesSuggestions: showMovieQueriesSuggestions,
+                                                   closeMovieQueriesSuggestions: closeMovieQueriesSuggestions)
+        let vc = dependencies.makeMoviesListViewController(closures: closures)
 
         navigationController.pushViewController(vc, animated: false)
         moviesListViewController = vc
@@ -46,8 +46,8 @@ class MoviesSearchFlowCoordinator {
     private func showMovieQueriesSuggestions(selectMovieQuery: @escaping (MovieQuery) -> Void) {
         guard let moviesListViewController = moviesListViewController,
             let container = moviesListViewController.suggestionsListContainer else { return }
-        let actions = MoviesQueryListViewModelActions(selectMovieQuery: selectMovieQuery)
-        let vc = dependencies.makeMoviesQueriesSuggestionsListViewController(actions: actions)
+        let closures = MoviesQueryListViewModelClosures(selectMovieQuery: selectMovieQuery)
+        let vc = dependencies.makeMoviesQueriesSuggestionsListViewController(closures: closures)
         moviesListViewController.add(child: vc, container: container)
         vc.view.frame = moviesListViewController.view.bounds
         moviesQueriesSuggestionsView = vc
