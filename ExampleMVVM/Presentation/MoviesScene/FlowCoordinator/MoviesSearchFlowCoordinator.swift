@@ -28,6 +28,7 @@ class MoviesSearchFlowCoordinator {
     }
     
     func start() {
+        // Note: here we keep strong reference with closures, this way this flow do not need to be strong referenced
         let actions = MoviesListViewModelActions(showMovieDetails: showMovieDetails,
                                                  showMovieQueriesSuggestions: showMovieQueriesSuggestions,
                                                  closeMovieQueriesSuggestions: closeMovieQueriesSuggestions)
