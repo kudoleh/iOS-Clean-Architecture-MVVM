@@ -31,7 +31,7 @@ final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
 
     private let numberOfQueriesToShow: Int
     private let fetchRecentMovieQueriesUseCaseFactory: FetchRecentMovieQueriesUseCaseFactory
-    private var closures: MoviesQueryListViewModelClosures?
+    private let closures: MoviesQueryListViewModelClosures?
     
     // MARK: - OUTPUT
     let items: Observable<[MoviesQueryListItemViewModel]> = Observable([])
