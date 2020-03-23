@@ -9,7 +9,7 @@ import Foundation
 
 struct MoviesListViewModelActions {
     let showMovieDetails: (Movie) -> Void
-    let showMovieQueriesSuggestions: (@escaping (MovieQuery) -> Void) -> Void
+    let showMovieQueriesSuggestions: (@escaping (_ didSelect: MovieQuery) -> Void) -> Void
     let closeMovieQueriesSuggestions: () -> Void
 }
 
@@ -142,7 +142,9 @@ extension DefaultMoviesListViewModel {
     }
 
     func showQueriesSuggestions() {
-        actions?.showMovieQueriesSuggestions(update(movieQuery:))
+        actions?.showMovieQueriesSuggestions { [weak self] query in
+            self?.update(movieQuery: query)
+        }
     }
     
     func closeQueriesSuggestions() {
