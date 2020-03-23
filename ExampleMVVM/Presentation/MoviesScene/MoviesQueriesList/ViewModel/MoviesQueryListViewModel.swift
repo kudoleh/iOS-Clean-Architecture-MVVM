@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct MoviesQueryListViewModelActions {
+    var selectMovieQuery: (MovieQuery) -> Void
+}
+
 protocol MoviesQueryListViewModelInput {
     func viewWillAppear()
     func didSelect(item: MoviesQueryListItemViewModel)
@@ -17,10 +21,6 @@ protocol MoviesQueryListViewModelOutput {
 }
 
 protocol MoviesQueryListViewModel: MoviesQueryListViewModelInput, MoviesQueryListViewModelOutput { }
-
-struct MoviesQueryListViewModelActions {
-    var selectMovieQuery: (MovieQuery) -> Void
-}
 
 typealias FetchRecentMovieQueriesUseCaseFactory = (
     FetchRecentMovieQueriesUseCase.RequestValue,
