@@ -45,6 +45,7 @@ protocol MoviesListViewModel: MoviesListViewModelInput, MoviesListViewModelOutpu
 final class DefaultMoviesListViewModel: MoviesListViewModel {
 
     private let searchMoviesUseCase: SearchMoviesUseCase
+    private let closures: MoviesListViewModelClosures?
 
     private(set) var currentPage: Int = 0
     private var totalPageCount: Int = 1
@@ -57,7 +58,6 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     }
     private var movies: [Movie] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
-    private var closures: MoviesListViewModelClosures?
     
     // MARK: - OUTPUT
     let items: Observable<[MoviesListItemViewModel]> = Observable([])
