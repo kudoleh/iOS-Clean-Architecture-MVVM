@@ -14,7 +14,6 @@ struct MoviesListViewModelClosures {
 }
 
 enum MoviesListViewModelLoading {
-    case none
     case fullScreen
     case nextPage
 }
@@ -31,7 +30,7 @@ protocol MoviesListViewModelInput {
 
 protocol MoviesListViewModelOutput {
     var items: Observable<[MoviesListItemViewModel]> { get }
-    var loadingType: Observable<MoviesListViewModelLoading> { get }
+    var loadingType: Observable<MoviesListViewModelLoading?> { get }
     var query: Observable<String> { get }
     var error: Observable<String> { get }
     var isEmpty: Bool { get }
@@ -62,7 +61,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     
     // MARK: - OUTPUT
     let items: Observable<[MoviesListItemViewModel]> = Observable([])
-    let loadingType: Observable<MoviesListViewModelLoading> = Observable(.none)
+    let loadingType: Observable<MoviesListViewModelLoading?> = Observable(.none)
     let query: Observable<String> = Observable("")
     let error: Observable<String> = Observable("")
     var isEmpty: Bool { return items.value.isEmpty }
