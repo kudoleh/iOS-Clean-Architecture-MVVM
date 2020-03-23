@@ -10,7 +10,7 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var appDIContainer: AppDIContainer? = AppDIContainer()
+    let appDIContainer = AppDIContainer()
     var appFlowCoordinator: AppMainFlowCoordinator?
     var window: UIWindow?
     
@@ -23,15 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window?.rootViewController = navigationController
         appFlowCoordinator = AppMainFlowCoordinator(navigationController: navigationController,
-                                                    appDIContainer: appDIContainer!)
+                                                    appDIContainer: appDIContainer)
         appFlowCoordinator?.startMoviesSearchFlow()
         window?.makeKeyAndVisible()
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            // your code here
-            self.appDIContainer = nil
-            self.window?.rootViewController = nil
-        }
     
         return true
     }
