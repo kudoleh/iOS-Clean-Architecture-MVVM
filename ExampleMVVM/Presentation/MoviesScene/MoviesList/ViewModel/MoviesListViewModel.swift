@@ -7,11 +7,10 @@
 
 import Foundation
 
-enum MoviesListViewModelRoute {
-    case initial
-    case showMovieDetails(movie: Movie)
-    case showMovieQueriesSuggestions(delegate: MoviesQueryListViewModelDelegate)
-    case closeMovieQueriesSuggestions
+struct MoviesListViewModelClosures {
+    let showMovieDetails: (Movie) -> Void
+    let showMovieQueriesSuggestions: (@escaping (_ didSelect: MovieQuery) -> Void) -> Void
+    let closeMovieQueriesSuggestions: () -> Void
 }
 
 enum MoviesListViewModelLoading {
@@ -31,7 +30,6 @@ protocol MoviesListViewModelInput {
 }
 
 protocol MoviesListViewModelOutput {
-    var route: Observable<MoviesListViewModelRoute> { get }
     var items: Observable<[MoviesListItemViewModel]> { get }
     var loadingType: Observable<MoviesListViewModelLoading> { get }
     var query: Observable<String> { get }
@@ -60,9 +58,9 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     }
     private var movies: [Movie] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
+    private var closures: MoviesListViewModelClosures?
     
     // MARK: - OUTPUT
-    let route: Observable<MoviesListViewModelRoute> = Observable(.initial)
     let items: Observable<[MoviesListItemViewModel]> = Observable([])
     let loadingType: Observable<MoviesListViewModelLoading> = Observable(.none)
     let query: Observable<String> = Observable("")
@@ -74,8 +72,10 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
 
     @discardableResult
-    init(searchMoviesUseCase: SearchMoviesUseCase) {
+    init(searchMoviesUseCase: SearchMoviesUseCase,
+         closures: MoviesListViewModelClosures? = nil) {
         self.searchMoviesUseCase = searchMoviesUseCase
+        self.closures = closures
     }
     
     private func appendPage(moviesPage: MoviesPage) {
@@ -142,21 +142,16 @@ extension DefaultMoviesListViewModel {
     }
 
     func showQueriesSuggestions() {
-        route.value = .showMovieQueriesSuggestions(delegate: self)
+        closures?.showMovieQueriesSuggestions { [weak self] query in
+            self?.update(movieQuery: query)
+        }
     }
     
     func closeQueriesSuggestions() {
-        route.value = .closeMovieQueriesSuggestions
+        closures?.closeMovieQueriesSuggestions()
     }
     
     func didSelect(at indexPath: IndexPath) {
-        route.value = .showMovieDetails(movie: movies[indexPath.row])
-    }
-}
-
-// MARK: - Delegate method from another model views
-extension DefaultMoviesListViewModel: MoviesQueryListViewModelDelegate {
-    func moviesQueriesListDidSelect(movieQuery: MovieQuery) {
-        update(movieQuery: movieQuery)
+        closures?.showMovieDetails(movies[indexPath.row])
     }
 }

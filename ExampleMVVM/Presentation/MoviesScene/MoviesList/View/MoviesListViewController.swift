@@ -16,7 +16,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     @IBOutlet private var loadingView: UIActivityIndicatorView!
     @IBOutlet private var emptyDataLabel: UILabel!
     
-    private(set) var viewModel: MoviesListViewModel!
+    private var viewModel: MoviesListViewModel!
     private var posterImagesRepository: PosterImagesRepository?
     
     private var moviesTableViewController: MoviesListTableViewController?

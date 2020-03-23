@@ -8,9 +8,9 @@
 import UIKit
 
 protocol MoviesSearchFlowCoordinatorDependencies  {
-    func makeMoviesListViewController() -> MoviesListViewController
+    func makeMoviesListViewController(closures: MoviesListViewModelClosures) -> MoviesListViewController
     func makeMoviesDetailsViewController(movie: Movie) -> UIViewController
-    func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController
+    func makeMoviesQueriesSuggestionsListViewController(closures: MoviesQueryListViewModelClosures) -> UIViewController
 }
 
 class MoviesSearchFlowCoordinator {
@@ -28,35 +28,35 @@ class MoviesSearchFlowCoordinator {
     }
     
     func start() {
-        let vc = dependencies.makeMoviesListViewController()
-        // Note: here we use strong reference to self, because this flow can be created without strong reference to it.
-        vc.viewModel.route.observe(on: self, observerBlock: handle(_:))
+        // Note: here we keep strong reference with closures, this way this flow do not need to be strong referenced
+        let closures = MoviesListViewModelClosures(showMovieDetails: showMovieDetails,
+                                                   showMovieQueriesSuggestions: showMovieQueriesSuggestions,
+                                                   closeMovieQueriesSuggestions: closeMovieQueriesSuggestions)
+        let vc = dependencies.makeMoviesListViewController(closures: closures)
 
         navigationController.pushViewController(vc, animated: false)
         moviesListViewController = vc
     }
 
-    private func handle(_ route: MoviesListViewModelRoute) {
-        switch route {
-        case .initial: break
+    private func showMovieDetails(movie: Movie) {
+        let vc = dependencies.makeMoviesDetailsViewController(movie: movie)
+        navigationController.pushViewController(vc, animated: true)
+    }
 
-        case .showMovieDetails(let movie):
-            let vc = dependencies.makeMoviesDetailsViewController(movie: movie)
-            navigationController.pushViewController(vc, animated: true)
+    private func showMovieQueriesSuggestions(selectMovieQuery: @escaping (MovieQuery) -> Void) {
+        guard let moviesListViewController = moviesListViewController,
+            let container = moviesListViewController.suggestionsListContainer else { return }
+        let closures = MoviesQueryListViewModelClosures(selectMovieQuery: selectMovieQuery)
+        let vc = dependencies.makeMoviesQueriesSuggestionsListViewController(closures: closures)
+        moviesListViewController.add(child: vc, container: container)
+        vc.view.frame = moviesListViewController.view.bounds
+        moviesQueriesSuggestionsView = vc
+        container.isHidden = false
+    }
 
-        case .showMovieQueriesSuggestions(let delegate):
-            guard let moviesListViewController = moviesListViewController,
-                let container = moviesListViewController.suggestionsListContainer else { return }
-            let vc = dependencies.makeMoviesQueriesSuggestionsListViewController(delegate: delegate)
-            moviesListViewController.add(child: vc, container: container)
-            vc.view.frame = moviesListViewController.view.bounds
-            moviesQueriesSuggestionsView = vc
-            container.isHidden = false
-
-        case .closeMovieQueriesSuggestions:
-            moviesQueriesSuggestionsView?.remove()
-            moviesQueriesSuggestionsView = nil
-            moviesListViewController?.suggestionsListContainer.isHidden = true
-        }
+    private func closeMovieQueriesSuggestions() {
+        moviesQueriesSuggestionsView?.remove()
+        moviesQueriesSuggestionsView = nil
+        moviesListViewController?.suggestionsListContainer.isHidden = true
     }
 }

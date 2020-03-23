@@ -52,13 +52,14 @@ final class MoviesSceneDIContainer {
     }
     
     // MARK: - Movies List
-    func makeMoviesListViewController() -> MoviesListViewController {
-        return MoviesListViewController.create(with: makeMoviesListViewModel(),
+    func makeMoviesListViewController(closures: MoviesListViewModelClosures) -> MoviesListViewController {
+        return MoviesListViewController.create(with: makeMoviesListViewModel(closures: closures),
                                                posterImagesRepository: makePosterImagesRepository())
     }
     
-    func makeMoviesListViewModel() -> MoviesListViewModel {
-        return DefaultMoviesListViewModel(searchMoviesUseCase: makeSearchMoviesUseCase())
+    func makeMoviesListViewModel(closures: MoviesListViewModelClosures) -> MoviesListViewModel {
+        return DefaultMoviesListViewModel(searchMoviesUseCase: makeSearchMoviesUseCase(),
+                                          closures: closures)
     }
     
     // MARK: - Movie Details
@@ -72,24 +73,24 @@ final class MoviesSceneDIContainer {
     }
     
     // MARK: - Movies Queries Suggestions List
-    func makeMoviesQueriesSuggestionsListViewController(delegate: MoviesQueryListViewModelDelegate) -> UIViewController {
+    func makeMoviesQueriesSuggestionsListViewController(closures: MoviesQueryListViewModelClosures) -> UIViewController {
         if #available(iOS 13.0, *) { // SwiftUI
-            let view = MoviesQueryListView(viewModelWrapper: makeMoviesQueryListViewModelWrapper(delegate: delegate))
+            let view = MoviesQueryListView(viewModelWrapper: makeMoviesQueryListViewModelWrapper(closures: closures))
             return UIHostingController(rootView: view)
         } else { // UIKit
-            return MoviesQueriesTableViewController.create(with: makeMoviesQueryListViewModel(delegate: delegate))
+            return MoviesQueriesTableViewController.create(with: makeMoviesQueryListViewModel(closures: closures))
         }
     }
     
-    func makeMoviesQueryListViewModel(delegate: MoviesQueryListViewModelDelegate) -> MoviesQueryListViewModel {
+    func makeMoviesQueryListViewModel(closures: MoviesQueryListViewModelClosures) -> MoviesQueryListViewModel {
         return DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 10,
                                                fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase,
-                                               delegate: delegate)
+                                               closures: closures)
     }
 
     @available(iOS 13.0, *)
-    func makeMoviesQueryListViewModelWrapper(delegate: MoviesQueryListViewModelDelegate) -> MoviesQueryListViewModelWrapper {
-        return MoviesQueryListViewModelWrapper(viewModel: makeMoviesQueryListViewModel(delegate: delegate))
+    func makeMoviesQueryListViewModelWrapper(closures: MoviesQueryListViewModelClosures) -> MoviesQueryListViewModelWrapper {
+        return MoviesQueryListViewModelWrapper(viewModel: makeMoviesQueryListViewModel(closures: closures))
     }
 
     // MARK: - Flow Coordinators
