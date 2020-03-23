@@ -36,13 +36,12 @@ final class MoviesListItemCell: UITableViewCell {
         guard let posterImagePath = viewModel.posterImagePath else { return }
 
         imageLoadTask = posterImagesRepository?.fetchImage(with: posterImagePath, width: width) { [weak self] result in
-            guard self?.viewModel.posterImagePath == posterImagePath else { return }
-            switch result {
-            case .success(let data):
-                self?.posterImageView.image = UIImage(data: data)
-            case .failure: break
+            guard let self = self else { return }
+            guard self.viewModel.posterImagePath == posterImagePath else { return }
+            if case let .success(data) = result {
+                self.posterImageView.image = UIImage(data: data)
             }
-            self?.imageLoadTask = nil
+            self.imageLoadTask = nil
         }
     }
 }
