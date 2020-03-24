@@ -153,7 +153,7 @@ extension DefaultMoviesListViewModel {
     }
 }
 
-// MARK: - INPUT. events from other viewModel
+// MARK: - INPUT. Events from other ViewModel
 extension DefaultMoviesListViewModel {
 
     func didSelect(movieQuery: MovieQuery) {
