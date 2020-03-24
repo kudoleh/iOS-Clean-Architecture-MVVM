@@ -157,6 +157,6 @@ extension DefaultMoviesListViewModel {
 extension DefaultMoviesListViewModel {
 
     func didSelect(movieQuery: MovieQuery) {
-           update(movieQuery: movieQuery)
+        update(movieQuery: movieQuery)
     }
 }
