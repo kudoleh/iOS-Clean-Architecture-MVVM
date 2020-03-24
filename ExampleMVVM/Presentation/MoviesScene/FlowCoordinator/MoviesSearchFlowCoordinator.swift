@@ -43,12 +43,12 @@ class MoviesSearchFlowCoordinator {
         navigationController.pushViewController(vc, animated: true)
     }
 
-    private func showMovieQueriesSuggestions(didSelect: @escaping (MovieQuery) -> Void) {
+    private func showMovieQueriesSuggestions(viewModel: MoviesListViewModelInput) {
         guard let moviesListViewController = moviesListVC, moviesQueriesSuggestionsVC == nil,
             let container = moviesListViewController.suggestionsListContainer else { return }
 
         let vc = dependencies.makeMoviesQueriesSuggestionsListViewController(closures:
-            MoviesQueryListViewModelClosures(didSelect: didSelect)
+            MoviesQueryListViewModelClosures(didSelect: viewModel.update(movieQuery:))
         )
 
         moviesListViewController.add(child: vc, container: container)

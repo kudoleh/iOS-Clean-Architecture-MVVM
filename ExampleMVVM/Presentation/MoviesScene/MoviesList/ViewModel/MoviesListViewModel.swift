@@ -9,7 +9,7 @@ import Foundation
 
 struct MoviesListViewModelClosures {
     let showMovieDetails: (Movie) -> Void
-    let showMovieQueriesSuggestions: (@escaping (_ didSelect: MovieQuery) -> Void) -> Void
+    let showMovieQueriesSuggestions: (MoviesListViewModelInput) -> Void
     let closeMovieQueriesSuggestions: () -> Void
 }
 
@@ -26,6 +26,7 @@ protocol MoviesListViewModelInput {
     func showQueriesSuggestions()
     func closeQueriesSuggestions()
     func didSelect(at indexPath: IndexPath)
+    func update(movieQuery: MovieQuery)
 }
 
 protocol MoviesListViewModelOutput {
@@ -112,11 +113,6 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
             NSLocalizedString("No internet connection", comment: "") :
             NSLocalizedString("Failed loading movies", comment: "")
     }
-    
-    private func update(movieQuery: MovieQuery) {
-        resetPages()
-        load(movieQuery: movieQuery, loadingType: .fullScreen)
-    }
 }
 
 // MARK: - INPUT. View event methods
@@ -140,7 +136,7 @@ extension DefaultMoviesListViewModel {
     }
 
     func showQueriesSuggestions() {
-        closures?.showMovieQueriesSuggestions(update(movieQuery:))
+        closures?.showMovieQueriesSuggestions(self)
     }
     
     func closeQueriesSuggestions() {
@@ -149,5 +145,10 @@ extension DefaultMoviesListViewModel {
     
     func didSelect(at indexPath: IndexPath) {
         closures?.showMovieDetails(movies[indexPath.row])
+    }
+
+    func update(movieQuery: MovieQuery) {
+           resetPages()
+           load(movieQuery: movieQuery, loadingType: .fullScreen)
     }
 }
