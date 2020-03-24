@@ -140,9 +140,7 @@ extension DefaultMoviesListViewModel {
     }
 
     func showQueriesSuggestions() {
-        closures?.showMovieQueriesSuggestions { [weak self] query in
-            self?.update(movieQuery: query)
-        }
+        closures?.showMovieQueriesSuggestions(update(movieQuery:))
     }
     
     func closeQueriesSuggestions() {

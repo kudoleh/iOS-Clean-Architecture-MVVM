@@ -11,7 +11,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let appDIContainer = AppDIContainer()
-    var appFlowCoordinator: AppMainFlowCoordinator?
+    var appFlowCoordinator: AppFlowCoordinator?
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navigationController = UINavigationController()
 
         window?.rootViewController = navigationController
-        appFlowCoordinator = AppMainFlowCoordinator(navigationController: navigationController,
-                                                    appDIContainer: appDIContainer)
+        appFlowCoordinator = AppFlowCoordinator(navigationController: navigationController,
+                                                appDIContainer: appDIContainer)
         appFlowCoordinator?.startMoviesSearchFlow()
         window?.makeKeyAndVisible()
     

@@ -18,8 +18,8 @@ class MoviesSearchFlowCoordinator {
     private let navigationController: UINavigationController
     private let dependencies: MoviesSearchFlowCoordinatorDependencies
 
-    private weak var moviesListViewController: MoviesListViewController?
-    private weak var moviesQueriesSuggestionsView: UIViewController?
+    private weak var moviesListVC: MoviesListViewController?
+    private weak var moviesQueriesSuggestionsVC: UIViewController?
 
     init(navigationController: UINavigationController,
          dependencies: MoviesSearchFlowCoordinatorDependencies) {
@@ -35,7 +35,7 @@ class MoviesSearchFlowCoordinator {
         let vc = dependencies.makeMoviesListViewController(closures: closures)
 
         navigationController.pushViewController(vc, animated: false)
-        moviesListViewController = vc
+        moviesListVC = vc
     }
 
     private func showMovieDetails(movie: Movie) {
@@ -43,20 +43,22 @@ class MoviesSearchFlowCoordinator {
         navigationController.pushViewController(vc, animated: true)
     }
 
-    private func showMovieQueriesSuggestions(selectMovieQuery: @escaping (MovieQuery) -> Void) {
-        guard let moviesListViewController = moviesListViewController,
+    private func showMovieQueriesSuggestions(didSelect: @escaping (MovieQuery) -> Void) {
+        guard let moviesListViewController = moviesListVC, moviesQueriesSuggestionsVC == nil,
             let container = moviesListViewController.suggestionsListContainer else { return }
-        let closures = MoviesQueryListViewModelClosures(selectMovieQuery: selectMovieQuery)
-        let vc = dependencies.makeMoviesQueriesSuggestionsListViewController(closures: closures)
+
+        let vc = dependencies.makeMoviesQueriesSuggestionsListViewController(closures:
+            MoviesQueryListViewModelClosures(didSelect: didSelect)
+        )
+
         moviesListViewController.add(child: vc, container: container)
-        vc.view.frame = moviesListViewController.view.bounds
-        moviesQueriesSuggestionsView = vc
+        moviesQueriesSuggestionsVC = vc
         container.isHidden = false
     }
 
     private func closeMovieQueriesSuggestions() {
-        moviesQueriesSuggestionsView?.remove()
-        moviesQueriesSuggestionsView = nil
-        moviesListViewController?.suggestionsListContainer.isHidden = true
+        moviesQueriesSuggestionsVC?.remove()
+        moviesQueriesSuggestionsVC = nil
+        moviesListVC?.suggestionsListContainer.isHidden = true
     }
 }

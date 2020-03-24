@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AppMainFlowCoordinator {
+class AppFlowCoordinator {
 
     var navigationController: UINavigationController
     private let appDIContainer: AppDIContainer
