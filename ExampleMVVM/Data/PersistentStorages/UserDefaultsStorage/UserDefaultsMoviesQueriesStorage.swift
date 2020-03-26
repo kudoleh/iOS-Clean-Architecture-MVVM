@@ -10,10 +10,11 @@ import Foundation
 final class UserDefaultsMoviesQueriesStorage {
     private let maxStorageLimit: Int
     private let recentsMoviesQueriesKey = "recentsMoviesQueries"
-    private var userDefaults: UserDefaults { return UserDefaults.standard }
+    private var userDefaults: UserDefaults
     
-    init(maxStorageLimit: Int) {
+    init(maxStorageLimit: Int, userDefaults: UserDefaults = UserDefaults.standard) {
         self.maxStorageLimit = maxStorageLimit
+        self.userDefaults = userDefaults
     }
 
     private func fetchMoviesQuries() -> [MovieQuery] {

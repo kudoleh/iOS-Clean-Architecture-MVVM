@@ -36,6 +36,7 @@
 		1F57F8D223C656F600981E09 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F57F8D123C656F600981E09 /* AccessibilityIdentifier.swift */; };
 		1F57F8D323C656F600981E09 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F57F8D123C656F600981E09 /* AccessibilityIdentifier.swift */; };
 		1F57F8D423C656F600981E09 /* AccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F57F8D123C656F600981E09 /* AccessibilityIdentifier.swift */; };
+		1F5CE1CD242C303700A9CDE3 /* CoreDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5CE1CC242C303700A9CDE3 /* CoreDataStorage.swift */; };
 		1F6B521323630016002FCDE9 /* RepositoryTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6B521223630016002FCDE9 /* RepositoryTask.swift */; };
 		1F77930F222C0DF2004E034C /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F77930E222C0DF2004E034C /* StoryboardInstantiable.swift */; };
 		1F7C1D19242117910014F011 /* Movie+Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7C1D17242117790014F011 /* Movie+Stub.swift */; };
@@ -140,6 +141,7 @@
 		1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AddChild.swift"; sourceTree = "<group>"; };
 		1F53E2B723125F71008D6A05 /* MoviesQueryListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesQueryListItemViewModel.swift; sourceTree = "<group>"; };
 		1F57F8D123C656F600981E09 /* AccessibilityIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifier.swift; sourceTree = "<group>"; };
+		1F5CE1CC242C303700A9CDE3 /* CoreDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStorage.swift; sourceTree = "<group>"; };
 		1F6B521223630016002FCDE9 /* RepositoryTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryTask.swift; sourceTree = "<group>"; };
 		1F77930E222C0DF2004E034C /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		1F7C1D17242117790014F011 /* Movie+Stub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Movie+Stub.swift"; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				1FD03804239098650016D05F /* CoreDataStorage.xcdatamodeld */,
 				1F9035332307597200DEA4BD /* EntityMapping */,
 				1F9035262307528F00DEA4BD /* CoreDataMoviesQueriesStorage.swift */,
+				1F5CE1CC242C303700A9CDE3 /* CoreDataStorage.swift */,
 			);
 			path = CoreDataStorage;
 			sourceTree = "<group>";
@@ -959,6 +962,7 @@
 				1FE49D8E230AA7C200D1D42E /* MoviesQueryListView.swift in Sources */,
 				1F9035272307528F00DEA4BD /* CoreDataMoviesQueriesStorage.swift in Sources */,
 				1FE49D92230AA7C200D1D42E /* MoviesListViewModel.swift in Sources */,
+				1F5CE1CD242C303700A9CDE3 /* CoreDataStorage.swift in Sources */,
 				1FE49D85230AA7C200D1D42E /* MoviesQueriesTableViewController.swift in Sources */,
 				1F160324242693DD00C173C6 /* MoviesSearchFlowCoordinator.swift in Sources */,
 				1F1CD656222368CA00B0143C /* AppConfigurations.swift in Sources */,
