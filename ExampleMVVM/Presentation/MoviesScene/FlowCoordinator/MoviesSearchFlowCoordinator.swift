@@ -47,8 +47,8 @@ class MoviesSearchFlowCoordinator {
         guard let moviesListViewController = moviesListVC, moviesQueriesSuggestionsVC == nil,
             let container = moviesListViewController.suggestionsListContainer else { return }
 
-        let vc = dependencies.makeMoviesQueriesSuggestionsListViewController(closures:
-            MoviesQueryListViewModelClosures(didSelect: didSelect)
+        let vc = dependencies.makeMoviesQueriesSuggestionsListViewController(
+            closures: MoviesQueryListViewModelClosures(didSelect: didSelect)
         )
 
         moviesListViewController.add(child: vc, container: container)
