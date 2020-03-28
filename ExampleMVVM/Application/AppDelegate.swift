@@ -24,9 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = navigationController
         appFlowCoordinator = AppFlowCoordinator(navigationController: navigationController,
                                                 appDIContainer: appDIContainer)
-        appFlowCoordinator?.startMoviesSearchFlow()
+        appFlowCoordinator?.start()
         window?.makeKeyAndVisible()
     
         return true
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        CoreDataStorage.shared.saveContext()
     }
 }
