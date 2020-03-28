@@ -13,7 +13,6 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     @IBOutlet private var moviesListContainer: UIView!
     @IBOutlet private(set) var suggestionsListContainer: UIView!
     @IBOutlet private var searchBarContainer: UIView!
-    @IBOutlet private var loadingView: UIActivityIndicatorView!
     @IBOutlet private var emptyDataLabel: UILabel!
     
     private var viewModel: MoviesListViewModel!
@@ -73,15 +72,15 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     }
     
     private func updateViewsVisibility() {
-        loadingView.isHidden = true
         emptyDataLabel.isHidden = true
         moviesListContainer.isHidden = true
         suggestionsListContainer.isHidden = true
-        
+        LoadingView.hide()
+
         switch viewModel.loadingType.value {
-        case .none: updateMoviesListVisibility()
-        case .fullScreen: loadingView.isHidden = false
+        case .fullScreen: LoadingView.show()
         case .nextPage: moviesListContainer.isHidden = false
+        case .none: updateMoviesListVisibility()
         }
         updateQueriesSuggestionsVisibility()
     }
