@@ -89,10 +89,8 @@ public final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
     public init() { }
     
     public func log(error: Error) {
-        #if DEBUG
-        print("-------------")
-        print("\(error)")
-        #endif
+        debugPrint("-------------")
+        debugPrint("\(error)")
     }
 }
 
