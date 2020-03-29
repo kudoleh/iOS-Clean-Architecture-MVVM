@@ -73,24 +73,24 @@ final class MoviesSceneDIContainer {
     }
     
     // MARK: - Movies Queries Suggestions List
-    func makeMoviesQueriesSuggestionsListViewController(closures: MoviesQueryListViewModelClosures) -> UIViewController {
+    func makeMoviesQueriesSuggestionsListViewController(didSelect: @escaping MoviesQueryListViewModelDidSelectClosure) -> UIViewController {
         if #available(iOS 13.0, *) { // SwiftUI
-            let view = MoviesQueryListView(viewModelWrapper: makeMoviesQueryListViewModelWrapper(closures: closures))
+            let view = MoviesQueryListView(viewModelWrapper: makeMoviesQueryListViewModelWrapper(didSelect: didSelect))
             return UIHostingController(rootView: view)
         } else { // UIKit
-            return MoviesQueriesTableViewController.create(with: makeMoviesQueryListViewModel(closures: closures))
+            return MoviesQueriesTableViewController.create(with: makeMoviesQueryListViewModel(didSelect: didSelect))
         }
     }
     
-    func makeMoviesQueryListViewModel(closures: MoviesQueryListViewModelClosures) -> MoviesQueryListViewModel {
+    func makeMoviesQueryListViewModel(didSelect: @escaping MoviesQueryListViewModelDidSelectClosure) -> MoviesQueryListViewModel {
         return DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 10,
                                                fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase,
-                                               closures: closures)
+                                               didSelect: didSelect)
     }
 
     @available(iOS 13.0, *)
-    func makeMoviesQueryListViewModelWrapper(closures: MoviesQueryListViewModelClosures) -> MoviesQueryListViewModelWrapper {
-        return MoviesQueryListViewModelWrapper(viewModel: makeMoviesQueryListViewModel(closures: closures))
+    func makeMoviesQueryListViewModelWrapper(didSelect: @escaping MoviesQueryListViewModelDidSelectClosure) -> MoviesQueryListViewModelWrapper {
+        return MoviesQueryListViewModelWrapper(viewModel: makeMoviesQueryListViewModel(didSelect: didSelect))
     }
 
     // MARK: - Flow Coordinators
