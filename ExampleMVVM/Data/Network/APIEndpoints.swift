@@ -15,6 +15,13 @@ struct APIEndpoints {
                         method: .get,
                         queryParametersEncodable: moviesRequestDTO)
     }
+
+    static func getMovies2(with moviesRequestDTO: MoviesRequestDTO) -> Endpoint<Void> {
+
+        return Endpoint(path: "3/search/movie/",
+                        method: .get,
+                        queryParametersEncodable: moviesRequestDTO)
+    }
     
     static func getMoviePoster(path: String, width: Int) -> Endpoint<Data> {
 
