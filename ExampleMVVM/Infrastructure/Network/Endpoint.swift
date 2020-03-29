@@ -27,9 +27,10 @@ public class Endpoint<R>: ResponseRequestable {
     public var path: String
     public var isFullPath: Bool
     public var method: HTTPMethodType
+    public var headerParamaters: [String: String]
     public var queryParametersEncodable: Encodable? = nil
     public var queryParameters: [String: Any]
-    public var headerParamaters: [String: String]
+    public var bodyParamatersEncodable: Encodable? = nil
     public var bodyParamaters: [String: Any]
     public var bodyEncoding: BodyEncoding
     public var responseDecoder: ResponseDecoder
@@ -37,18 +38,20 @@ public class Endpoint<R>: ResponseRequestable {
     init(path: String,
          isFullPath: Bool = false,
          method: HTTPMethodType,
+         headerParamaters: [String: String] = [:],
          queryParametersEncodable: Encodable? = nil,
          queryParameters: [String: Any] = [:],
-         headerParamaters: [String: String] = [:],
+         bodyParamatersEncodable: Encodable? = nil,
          bodyParamaters: [String: Any] = [:],
          bodyEncoding: BodyEncoding = .jsonSerializationData,
          responseDecoder: ResponseDecoder = JSONResponseDecoder()) {
         self.path = path
         self.isFullPath = isFullPath
         self.method = method
+        self.headerParamaters = headerParamaters
         self.queryParametersEncodable = queryParametersEncodable
         self.queryParameters = queryParameters
-        self.headerParamaters = headerParamaters
+        self.bodyParamatersEncodable = bodyParamatersEncodable
         self.bodyParamaters = bodyParamaters
         self.bodyEncoding = bodyEncoding
         self.responseDecoder = responseDecoder
@@ -59,9 +62,10 @@ public protocol Requestable {
     var path: String { get }
     var isFullPath: Bool { get }
     var method: HTTPMethodType { get }
+    var headerParamaters: [String: String] { get }
     var queryParametersEncodable: Encodable? { get }
     var queryParameters: [String: Any] { get }
-    var headerParamaters: [String: String] { get }
+    var bodyParamatersEncodable: Encodable? { get }
     var bodyParamaters: [String: Any] { get }
     var bodyEncoding: BodyEncoding { get }
     
@@ -106,7 +110,8 @@ extension Requestable {
         var urlRequest = URLRequest(url: url)
         var allHeaders: [String: String] = config.headers
         headerParamaters.forEach { allHeaders.updateValue($1, forKey: $0) }
-        
+
+        let bodyParamaters = try bodyParamatersEncodable?.toDictionary() ?? self.bodyParamaters
         if !bodyParamaters.isEmpty {
             urlRequest.httpBody = encodeBody(bodyParamaters: bodyParamaters, bodyEncoding: bodyEncoding)
         }
