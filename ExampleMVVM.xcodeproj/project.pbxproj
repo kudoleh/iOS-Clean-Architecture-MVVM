@@ -66,6 +66,8 @@
 		1FA533D7201EF2B500747E55 /* AppDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA533D6201EF2B500747E55 /* AppDIContainer.swift */; };
 		1FA533E2201EF5F700747E55 /* APIEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA533E1201EF5F700747E55 /* APIEndpoints.swift */; };
 		1FA53A3922F45CD9009A104C /* SearchMoviesUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA53A3822F45CD5009A104C /* SearchMoviesUseCaseTests.swift */; };
+		1FB0903A2437651700DBE132 /* UIViewController+AddBehaviors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB090392437651700DBE132 /* UIViewController+AddBehaviors.swift */; };
+		1FB0903D243766C200DBE132 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB0903C243766C200DBE132 /* BackButtonEmptyTitleNavigationBarBehavior.swift */; };
 		1FC2C9632301FEC0001AE47E /* MovieQueryUDS+Mappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC2C9612301FEC0001AE47E /* MovieQueryUDS+Mappings.swift */; };
 		1FC5B7D0242634EB0086FA8C /* UIImageView+ImageSizeAfterAspectFit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC5B7CF242634EB0086FA8C /* UIImageView+ImageSizeAfterAspectFit.swift */; };
 		1FC5B7D2242635CC0086FA8C /* CGSize+ScaledSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC5B7D1242635CB0086FA8C /* CGSize+ScaledSize.swift */; };
@@ -169,6 +171,8 @@
 		1FA533D6201EF2B500747E55 /* AppDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDIContainer.swift; sourceTree = "<group>"; };
 		1FA533E1201EF5F700747E55 /* APIEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoints.swift; sourceTree = "<group>"; };
 		1FA53A3822F45CD5009A104C /* SearchMoviesUseCaseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMoviesUseCaseTests.swift; sourceTree = "<group>"; };
+		1FB090392437651700DBE132 /* UIViewController+AddBehaviors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AddBehaviors.swift"; sourceTree = "<group>"; };
+		1FB0903C243766C200DBE132 /* BackButtonEmptyTitleNavigationBarBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonEmptyTitleNavigationBarBehavior.swift; sourceTree = "<group>"; };
 		1FC2C9612301FEC0001AE47E /* MovieQueryUDS+Mappings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MovieQueryUDS+Mappings.swift"; sourceTree = "<group>"; };
 		1FC5B7CF242634EB0086FA8C /* UIImageView+ImageSizeAfterAspectFit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageSizeAfterAspectFit.swift"; sourceTree = "<group>"; };
 		1FC5B7D1242635CB0086FA8C /* CGSize+ScaledSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+ScaledSize.swift"; sourceTree = "<group>"; };
@@ -257,12 +261,12 @@
 			path = MoviesScene;
 			sourceTree = "<group>";
 		};
-		1F16031E2426922E00C173C6 /* FlowCoordinator */ = {
+		1F16031E2426922E00C173C6 /* Flows */ = {
 			isa = PBXGroup;
 			children = (
 				1F160323242693DD00C173C6 /* MoviesSearchFlowCoordinator.swift */,
 			);
-			path = FlowCoordinator;
+			path = Flows;
 			sourceTree = "<group>";
 		};
 		1F1FC48422E3693100BCBA8D /* Network */ = {
@@ -555,6 +559,14 @@
 			path = UseCases;
 			sourceTree = "<group>";
 		};
+		1FB0903B2437660D00DBE132 /* Behaviors */ = {
+			isa = PBXGroup;
+			children = (
+				1FB0903C243766C200DBE132 /* BackButtonEmptyTitleNavigationBarBehavior.swift */,
+			);
+			path = Behaviors;
+			sourceTree = "<group>";
+		};
 		1FC8B6E4230AF89A005DBF44 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -570,6 +582,7 @@
 		1FD2696524261A24005236FB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1FB090392437651700DBE132 /* UIViewController+AddBehaviors.swift */,
 				1F53E2B523125896008D6A05 /* UIViewController+AddChild.swift */,
 				1FC5B7CF242634EB0086FA8C /* UIImageView+ImageSizeAfterAspectFit.swift */,
 				1FC5B7D1242635CB0086FA8C /* CGSize+ScaledSize.swift */,
@@ -623,10 +636,11 @@
 		1FE49D7C230AA7C200D1D42E /* MoviesScene */ = {
 			isa = PBXGroup;
 			children = (
-				1F16031E2426922E00C173C6 /* FlowCoordinator */,
+				1F16031E2426922E00C173C6 /* Flows */,
 				1FE49D81230AA7C200D1D42E /* MoviesList */,
 				1FE49D7F230AA7C200D1D42E /* MovieDetails */,
 				1FE49D7D230AA7C200D1D42E /* MoviesQueriesList */,
+				1FB0903B2437660D00DBE132 /* Behaviors */,
 			);
 			path = MoviesScene;
 			sourceTree = "<group>";
@@ -966,6 +980,7 @@
 				1FE49D8E230AA7C200D1D42E /* MoviesQueryListView.swift in Sources */,
 				1F9035272307528F00DEA4BD /* CoreDataMoviesQueriesStorage.swift in Sources */,
 				1FE49D92230AA7C200D1D42E /* MoviesListViewModel.swift in Sources */,
+				1FB0903A2437651700DBE132 /* UIViewController+AddBehaviors.swift in Sources */,
 				1F5CE1CD242C303700A9CDE3 /* CoreDataStorage.swift in Sources */,
 				1FE49D85230AA7C200D1D42E /* MoviesQueriesTableViewController.swift in Sources */,
 				1F160324242693DD00C173C6 /* MoviesSearchFlowCoordinator.swift in Sources */,
@@ -977,6 +992,7 @@
 				1F2AB95324278CC20010DEEE /* MoviesRequestDTO+Mappings.swift in Sources */,
 				1F903535230759AC00DEA4BD /* MovieQueryEntity+Mappings.swift in Sources */,
 				1FE49D8F230AA7C200D1D42E /* MoviesQueryListViewModel.swift in Sources */,
+				1FB0903D243766C200DBE132 /* BackButtonEmptyTitleNavigationBarBehavior.swift in Sources */,
 				1F1FC48C22E3693100BCBA8D /* NetworkConfig.swift in Sources */,
 				1FFFC834221B0041007D99D2 /* PosterImagesRepository.swift in Sources */,
 				1FA5338D201E1FDE00747E55 /* AppDelegate.swift in Sources */,

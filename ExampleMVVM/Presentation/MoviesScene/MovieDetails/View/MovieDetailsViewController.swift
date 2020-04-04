@@ -27,7 +27,7 @@ final class MovieDetailsViewController: UIViewController, StoryboardInstantiable
         bind(to: viewModel)
         view.accessibilityIdentifier = AccessibilityIdentifier.movieDetailsView
     }
-    
+
     private func bind(to viewModel: MovieDetailsViewModel) {
         title = viewModel.title
         overviewTextView.text = viewModel.overview
