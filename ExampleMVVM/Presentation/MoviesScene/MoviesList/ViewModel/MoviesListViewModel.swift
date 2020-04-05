@@ -29,7 +29,7 @@ protocol MoviesListViewModelInput {
 }
 
 protocol MoviesListViewModelOutput {
-    var items: Observable<[MoviesListItemViewModel]> { get }
+    var pageViewModels: Observable<[MoviesListPageViewModel]> { get }
     var loadingType: Observable<MoviesListViewModelLoading?> { get }
     var query: Observable<String> { get }
     var error: Observable<String> { get }
@@ -56,15 +56,15 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         guard hasMorePages else { return currentPage }
         return currentPage + 1
     }
-    private var movies: [Movie] = []
+    private var pages: [MoviesPage] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
     
     // MARK: - OUTPUT
-    let items: Observable<[MoviesListItemViewModel]> = Observable([])
+    let pageViewModels: Observable<[MoviesListPageViewModel]> = Observable([])
     let loadingType: Observable<MoviesListViewModelLoading?> = Observable(.none)
     let query: Observable<String> = Observable("")
     let error: Observable<String> = Observable("")
-    var isEmpty: Bool { return items.value.isEmpty }
+    var isEmpty: Bool { return pageViewModels.value.isEmpty }
     let screenTitle = NSLocalizedString("Movies", comment: "")
     let emptyDataTitle = NSLocalizedString("Search results", comment: "")
     let errorTitle = NSLocalizedString("Error", comment: "")
@@ -76,18 +76,24 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         self.closures = closures
     }
     
-    private func appendPage(moviesPage: MoviesPage) {
+    private func insertPage(moviesPage: MoviesPage) {
         currentPage = moviesPage.page
         totalPageCount = moviesPage.totalPages
-        movies += moviesPage.movies
-        items.value += moviesPage.movies.map(MoviesListItemViewModel.init)
+
+        if pages.indices.contains(moviesPage.page) {
+            pages[moviesPage.page] = moviesPage
+            pageViewModels.value[moviesPage.page] = .init(moviePage: moviesPage)
+        } else {
+            pages += [moviesPage]
+            pageViewModels.value += [.init(moviePage: moviesPage)]
+        }
     }
     
     private func resetPages() {
         currentPage = 0
         totalPageCount = 1
-        movies.removeAll()
-        items.value.removeAll()
+        pages.removeAll()
+        pageViewModels.value.removeAll()
     }
     
     private func load(movieQuery: MovieQuery, loadingType: MoviesListViewModelLoading) {
@@ -95,16 +101,22 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         query.value = movieQuery.query
         
         let moviesRequest = SearchMoviesUseCaseRequestValue(query: movieQuery, page: nextPage)
-        moviesLoadTask = searchMoviesUseCase.execute(requestValue: moviesRequest) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let moviesPage):
-                self.appendPage(moviesPage: moviesPage)
-            case .failure(let error):
-                self.handle(error: error)
-            }
-            self.loadingType.value = .none
-        }
+        moviesLoadTask = searchMoviesUseCase.execute(
+            requestValue: moviesRequest,
+            cached: { [weak self] cachedMoviesPage in
+                guard let self = self, let cachedMoviesPage = cachedMoviesPage else { return }
+                self.insertPage(moviesPage: cachedMoviesPage)
+        },
+            completion: { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let moviesPage):
+                    self.insertPage(moviesPage: moviesPage)
+                case .failure(let error):
+                    self.handle(error: error)
+                }
+                self.loadingType.value = .none
+        })
     }
     
     private func handle(error: Error) {
@@ -148,6 +160,7 @@ extension DefaultMoviesListViewModel {
     }
     
     func didSelect(at indexPath: IndexPath) {
-        closures?.showMovieDetails(movies[indexPath.row])
+        let movie = pages[indexPath.section].movies[indexPath.row]
+        closures?.showMovieDetails(movie)
     }
 }

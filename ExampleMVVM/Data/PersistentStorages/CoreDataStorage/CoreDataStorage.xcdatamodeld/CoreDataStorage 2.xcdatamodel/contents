@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18G59b" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="MovieQueryEntity" representedClassName="MovieQueryEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="query" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="query" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="MovieResponseEntity" representedClassName="MovieResponseEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="overview" optional="YES" attributeType="String"/>
+        <attribute name="posterPath" optional="YES" attributeType="String"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="moviesResponse" maxCount="1" deletionRule="Nullify" destinationEntity="MoviesResponseEntity" inverseName="movies" inverseEntity="MoviesResponseEntity"/>
+    </entity>
+    <entity name="MoviesRequestEntity" representedClassName="MoviesRequestEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="page" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="query" optional="YES" attributeType="String"/>
+        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MoviesResponseEntity" inverseName="request" inverseEntity="MoviesResponseEntity"/>
+    </entity>
+    <entity name="MoviesResponseEntity" representedClassName="MoviesResponseEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="page" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalPages" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MovieResponseEntity" inverseName="moviesResponse" inverseEntity="MovieResponseEntity"/>
+        <relationship name="request" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MoviesRequestEntity" inverseName="response" inverseEntity="MoviesRequestEntity"/>
     </entity>
     <elements>
-        <element name="MovieQueryEntity" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="MovieQueryEntity" positionX="6913.73828125" positionY="-748.890625" width="128" height="73"/>
+        <element name="MoviesResponseEntity" positionX="6993.70703125" positionY="-578.1640625" width="128" height="103"/>
+        <element name="MoviesRequestEntity" positionX="6822.30859375" positionY="-559.6484375" width="128" height="88"/>
+        <element name="MovieResponseEntity" positionX="7148.09765625" positionY="-579.2265625" width="128" height="133"/>
     </elements>
 </model>

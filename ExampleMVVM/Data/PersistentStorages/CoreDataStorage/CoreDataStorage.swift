@@ -7,6 +7,12 @@
 
 import CoreData
 
+enum CoreDataStorageError: Error {
+    case readError(Error)
+    case writeError(Error)
+    case deleteError(Error)
+}
+
 final class CoreDataStorage {
 
     static let shared = CoreDataStorage()

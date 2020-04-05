@@ -8,12 +8,6 @@
 import Foundation
 import CoreData
 
-enum CoreDataMoviesQueriesStorageError: Error {
-    case readError(Error)
-    case writeError(Error)
-    case deleteError(Error)
-}
-
 final class CoreDataMoviesQueriesStorage {
 
     private let maxStorageLimit: Int
@@ -27,13 +21,13 @@ final class CoreDataMoviesQueriesStorage {
     // MARK: - Private
     private func cleanUpQueries(for query: MovieQuery, inContext context: NSManagedObjectContext) throws {
 
-        let request: NSFetchRequest<MovieQueryEntity> = MovieQueryEntity.fetchRequest()
+        let request: NSFetchRequest = MovieQueryEntity.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
                                                     ascending: false)]
-        let resut = try context.fetch(request)
-        resut.filter { $0.query == query.query }.forEach { context.delete($0) }
-        if resut.count > maxStorageLimit - 1 {
-            Array(resut[maxStorageLimit - 1..<resut.count]).forEach { context.delete($0) }
+        let result = try context.fetch(request)
+        result.filter { $0.query == query.query }.forEach { context.delete($0) }
+        if result.count > maxStorageLimit - 1 {
+            Array(result[maxStorageLimit - 1..<result.count]).forEach { context.delete($0) }
         }
     }
 }
@@ -44,15 +38,15 @@ extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
         
         coreDataStorage.performBackgroundTask { context in
             do {
-                let request: NSFetchRequest<MovieQueryEntity> = MovieQueryEntity.fetchRequest()
+                let request: NSFetchRequest = MovieQueryEntity.fetchRequest()
                 request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
                                                             ascending: false)]
                 request.fetchLimit = maxCount
-                let resut = try context.fetch(request).map(MovieQuery.init)
+                let result = try context.fetch(request).map { $0.mapToDomain() }
 
-                completion(.success(resut))
+                completion(.success(result))
             } catch {
-                completion(.failure(CoreDataMoviesQueriesStorageError.readError(error)))
+                completion(.failure(CoreDataStorageError.readError(error)))
                 print(error)
             }
         }
@@ -67,9 +61,9 @@ extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
                 let entity = MovieQueryEntity(movieQuery: query, insertInto: context)
                 try context.save()
 
-                completion(.success(MovieQuery(movieQueryEntity: entity)))
+                completion(.success(entity.mapToDomain()))
             } catch {
-                completion(.failure(CoreDataMoviesQueriesStorageError.writeError(error)))
+                completion(.failure(CoreDataStorageError.writeError(error)))
                 print(error)
             }
         }

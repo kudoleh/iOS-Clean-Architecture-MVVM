@@ -19,9 +19,8 @@ final class UserDefaultsMoviesQueriesStorage {
 
     private func fetchMoviesQuries() -> [MovieQuery] {
         if let queriesData = userDefaults.object(forKey: recentsMoviesQueriesKey) as? Data {
-            let decoder = JSONDecoder()
-            if let movieQueryList = try? decoder.decode(MovieQueriesListUDS.self, from: queriesData) {
-                return movieQueryList.list.map(MovieQuery.init)
+            if let movieQueryList = try? JSONDecoder().decode(MovieQueriesListUDS.self, from: queriesData) {
+                return movieQueryList.list.map { $0.mapToDomain() }
             }
         }
         return []

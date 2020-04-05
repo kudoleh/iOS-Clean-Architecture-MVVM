@@ -35,8 +35,8 @@ final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     
     init(movie: Movie,
          posterImagesRepository: PosterImagesRepository) {
-        self.title = movie.title
-        self.overview = movie.overview
+        self.title = movie.title ?? ""
+        self.overview = movie.overview ?? ""
         self.posterImagePath = movie.posterPath
         self.isPosterImageHidden = movie.posterPath == nil
         self.posterImagesRepository = posterImagesRepository

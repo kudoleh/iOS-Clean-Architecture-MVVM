@@ -28,6 +28,7 @@ class MoviesListViewModelTests: XCTestCase {
         var page = MoviesPage(page: 0, totalPages: 0, movies: [])
         
         func execute(requestValue: SearchMoviesUseCaseRequestValue,
+                     cached: @escaping (MoviesPage?) -> Void,
                      completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
             if let error = error {
                 completion(.failure(error))

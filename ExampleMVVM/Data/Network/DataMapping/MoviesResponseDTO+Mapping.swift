@@ -1,5 +1,5 @@
 //
-//  MoviesPage+Decodable.swift
+//  MoviesResponseDTO+Mapping.swift
 //  Data
 //
 //  Created by Oleh Kudinov on 12.08.19.
@@ -31,9 +31,9 @@ extension MoviesResponseDTO {
             case releaseDate = "release_date"
         }
         let id: Int
-        let title: String
+        let title: String?
         let posterPath: String?
-        let overview: String
+        let overview: String?
         let releaseDate: String?
     }
 }

@@ -17,11 +17,11 @@ final class MoviesListItemCell: UITableViewCell {
     @IBOutlet private var overviewLabel: UILabel!
     @IBOutlet private var posterImageView: UIImageView!
 
-    private var viewModel: MoviesListItemViewModel!
+    private var viewModel: MoviesListPageViewModel.MovieViewModel!
     private var posterImagesRepository: PosterImagesRepository?
     private var imageLoadTask: Cancellable? { willSet { imageLoadTask?.cancel() } }
 
-    func fill(with viewModel: MoviesListItemViewModel, posterImagesRepository: PosterImagesRepository?) {
+    func fill(with viewModel: MoviesListPageViewModel.MovieViewModel, posterImagesRepository: PosterImagesRepository?) {
         self.viewModel = viewModel
         self.posterImagesRepository = posterImagesRepository
 

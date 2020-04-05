@@ -13,7 +13,7 @@ final class MoviesListTableViewController: UITableViewController {
     var nextPageLoadingSpinner: UIActivityIndicatorView?
     
     var viewModel: MoviesListViewModel!
-    var items: [MoviesListItemViewModel]! {
+    var pages: [MoviesListPageViewModel] = [] {
         didSet { reload() }
     }
     
@@ -50,11 +50,11 @@ final class MoviesListTableViewController: UITableViewController {
 extension MoviesListTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return pages.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.items.value.count
+        return pages[section].movies.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,10 +62,10 @@ extension MoviesListTableViewController {
             fatalError("Cannot dequeue reusable cell \(MoviesListItemCell.self) with reuseIdentifier: \(MoviesListItemCell.reuseIdentifier)")
         }
 
-        let item = viewModel.items.value[indexPath.row]
-        cell.fill(with: item, posterImagesRepository: posterImagesRepository)
+        let movieViewModel = pages[indexPath.section].movies[indexPath.row]
+        cell.fill(with: movieViewModel, posterImagesRepository: posterImagesRepository)
 
-        if indexPath.row == viewModel.items.value.count - 1 {
+        if indexPath.row == pages[indexPath.section].movies.count  - 1 {
             viewModel.didLoadNextPage()
         }
         

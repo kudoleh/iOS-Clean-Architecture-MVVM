@@ -11,9 +11,9 @@ typealias MovieId = String
 
 struct Movie: Equatable, Identifiable {
     let id: MovieId
-    let title: String
+    let title: String?
     let posterPath: String?
-    let overview: String
+    let overview: String?
     let releaseDate: Date?
 }
 
