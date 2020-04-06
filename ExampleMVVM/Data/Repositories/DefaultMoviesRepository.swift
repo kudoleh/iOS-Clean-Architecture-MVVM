@@ -28,13 +28,14 @@ extension DefaultMoviesRepository: MoviesRepository {
         let task = RepositoryTask()
 
         cache.getResponse(for: requestDTO) { result in
+
             if case let .success(moviesResponseDTO?) = result {
                 cached(moviesResponseDTO.mapToDomain())
             }
             guard !task.isCancelled else { return }
 
             let endpoint = APIEndpoints.getMovies(with: requestDTO)
-            task.networkTask = self.dataTransferService.request(with: endpoint) { (response: Result<MoviesResponseDTO, Error>) in
+            task.networkTask = self.dataTransferService.request(with: endpoint) { response in
                 switch response {
                 case .success(let moviesResponseDTO):
                     self.cache.save(response: moviesResponseDTO, for: requestDTO)
@@ -43,7 +44,6 @@ extension DefaultMoviesRepository: MoviesRepository {
                     completion(.failure(error))
                 }
             }
-
         }
         return task
     }
