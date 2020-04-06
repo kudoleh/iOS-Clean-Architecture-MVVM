@@ -35,7 +35,7 @@ class SearchMoviesUseCaseTests: XCTestCase {
     
     struct MoviesRepositoryMock: MoviesRepository {
         var result: Result<MoviesPage, Error>
-        func fetchMoviesList(query: MovieQuery, page: Int, cached: @escaping (MoviesPage?) -> Void, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
+        func fetchMoviesList(query: MovieQuery, page: Int, cached: @escaping (MoviesPage) -> Void, completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
             completion(result)
             return nil
         }

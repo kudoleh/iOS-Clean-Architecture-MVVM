@@ -9,7 +9,7 @@ import Foundation
 
 protocol SearchMoviesUseCase {
     func execute(requestValue: SearchMoviesUseCaseRequestValue,
-                 cached: @escaping (MoviesPage?) -> Void,
+                 cached: @escaping (MoviesPage) -> Void,
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable?
 }
 
@@ -24,7 +24,7 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
     }
 
     func execute(requestValue: SearchMoviesUseCaseRequestValue,
-                 cached: @escaping (MoviesPage?) -> Void,
+                 cached: @escaping (MoviesPage) -> Void,
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
         return moviesRepository.fetchMoviesList(query: requestValue.query,
                                                 page: requestValue.page,

@@ -25,11 +25,11 @@ protocol MoviesListViewModelInput {
     func didCancelSearch()
     func showQueriesSuggestions()
     func closeQueriesSuggestions()
-    func didSelect(at indexPath: IndexPath)
+    func didSelect(item: MoviesListItemViewModel)
 }
 
 protocol MoviesListViewModelOutput {
-    var pageViewModels: Observable<[MoviesListPageViewModel]> { get }
+    var items: Observable<[MoviesListItemViewModel]> { get }
     var loadingType: Observable<MoviesListViewModelLoading?> { get }
     var query: Observable<String> { get }
     var error: Observable<String> { get }
@@ -52,15 +52,14 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     var hasMorePages: Bool { currentPage < totalPageCount }
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
 
-    private var pages: [MoviesPage] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
     
     // MARK: - OUTPUT
-    let pageViewModels: Observable<[MoviesListPageViewModel]> = Observable([])
+    let items: Observable<[MoviesListItemViewModel]> = Observable([])
     let loadingType: Observable<MoviesListViewModelLoading?> = Observable(.none)
     let query: Observable<String> = Observable("")
     let error: Observable<String> = Observable("")
-    var isEmpty: Bool { return pageViewModels.value.isEmpty }
+    var isEmpty: Bool { return items.value.isEmpty }
     let screenTitle = NSLocalizedString("Movies", comment: "")
     let emptyDataTitle = NSLocalizedString("Search results", comment: "")
     let errorTitle = NSLocalizedString("Error", comment: "")
@@ -72,38 +71,34 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         self.closures = closures
     }
     
-    private func insertPage(moviesPage: MoviesPage) {
+       private func insertPage(moviesPage: MoviesPage) {
         currentPage = moviesPage.page
         totalPageCount = moviesPage.totalPages
-        
-        if moviesPage.page - 1 < pages.count {
-            pages[moviesPage.page - 1] = moviesPage
-            pageViewModels.value[moviesPage.page - 1] = .init(moviePage: moviesPage)
-        } else {
-            pages += [moviesPage]
-            pageViewModels.value += [.init(moviePage: moviesPage)]
-        }
+
+        var items = self.items.value
+        items.removeAll { $0.page == moviesPage.page }
+        items.insert(contentsOf: moviesPage.movies.map { .init(movie: $0, page: moviesPage.page) },
+                     at: moviesPage.page - 1)
+
+        self.items.value = items
     }
     
     private func resetPages() {
         currentPage = 0
         totalPageCount = 1
-        pages.removeAll()
-        pageViewModels.value.removeAll()
+        items.value.removeAll()
     }
     
     private func load(movieQuery: MovieQuery, loadingType: MoviesListViewModelLoading) {
         self.loadingType.value = loadingType
         query.value = movieQuery.query
-        
+
         moviesLoadTask = searchMoviesUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
-            cached: { [weak self] cachedMoviesPage in
-                guard let self = self, let cachedMoviesPage = cachedMoviesPage else { return }
+            cached: { cachedMoviesPage in
                 self.insertPage(moviesPage: cachedMoviesPage)
             },
-            completion: { [weak self] result in
-                guard let self = self else { return }
+            completion: { result in
                 switch result {
                 case .success(let moviesPage):
                     self.insertPage(moviesPage: moviesPage)
@@ -154,8 +149,7 @@ extension DefaultMoviesListViewModel {
         closures?.closeMovieQueriesSuggestions()
     }
     
-    func didSelect(at indexPath: IndexPath) {
-        let movie = pages[indexPath.section].movies[indexPath.row]
-        closures?.showMovieDetails(movie)
+    func didSelect(item: MoviesListItemViewModel) {
+        closures?.showMovieDetails(item.movie)
     }
 }

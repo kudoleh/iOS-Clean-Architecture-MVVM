@@ -8,10 +8,10 @@
 import Foundation
 
 final class DefaultMoviesRepository {
-    
+
     private let dataTransferService: DataTransferService
     private let moviesResponseCache: MoviesResponseStorage
-    
+
     init(dataTransferService: DataTransferService, moviesResponseCache: MoviesResponseStorage) {
         self.dataTransferService = dataTransferService
         self.moviesResponseCache = moviesResponseCache
@@ -19,17 +19,17 @@ final class DefaultMoviesRepository {
 }
 
 extension DefaultMoviesRepository: MoviesRepository {
-    
+
     public func fetchMoviesList(query: MovieQuery, page: Int,
-                                cached: @escaping (MoviesPage?) -> Void,
+                                cached: @escaping (MoviesPage) -> Void,
                                 completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
 
         let requestDTO = MoviesRequestDTO(query: query.query, page: page)
         let task = RepositoryTask()
-        
+
         moviesResponseCache.fetchMoviesResponse(for: requestDTO) { result in
-            if case let .success(cachedResponse) = result {
-                cached(cachedResponse?.mapToDomain())
+            if case let .success(cachedResponse) = result, let moviesResponseDTO = cachedResponse {
+                cached(moviesResponseDTO.mapToDomain())
             }
             guard !task.isCancelled else { return }
 
@@ -43,6 +43,7 @@ extension DefaultMoviesRepository: MoviesRepository {
                     completion(.failure(error))
                 }
             }
+
         }
         return task
     }
