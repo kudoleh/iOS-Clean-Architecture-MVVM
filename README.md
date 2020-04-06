@@ -33,6 +33,7 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * Size Classes and UIStackView in Detail view
 * Dark Mode
 * SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
+* Pagination
 
 
 ## Requirements
