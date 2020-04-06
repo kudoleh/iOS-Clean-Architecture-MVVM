@@ -43,7 +43,6 @@ extension DefaultMoviesRepository: MoviesRepository {
                     completion(.failure(error))
                 }
             }
-
         }
         return task
     }

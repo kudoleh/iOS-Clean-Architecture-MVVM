@@ -20,12 +20,14 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * [MVVM](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList) 
 * Data Binding using [Observable](ExampleMVVM/Presentation/Utils/Observable.swift) without 3rd party libraries 
 * [Dependency Injection](ExampleMVVM/Application/DIContainer/AppDIContainer.swift)
-* [Flow Coordinator](ExampleMVVM/Presentation/MoviesScene/FlowCoordinator/MoviesSearchFlowCoordinator.swift)
-* [Data Transfer Object (DTO)](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Network/DataMapping/MoviesResponseDTO%2BMappings.swift)
+* [Flow Coordinator](ExampleMVVM/Presentation/MoviesScene/Flows/MoviesSearchFlowCoordinator.swift)
+* [Data Transfer Object (DTO)](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Network/DataMapping/MoviesResponseDTO%2BMapping.swift)
+* [Response Data Caching](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Repositories/DefaultMoviesRepository.swift)
 * [SwiftUI and UIKit view](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/View/SwiftUI/MoviesQueryListView.swift) implementations by reusing same [ViewModel](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/ViewModel/MoviesQueryListViewModel.swift) (at least Xcode 11 required)
 * CI Pipeline ([Travis CI + Fastlane](.travis.yml))
  
 ## Includes
+* [Unit Tests with Quick and Nimble](https://github.com/kudoleh/iOS-Modular-Architecture/blob/master/DevPods/MoviesSearch/MoviesSearch/Tests/Presentation/MoviesScene/MoviesListViewModelSpec.swift), and [View Unit tests with iOSSnapshotTestCase](https://github.com/kudoleh/iOS-Modular-Architecture/blob/master/DevPods/MoviesSearch/MoviesSearch/Tests/Presentation/MoviesScene/MoviesListViewTests.swift)
 * Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService(Infrastructure Layer)
 * UI test with XCUITests
 * Size Classes and UIStackView in Detail view
