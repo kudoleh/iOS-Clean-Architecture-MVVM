@@ -65,7 +65,7 @@ extension MoviesListTableViewController {
         let movieViewModel = pages[indexPath.section].movies[indexPath.row]
         cell.fill(with: movieViewModel, posterImagesRepository: posterImagesRepository)
 
-        if indexPath.row == pages[indexPath.section].movies.count  - 1 {
+        if indexPath.section == pages.count - 1, indexPath.row == pages[indexPath.section].movies.count - 1 {
             viewModel.didLoadNextPage()
         }
         

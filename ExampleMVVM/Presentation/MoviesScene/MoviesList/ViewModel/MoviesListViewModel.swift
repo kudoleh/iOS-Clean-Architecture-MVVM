@@ -47,15 +47,11 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     private let searchMoviesUseCase: SearchMoviesUseCase
     private let closures: MoviesListViewModelClosures?
 
-    private(set) var currentPage: Int = 0
-    private var totalPageCount: Int = 1
-    var hasMorePages: Bool {
-        return currentPage < totalPageCount
-    }
-    var nextPage: Int {
-        guard hasMorePages else { return currentPage }
-        return currentPage + 1
-    }
+    var currentPage: Int { pages.last?.page ?? 0 }
+    var totalPageCount: Int { pages.last?.totalPages ?? 1 }
+    var hasMorePages: Bool { currentPage < totalPageCount }
+    var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
+
     private var pages: [MoviesPage] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
     
@@ -77,9 +73,6 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     }
     
     private func insertPage(moviesPage: MoviesPage) {
-        currentPage = moviesPage.page
-        totalPageCount = moviesPage.totalPages
-
         if pages.indices.contains(moviesPage.page) {
             pages[moviesPage.page] = moviesPage
             pageViewModels.value[moviesPage.page] = .init(moviePage: moviesPage)
@@ -90,8 +83,6 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     }
     
     private func resetPages() {
-        currentPage = 0
-        totalPageCount = 1
         pages.removeAll()
         pageViewModels.value.removeAll()
     }
