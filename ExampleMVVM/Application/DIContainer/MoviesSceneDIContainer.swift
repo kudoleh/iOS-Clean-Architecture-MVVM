@@ -41,7 +41,7 @@ final class MoviesSceneDIContainer {
     
     // MARK: - Repositories
     func makeMoviesRepository() -> MoviesRepository {
-        return DefaultMoviesRepository(dataTransferService: dependencies.apiDataTransferService, moviesResponseCache: moviesResponseCache)
+        return DefaultMoviesRepository(dataTransferService: dependencies.apiDataTransferService, cache: moviesResponseCache)
     }
     func makeMoviesQueriesRepository() -> MoviesQueriesRepository {
         return DefaultMoviesQueriesRepository(dataTransferService: dependencies.apiDataTransferService,

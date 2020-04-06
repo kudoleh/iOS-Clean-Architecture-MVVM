@@ -8,6 +8,6 @@
 import Foundation
 
 protocol MoviesResponseStorage {
-    func fetchMoviesResponse(for request: MoviesRequestDTO, completion: @escaping (Result<MoviesResponseDTO?, CoreDataStorageError>) -> Void)
-    func saveMoviesResponse(_ responseDto: MoviesResponseDTO, for requestDto: MoviesRequestDTO)
+    func getResponse(for request: MoviesRequestDTO, completion: @escaping (Result<MoviesResponseDTO?, CoreDataStorageError>) -> Void)
+    func save(response: MoviesResponseDTO, for requestDto: MoviesRequestDTO)
 }

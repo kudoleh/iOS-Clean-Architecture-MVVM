@@ -39,7 +39,7 @@ final class CoreDataMoviesResponseStorage {
 
 extension CoreDataMoviesResponseStorage: MoviesResponseStorage {
 
-    func fetchMoviesResponse(for requestDto: MoviesRequestDTO, completion: @escaping (Result<MoviesResponseDTO?, CoreDataStorageError>) -> Void) {
+    func getResponse(for requestDto: MoviesRequestDTO, completion: @escaping (Result<MoviesResponseDTO?, CoreDataStorageError>) -> Void) {
         coreDataStorage.performBackgroundTask { context in
             do {
                 let request = self.fetchRequest(for: requestDto)
@@ -54,7 +54,7 @@ extension CoreDataMoviesResponseStorage: MoviesResponseStorage {
         }
     }
 
-    func saveMoviesResponse(_ responseDto: MoviesResponseDTO, for requestDto: MoviesRequestDTO) {
+    func save(response responseDto: MoviesResponseDTO, for requestDto: MoviesRequestDTO) {
         coreDataStorage.performBackgroundTask { context in
             do {
                 self.deleteResponse(for: requestDto, in: context)
