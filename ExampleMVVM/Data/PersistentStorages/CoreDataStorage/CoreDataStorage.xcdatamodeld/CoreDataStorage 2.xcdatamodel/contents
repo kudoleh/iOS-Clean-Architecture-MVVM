@@ -15,18 +15,18 @@
     <entity name="MoviesRequestEntity" representedClassName="MoviesRequestEntity" syncable="YES" codeGenerationType="class">
         <attribute name="page" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="query" optional="YES" attributeType="String"/>
-        <relationship name="response" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MoviesResponseEntity" inverseName="request" inverseEntity="MoviesResponseEntity"/>
+        <relationship name="response" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MoviesResponseEntity" inverseName="request" inverseEntity="MoviesResponseEntity"/>
     </entity>
     <entity name="MoviesResponseEntity" representedClassName="MoviesResponseEntity" syncable="YES" codeGenerationType="class">
         <attribute name="page" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="totalPages" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MovieResponseEntity" inverseName="moviesResponse" inverseEntity="MovieResponseEntity"/>
-        <relationship name="request" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MoviesRequestEntity" inverseName="response" inverseEntity="MoviesRequestEntity"/>
+        <relationship name="movies" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="MovieResponseEntity" inverseName="moviesResponse" inverseEntity="MovieResponseEntity"/>
+        <relationship name="request" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MoviesRequestEntity" inverseName="response" inverseEntity="MoviesRequestEntity"/>
     </entity>
     <elements>
         <element name="MovieQueryEntity" positionX="6913.73828125" positionY="-748.890625" width="128" height="73"/>
-        <element name="MoviesResponseEntity" positionX="6993.70703125" positionY="-578.1640625" width="128" height="103"/>
+        <element name="MovieResponseEntity" positionX="7183.984375" positionY="-567.76171875" width="128" height="133"/>
         <element name="MoviesRequestEntity" positionX="6822.30859375" positionY="-559.6484375" width="128" height="88"/>
-        <element name="MovieResponseEntity" positionX="7148.09765625" positionY="-579.2265625" width="128" height="133"/>
+        <element name="MoviesResponseEntity" positionX="6993.70703125" positionY="-578.1640625" width="128" height="103"/>
     </elements>
 </model>
