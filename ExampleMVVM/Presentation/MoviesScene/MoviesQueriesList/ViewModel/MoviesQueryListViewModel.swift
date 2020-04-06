@@ -44,8 +44,7 @@ final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
     
     private func updateMoviesQueries() {
         let request = FetchRecentMovieQueriesUseCase.RequestValue(maxCount: numberOfQueriesToShow)
-        let completion: (FetchRecentMovieQueriesUseCase.ResultValue) -> Void = { [weak self] result in
-            guard let self = self else { return }
+        let completion: (FetchRecentMovieQueriesUseCase.ResultValue) -> Void = { result in
             switch result {
             case .success(let items):
                 self.items.value = items.map { $0.query }.map(MoviesQueryListItemViewModel.init)

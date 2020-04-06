@@ -49,14 +49,14 @@ extension DefaultMovieDetailsViewModel {
     func updatePosterImage(width: Int) {
         guard let posterImagePath = posterImagePath else { return }
 
-        imageLoadTask = posterImagesRepository.fetchImage(with: posterImagePath, width: width) { [weak self] result in
-            guard self?.posterImagePath == posterImagePath else { return }
+        imageLoadTask = posterImagesRepository.fetchImage(with: posterImagePath, width: width) { result in
+            guard self.posterImagePath == posterImagePath else { return }
             switch result {
             case .success(let data):
-                self?.posterImage.value = data
+                self.posterImage.value = data
             case .failure: break
             }
-            self?.imageLoadTask = nil
+            self.imageLoadTask = nil
         }
     }
 }

@@ -71,7 +71,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         self.closures = closures
     }
     
-       private func insertPage(moviesPage: MoviesPage) {
+       private func insertPage(_ moviesPage: MoviesPage) {
         currentPage = moviesPage.page
         totalPageCount = moviesPage.totalPages
 
@@ -95,13 +95,13 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
 
         moviesLoadTask = searchMoviesUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
-            cached: { cachedMoviesPage in
-                self.insertPage(moviesPage: cachedMoviesPage)
+            cached: { moviesPage in
+                self.insertPage(moviesPage)
             },
             completion: { result in
                 switch result {
                 case .success(let moviesPage):
-                    self.insertPage(moviesPage: moviesPage)
+                    self.insertPage(moviesPage)
                 case .failure(let error):
                     self.handle(error: error)
                 }
