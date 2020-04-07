@@ -26,11 +26,11 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
     func execute(requestValue: SearchMoviesUseCaseRequestValue,
                  cached: @escaping (MoviesPage) -> Void,
                  completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
+
         return moviesRepository.fetchMoviesList(query: requestValue.query,
                                                 page: requestValue.page,
                                                 cached: { page in DispatchQueue.main.async { cached(page) } },
-                                                completion: { [weak self] result in
-            guard let self = self else { return }
+                                                completion: { result in
 
             if case .success = result {
                 self.moviesQueriesRepository.saveRecentQuery(query: requestValue.query) { _ in }
