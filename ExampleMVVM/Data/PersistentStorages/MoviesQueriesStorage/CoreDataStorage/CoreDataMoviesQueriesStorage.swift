@@ -63,7 +63,7 @@ extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
 
                 completion(.success(entity.mapToDomain()))
             } catch {
-                completion(.failure(CoreDataStorageError.writeError(error)))
+                completion(.failure(CoreDataStorageError.saveError(error)))
                 print(error)
             }
         }

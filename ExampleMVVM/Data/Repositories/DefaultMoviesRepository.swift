@@ -29,17 +29,17 @@ extension DefaultMoviesRepository: MoviesRepository {
 
         cache.getResponse(for: requestDTO) { result in
 
-            if case let .success(moviesResponseDTO?) = result {
-                cached(moviesResponseDTO.mapToDomain())
+            if case let .success(responseDTO?) = result {
+                cached(responseDTO.mapToDomain())
             }
             guard !task.isCancelled else { return }
 
             let endpoint = APIEndpoints.getMovies(with: requestDTO)
-            task.networkTask = self.dataTransferService.request(with: endpoint) { response in
-                switch response {
-                case .success(let moviesResponseDTO):
-                    self.cache.save(response: moviesResponseDTO, for: requestDTO)
-                    completion(.success(moviesResponseDTO.mapToDomain()))
+            task.networkTask = self.dataTransferService.request(with: endpoint) { result in
+                switch result {
+                case .success(let responseDTO):
+                    self.cache.save(response: responseDTO, for: requestDTO)
+                    completion(.success(responseDTO.mapToDomain()))
                 case .failure(let error):
                     completion(.failure(error))
                 }

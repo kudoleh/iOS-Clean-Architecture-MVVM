@@ -9,7 +9,7 @@ import CoreData
 
 enum CoreDataStorageError: Error {
     case readError(Error)
-    case writeError(Error)
+    case saveError(Error)
     case deleteError(Error)
 }
 

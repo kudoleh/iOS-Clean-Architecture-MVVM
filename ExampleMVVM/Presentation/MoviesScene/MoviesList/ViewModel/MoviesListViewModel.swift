@@ -52,8 +52,9 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     var hasMorePages: Bool { currentPage < totalPageCount }
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
 
+    private var pages: [[MoviesListItemViewModel]] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
-    
+
     // MARK: - OUTPUT
     let items: Observable<[MoviesListItemViewModel]> = Observable([])
     let loadingType: Observable<MoviesListViewModelLoading?> = Observable(.none)
@@ -70,51 +71,50 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         self.searchMoviesUseCase = searchMoviesUseCase
         self.closures = closures
     }
-    
-       private func insertPage(_ moviesPage: MoviesPage) {
+
+    private func appendPage(_ moviesPage: MoviesPage) {
         currentPage = moviesPage.page
         totalPageCount = moviesPage.totalPages
 
-        var items = self.items.value
-        items.removeAll { $0.page == moviesPage.page }
-        items.insert(contentsOf: moviesPage.movies.map { .init(movie: $0, page: moviesPage.page) },
-                     at: moviesPage.page - 1)
+        if moviesPage.page == pages.count { pages.removeLast() }
+        pages.append(moviesPage.movies.map(MoviesListItemViewModel.init))
 
-        self.items.value = items
+        self.items.value = pages.flatMap { $0 }
     }
-    
+
     private func resetPages() {
         currentPage = 0
         totalPageCount = 1
+        pages.removeAll()
         items.value.removeAll()
     }
-    
+
     private func load(movieQuery: MovieQuery, loadingType: MoviesListViewModelLoading) {
         self.loadingType.value = loadingType
         query.value = movieQuery.query
 
         moviesLoadTask = searchMoviesUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
-            cached: { moviesPage in
-                self.insertPage(moviesPage)
-            },
+            cached: { page in
+                self.appendPage(page)
+        },
             completion: { result in
                 switch result {
-                case .success(let moviesPage):
-                    self.insertPage(moviesPage)
+                case .success(let page):
+                    self.appendPage(page)
                 case .failure(let error):
                     self.handle(error: error)
                 }
                 self.loadingType.value = .none
         })
     }
-    
+
     private func handle(error: Error) {
         self.error.value = error.isInternetConnectionError ?
             NSLocalizedString("No internet connection", comment: "") :
             NSLocalizedString("Failed loading movies", comment: "")
     }
-    
+
     private func update(movieQuery: MovieQuery) {
         resetPages()
         load(movieQuery: movieQuery, loadingType: .fullScreen)
@@ -125,18 +125,18 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
 extension DefaultMoviesListViewModel {
 
     func viewDidLoad() { }
-    
+
     func didLoadNextPage() {
         guard hasMorePages, loadingType.value == .none else { return }
         load(movieQuery: MovieQuery(query: query.value),
              loadingType: .nextPage)
     }
-    
+
     func didSearch(query: String) {
         guard !query.isEmpty else { return }
         update(movieQuery: MovieQuery(query: query))
     }
-    
+
     func didCancelSearch() {
         moviesLoadTask?.cancel()
     }
@@ -144,11 +144,11 @@ extension DefaultMoviesListViewModel {
     func showQueriesSuggestions() {
         closures?.showMovieQueriesSuggestions(update(movieQuery:))
     }
-    
+
     func closeQueriesSuggestions() {
         closures?.closeMovieQueriesSuggestions()
     }
-    
+
     func didSelect(item: MoviesListItemViewModel) {
         closures?.showMovieDetails(item.movie)
     }
