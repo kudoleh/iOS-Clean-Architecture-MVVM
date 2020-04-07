@@ -22,15 +22,15 @@ final class FetchRecentMovieQueriesUseCase: UseCase {
     init(requestValue: RequestValue,
          completion: @escaping (ResultValue) -> Void,
          moviesQueriesRepository: MoviesQueriesRepository) {
+
         self.requestValue = requestValue
         self.completion = completion
         self.moviesQueriesRepository = moviesQueriesRepository
     }
     
     func start() -> Cancellable? {
-        moviesQueriesRepository.fetchRecentsQueries(maxCount: requestValue.maxCount) { result in
-            DispatchQueue.main.async { self.completion(result) }
-        }
+
+        moviesQueriesRepository.fetchRecentsQueries(maxCount: requestValue.maxCount, completion: completion)
         return nil
     }
 }
