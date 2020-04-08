@@ -36,13 +36,7 @@ extension DefaultMoviesRepository: MoviesRepository {
 
             let endpoint = APIEndpoints.getMovies(with: requestDTO)
             task.networkTask = self.dataTransferService.request(with: endpoint) { result in
-                switch result {
-                case .success(let responseDTO):
-                    self.cache.save(response: responseDTO, for: requestDTO)
-                    completion(.success(responseDTO.mapToDomain()))
-                case .failure(let error):
-                    completion(.failure(error))
-                }
+                completion(result.map { $0.mapToDomain() })
             }
         }
         return task

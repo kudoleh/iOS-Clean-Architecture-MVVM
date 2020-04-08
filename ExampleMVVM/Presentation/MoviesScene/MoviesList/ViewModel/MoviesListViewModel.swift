@@ -52,7 +52,16 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     var hasMorePages: Bool { currentPage < totalPageCount }
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
 
-    private var pages: [[MoviesListItemViewModel]] = []
+    private struct Page {
+        let page: Int
+        let items: [MoviesListItemViewModel]
+
+        init(_ moviesPage: MoviesPage) {
+            self.page = moviesPage.page
+            self.items = moviesPage.movies.map(MoviesListItemViewModel.init)
+        }
+    }
+    private var pages: [Page] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
 
     // MARK: - OUTPUT
@@ -76,10 +85,11 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         currentPage = moviesPage.page
         totalPageCount = moviesPage.totalPages
 
-        if moviesPage.page == pages.count { pages.removeLast() }
-        pages.append(moviesPage.movies.map(MoviesListItemViewModel.init))
+        pages = pages
+            .filter { $0.page != moviesPage.page }
+            + [.init(moviesPage)]
 
-        self.items.value = pages.flatMap { $0 }
+        self.items.value = pages.flatMap { $0.items }
     }
 
     private func resetPages() {
