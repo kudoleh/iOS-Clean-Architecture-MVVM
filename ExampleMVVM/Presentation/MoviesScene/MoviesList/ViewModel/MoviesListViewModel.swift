@@ -52,15 +52,6 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     var hasMorePages: Bool { currentPage < totalPageCount }
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
 
-    private struct Page {
-        let moviesPage: MoviesPage
-        let items: [MoviesListItemViewModel]
-
-        init(_ moviesPage: MoviesPage) {
-            self.moviesPage = moviesPage
-            self.items = moviesPage.movies.map(MoviesListItemViewModel.init)
-        }
-    }
     private var pages: [Page] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
 
@@ -89,7 +80,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
             .filter { $0.moviesPage.page != moviesPage.page }
             + [Page(moviesPage)]
 
-        self.items.value = pages.flatMap { $0.items }
+        self.items.value = pages.items
     }
 
     private func resetPages() {
@@ -158,7 +149,21 @@ extension DefaultMoviesListViewModel {
     }
 
     func didSelectItem(at index: Int) {
-        let movies = pages.flatMap { $0.moviesPage.movies }
-        closures?.showMovieDetails(movies[index])
+        closures?.showMovieDetails(pages.movies[index])
     }
+}
+
+// MARK: - Private
+private struct Page {
+    let moviesPage: MoviesPage
+    let items: [MoviesListItemViewModel]
+
+    init(_ moviesPage: MoviesPage) {
+        self.moviesPage = moviesPage
+        self.items = moviesPage.movies.map(MoviesListItemViewModel.init)
+    }
+}
+private extension Array where Element == Page {
+    var movies: [Movie] { flatMap { $0.moviesPage.movies } }
+    var items: [MoviesListItemViewModel] { flatMap { $0.items } }
 }
