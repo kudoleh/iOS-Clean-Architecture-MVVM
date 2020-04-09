@@ -52,6 +52,10 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     var hasMorePages: Bool { currentPage < totalPageCount }
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
 
+    fileprivate struct Page {
+        let moviesPage: MoviesPage
+        let items: [MoviesListItemViewModel]
+    }
     private var pages: [Page] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
 
@@ -78,7 +82,8 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
 
         pages = pages
             .filter { $0.moviesPage.page != moviesPage.page }
-            + [Page(moviesPage)]
+            + [Page(moviesPage: moviesPage,
+                    items: moviesPage.movies.map(MoviesListItemViewModel.init))]
 
         self.items.value = pages.items
     }
@@ -154,16 +159,7 @@ extension DefaultMoviesListViewModel {
 }
 
 // MARK: - Private
-private struct Page {
-    let moviesPage: MoviesPage
-    let items: [MoviesListItemViewModel]
-
-    init(_ moviesPage: MoviesPage) {
-        self.moviesPage = moviesPage
-        self.items = moviesPage.movies.map(MoviesListItemViewModel.init)
-    }
-}
-private extension Array where Element == Page {
+private extension Array where Element == DefaultMoviesListViewModel.Page {
     var movies: [Movie] { flatMap { $0.moviesPage.movies } }
     var items: [MoviesListItemViewModel] { flatMap { $0.items } }
 }
