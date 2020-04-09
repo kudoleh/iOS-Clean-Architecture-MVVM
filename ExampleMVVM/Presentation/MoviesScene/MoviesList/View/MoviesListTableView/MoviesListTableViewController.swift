@@ -73,6 +73,6 @@ extension MoviesListTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelect(item: items[indexPath.row])
+        viewModel.didSelectItem(at: indexPath.row)
     }
 }

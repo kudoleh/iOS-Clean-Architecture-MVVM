@@ -12,7 +12,6 @@ struct MoviesListItemViewModel: Equatable {
     let overview: String
     let releaseDate: String
     let posterImagePath: String?
-    let movie: Movie
 }
 
 extension MoviesListItemViewModel {
@@ -26,7 +25,6 @@ extension MoviesListItemViewModel {
         } else {
             self.releaseDate = NSLocalizedString("To be announced", comment: "")
         }
-        self.movie = movie
     }
 }
 

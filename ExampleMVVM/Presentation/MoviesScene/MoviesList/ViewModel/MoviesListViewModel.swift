@@ -25,7 +25,7 @@ protocol MoviesListViewModelInput {
     func didCancelSearch()
     func showQueriesSuggestions()
     func closeQueriesSuggestions()
-    func didSelect(item: MoviesListItemViewModel)
+    func didSelectItem(at index: Int)
 }
 
 protocol MoviesListViewModelOutput {
@@ -53,11 +53,11 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
 
     private struct Page {
-        let page: Int
+        let moviesPage: MoviesPage
         let items: [MoviesListItemViewModel]
 
         init(_ moviesPage: MoviesPage) {
-            self.page = moviesPage.page
+            self.moviesPage = moviesPage
             self.items = moviesPage.movies.map(MoviesListItemViewModel.init)
         }
     }
@@ -86,8 +86,8 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         totalPageCount = moviesPage.totalPages
 
         pages = pages
-            .filter { $0.page != moviesPage.page }
-            + [.init(moviesPage)]
+            .filter { $0.moviesPage.page != moviesPage.page }
+            + [Page(moviesPage)]
 
         self.items.value = pages.flatMap { $0.items }
     }
@@ -159,7 +159,8 @@ extension DefaultMoviesListViewModel {
         closures?.closeMovieQueriesSuggestions()
     }
 
-    func didSelect(item: MoviesListItemViewModel) {
-        closures?.showMovieDetails(item.movie)
+    func didSelectItem(at index: Int) {
+        let movies = pages.flatMap { $0.moviesPage.movies }
+        closures?.showMovieDetails(movies[index])
     }
 }
