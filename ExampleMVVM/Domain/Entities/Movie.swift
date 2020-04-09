@@ -7,10 +7,9 @@
 
 import Foundation
 
-typealias MovieId = String
-
 struct Movie: Equatable, Identifiable {
-    let id: MovieId
+    typealias Identifier = String
+    let id: Identifier
     let title: String?
     let posterPath: String?
     let overview: String?

@@ -105,9 +105,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
 
         moviesLoadTask = searchMoviesUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
-            cached: { page in
-                self.appendPage(page)
-        },
+            cached: appendPage,
             completion: { result in
                 switch result {
                 case .success(let page):

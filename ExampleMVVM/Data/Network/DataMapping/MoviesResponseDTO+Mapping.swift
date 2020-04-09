@@ -50,7 +50,7 @@ extension MoviesResponseDTO {
 
 extension MoviesResponseDTO.MovieDTO {
     func mapToDomain() -> Movie {
-        return .init(id: MovieId(id),
+        return .init(id: Movie.Identifier(id),
                      title: title,
                      posterPath: posterPath,
                      overview: overview,
