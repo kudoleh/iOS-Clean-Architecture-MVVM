@@ -85,7 +85,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
             + [Page(moviesPage: moviesPage,
                     items: moviesPage.movies.map(MoviesListItemViewModel.init))]
 
-        self.items.value = pages.items
+        items.value = pages.items
     }
 
     private func resetPages() {
