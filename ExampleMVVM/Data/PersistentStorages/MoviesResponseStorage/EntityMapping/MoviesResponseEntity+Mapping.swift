@@ -20,6 +20,7 @@ extension MovieResponseEntity {
     func toDTO() -> MoviesResponseDTO.MovieDTO {
         return .init(id: Int(id),
                      title: title,
+                     genre: MoviesResponseDTO.MovieDTO.GenreDTO(rawValue: genre ?? ""),
                      posterPath: posterPath,
                      overview: overview,
                      releaseDate: releaseDate)
@@ -52,6 +53,7 @@ extension MoviesResponseDTO.MovieDTO {
         let entity: MovieResponseEntity = .init(context: context)
         entity.id = Int64(id)
         entity.title = title
+        entity.genre = genre?.rawValue
         entity.posterPath = posterPath
         entity.overview = overview
         entity.releaseDate = releaseDate

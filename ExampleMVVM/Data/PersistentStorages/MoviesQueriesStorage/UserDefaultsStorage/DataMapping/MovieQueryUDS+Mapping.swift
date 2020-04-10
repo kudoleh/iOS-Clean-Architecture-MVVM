@@ -23,7 +23,7 @@ extension MovieQueryUDS {
 }
 
 extension MovieQueryUDS {
-    func mapToDomain() -> MovieQuery {
+    func toDomain() -> MovieQuery {
         return .init(query: query)
     }
 }

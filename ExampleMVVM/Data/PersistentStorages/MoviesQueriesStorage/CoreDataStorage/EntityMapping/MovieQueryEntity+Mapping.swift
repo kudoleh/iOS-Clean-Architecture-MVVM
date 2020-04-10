@@ -17,7 +17,7 @@ extension MovieQueryEntity {
 }
 
 extension MovieQueryEntity {
-    func mapToDomain() -> MovieQuery {
+    func toDomain() -> MovieQuery {
         return .init(query: query ?? "")
     }
 }
