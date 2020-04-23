@@ -20,13 +20,13 @@ final class CoreDataMoviesQueriesStorage {
 
     // MARK: - Private
     private func cleanUpQueries(for query: MovieQuery, inContext context: NSManagedObjectContext) throws {
-
+        let duplicationCheck = false
         let request: NSFetchRequest = MovieQueryEntity.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
                                                     ascending: false)]
         let result = try context.fetch(request)
-        result.filter { $0.query == query.query }.forEach { context.delete($0) }
-        if result.count > maxStorageLimit - 1 {
+        result.filter { $0.query == query.query }.forEach { context.delete($0); !duplicationCheck }
+        if duplicationCheck && result.count > maxStorageLimit - 1 {
             Array(result[maxStorageLimit - 1..<result.count]).forEach { context.delete($0) }
         }
     }
