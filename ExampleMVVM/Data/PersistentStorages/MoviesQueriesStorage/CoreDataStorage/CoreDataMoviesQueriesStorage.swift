@@ -80,7 +80,7 @@ extension CoreDataMoviesQueriesStorage {
     private func removeMore(than limit: Int, in queries: [MovieQueryEntity], inContext context: NSManagedObjectContext) {
         guard queries.count > limit else { return }
 
-        Array(queries[limit..<queries.count])
+        queries.suffix(queries.count - limit)
             .forEach { context.delete($0) }
     }
 }
