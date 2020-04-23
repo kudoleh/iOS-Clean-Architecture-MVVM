@@ -17,19 +17,6 @@ final class CoreDataMoviesQueriesStorage {
         self.maxStorageLimit = maxStorageLimit
         self.coreDataStorage = coreDataStorage
     }
-
-    // MARK: - Private
-    private func cleanUpQueries(for query: MovieQuery, inContext context: NSManagedObjectContext) throws {
-        let duplicationCheck = false
-        let request: NSFetchRequest = MovieQueryEntity.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
-                                                    ascending: false)]
-        let result = try context.fetch(request)
-        result.filter { $0.query == query.query }.forEach { context.delete($0); !duplicationCheck }
-        if duplicationCheck && result.count > maxStorageLimit - 1 {
-            Array(result[maxStorageLimit - 1..<result.count]).forEach { context.delete($0) }
-        }
-    }
 }
 
 extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
@@ -67,5 +54,33 @@ extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
                 print(error)
             }
         }
+    }
+}
+
+// MARK: - Private
+extension CoreDataMoviesQueriesStorage {
+
+    private func cleanUpQueries(for query: MovieQuery, inContext context: NSManagedObjectContext) throws {
+        let request: NSFetchRequest = MovieQueryEntity.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
+                                                    ascending: false)]
+        var result = try context.fetch(request)
+
+        removeDuplicates(for: query, in: &result, inContext: context)
+        removeMore(than: maxStorageLimit - 1, in: result, inContext: context)
+    }
+
+    private func removeDuplicates(for query: MovieQuery, in queries: inout [MovieQueryEntity], inContext context: NSManagedObjectContext) {
+        queries
+            .filter { $0.query == query.query }
+            .forEach { context.delete($0) }
+        queries.removeAll { $0.query == query.query }
+    }
+
+    private func removeMore(than limit: Int, in queries: [MovieQueryEntity], inContext context: NSManagedObjectContext) {
+        guard queries.count > limit else { return }
+
+        Array(queries[limit..<queries.count])
+            .forEach { context.delete($0) }
     }
 }
