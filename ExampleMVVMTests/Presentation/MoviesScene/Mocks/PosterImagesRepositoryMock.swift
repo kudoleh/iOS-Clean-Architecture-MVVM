@@ -10,11 +10,11 @@ import XCTest
 
 class PosterImagesRepositoryMock: PosterImagesRepository {
     var expectation: XCTestExpectation?
-    var error: Error?
+    var error: RepositoryError?
     var image = Data()
     var validateInput: ((String, Int) -> Void)?
     
-    func fetchImage(with imagePath: String, width: Int, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
+    func fetchImage(with imagePath: String, width: Int, completion: @escaping (Result<Data, RepositoryError>) -> Void) -> Cancellable? {
         validateInput?(imagePath, width)
         if let error = error {
             completion(.failure(error))

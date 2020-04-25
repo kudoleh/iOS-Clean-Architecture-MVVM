@@ -21,22 +21,25 @@ final class DefaultPosterImagesRepository {
 
 extension DefaultPosterImagesRepository: PosterImagesRepository {
     
-    func fetchImage(with imagePath: String, width: Int, completion: @escaping (Result<Data, Error>) -> Void) -> Cancellable? {
+    func fetchImage(with imagePath: String, width: Int, completion: @escaping (Result<Data, RepositoryError>) -> Void) -> Cancellable? {
         
         let endpoint = APIEndpoints.getMoviePoster(path: imagePath, width: width)
         let task = RepositoryTask()
-        task.networkTask = dataTransferService.request(with: endpoint) { [weak self] (result: Result<Data, Error>) in
+        task.networkTask = dataTransferService.request(with: endpoint) { [weak self] (result: Result<Data, DataTransferError>) in
             guard let self = self else { return }
 
-            if case .failure(let error) = result,
-                case let DataTransferError.networkFailure(networkError) = error,
-                let imageNotFoundData = self.imageNotFoundData,
-                networkError.isNotFoundError {
-                DispatchQueue.main.async { completion(.success(imageNotFoundData)) }
-            } else {
-                DispatchQueue.main.async { completion(result) }
-            }
+            let result = result.flatMapError(self.handleError)
+
+            DispatchQueue.main.async { completion(result) }
         }
         return task
+    }
+
+    private func handleError(_ error: DataTransferError) -> Result<Data, RepositoryError> {
+        guard case let .networkFailure(networkError) = error,
+            networkError.isNotFoundError,
+            let imageNotFoundData = self.imageNotFoundData else { return .failure(.dataTransfer(error)) }
+
+        return .success(imageNotFoundData)
     }
 }
