@@ -49,7 +49,7 @@ final class MoviesSceneDIContainer {
     }
     func makePosterImagesRepository() -> PosterImagesRepository {
         return DefaultPosterImagesRepository(dataTransferService: dependencies.imageDataTransferService,
-                                             imageNotFoundData: UIImage(named: "image_not_found")?.pngData())
+                                             imageNotFound: UIImage(named: "image_not_found")?.pngData())
     }
     
     // MARK: - Movies List

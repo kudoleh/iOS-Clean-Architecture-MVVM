@@ -10,12 +10,12 @@ import Foundation
 final class DefaultPosterImagesRepository {
     
     private let dataTransferService: DataTransferService
-    private let imageNotFoundData: Data?
+    private let imageNotFound: Data?
     
     init(dataTransferService: DataTransferService,
-         imageNotFoundData: Data?) {
+         imageNotFound: Data?) {
         self.dataTransferService = dataTransferService
-        self.imageNotFoundData = imageNotFoundData
+        self.imageNotFound = imageNotFound
     }
 }
 
@@ -37,8 +37,8 @@ extension DefaultPosterImagesRepository: PosterImagesRepository {
     private func handleError(_ error: DataTransferError) -> Result<Data, RepositoryError> {
         guard case let .networkFailure(networkError) = error,
             networkError.isNotFoundError,
-            let imageNotFoundData = self.imageNotFoundData else { return .failure(.dataTransfer(error)) }
+            let imageNotFound = self.imageNotFound else { return .failure(.dataTransfer(error)) }
 
-        return .success(imageNotFoundData)
+        return .success(imageNotFound)
     }
 }
