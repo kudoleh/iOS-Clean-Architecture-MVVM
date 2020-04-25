@@ -9,5 +9,5 @@ import Foundation
 
 enum RepositoryError: Error {
     case dataTransfer(DataTransferError)
-    case persistentStorageError
+    case persistentStorageError(Error)
 }

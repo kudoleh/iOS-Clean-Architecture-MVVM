@@ -29,7 +29,6 @@ extension DefaultPosterImagesRepository: PosterImagesRepository {
             guard let self = self else { return }
 
             let result = result.flatMapError(self.handleError)
-
             DispatchQueue.main.async { completion(result) }
         }
         return task
