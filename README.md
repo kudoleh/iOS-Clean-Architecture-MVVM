@@ -24,6 +24,7 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * [Data Transfer Object (DTO)](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Network/DataMapping/MoviesResponseDTO%2BMapping.swift)
 * [Response Data Caching](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Repositories/DefaultMoviesRepository.swift)
 * [SwiftUI and UIKit view](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/View/SwiftUI/MoviesQueryListView.swift) implementations by reusing same [ViewModel](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/ViewModel/MoviesQueryListViewModel.swift) (at least Xcode 11 required)
+* [Error handling example](/ExampleMVVM/Data/Repositories/DefaultPosterImagesRepository.swift)
 * CI Pipeline ([Travis CI + Fastlane](.travis.yml))
  
 ## Includes
