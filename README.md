@@ -36,12 +36,12 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 * Pagination
 
-## Networking:
+## Networking
 If you would like to use Networking from this example project I made it easily availabe [here](https://github.com/kudoleh/SENetworking)
 
 
 ## Requirements
 * Xcode Version 11.2.1+  Swift 5.0+
 
-# How to use app:
+# How to use app
 To search a movie, write a name of a movie inside searchbar and hit search button. There are two network calls: request movies and request poster images. Every successful search query is stored persistently.
