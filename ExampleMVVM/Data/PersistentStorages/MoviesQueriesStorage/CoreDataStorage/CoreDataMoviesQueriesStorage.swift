@@ -34,7 +34,6 @@ extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
                 completion(.success(result))
             } catch {
                 completion(.failure(CoreDataStorageError.readError(error)))
-                print(error)
             }
         }
     }
@@ -51,7 +50,6 @@ extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
                 completion(.success(entity.toDomain()))
             } catch {
                 completion(.failure(CoreDataStorageError.saveError(error)))
-                print(error)
             }
         }
     }
