@@ -48,7 +48,6 @@ extension CoreDataMoviesResponseStorage: MoviesResponseStorage {
                 completion(.success(requestEntity?.response?.toDTO()))
             } catch {
                 completion(.failure(CoreDataStorageError.readError(error)))
-                print(error)
             }
         }
     }
@@ -63,7 +62,8 @@ extension CoreDataMoviesResponseStorage: MoviesResponseStorage {
 
                 try context.save()
             } catch {
-                print(error)
+                // Log to Crashlytics
+                debugPrint("CoreDataMoviesResponseStorage Unresolved error \(error), \((error as NSError).userInfo)")
             }
         }
     }
