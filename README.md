@@ -36,8 +36,8 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 * Pagination
 
-## If you would like to use Networking from this example project I made it easily availabe here:
-[Networking framework](https://github.com/kudoleh/SENetworking)
+## Networking:
+If you would like to use Networking from this example project I made it easily availabe [here](https://github.com/kudoleh/SENetworking)
 
 
 ## Requirements
