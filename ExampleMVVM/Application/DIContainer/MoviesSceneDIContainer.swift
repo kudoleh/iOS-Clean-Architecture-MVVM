@@ -48,8 +48,7 @@ final class MoviesSceneDIContainer {
                                               moviesQueriesPersistentStorage: moviesQueriesStorage)
     }
     func makePosterImagesRepository() -> PosterImagesRepository {
-        return DefaultPosterImagesRepository(dataTransferService: dependencies.imageDataTransferService,
-                                             imageNotFound: UIImage(named: "image_not_found")?.pngData())
+        return DefaultPosterImagesRepository(dataTransferService: dependencies.imageDataTransferService)
     }
     
     // MARK: - Movies List
