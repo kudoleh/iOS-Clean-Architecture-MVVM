@@ -24,7 +24,7 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * [Data Transfer Object (DTO)](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Network/DataMapping/MoviesResponseDTO%2BMapping.swift)
 * [Response Data Caching](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Repositories/DefaultMoviesRepository.swift)
 * [SwiftUI and UIKit view](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/View/SwiftUI/MoviesQueryListView.swift) implementations by reusing same [ViewModel](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/ViewModel/MoviesQueryListViewModel.swift) (at least Xcode 11 required)
-* [Error handling example](/ExampleMVVM/Data/Repositories/DefaultPosterImagesRepository.swift)
+* [Error handling examples](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/201de7759e2d5634e3bb4b5ad524c4242c62b306/ExampleMVVM/Presentation/MoviesScene/MoviesList/ViewModel/MoviesListViewModel.swift#L116) or [here](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/201de7759e2d5634e3bb4b5ad524c4242c62b306/ExampleMVVM/Infrastructure/Network/NetworkService.swift#L84)
 * CI Pipeline ([Travis CI + Fastlane](.travis.yml))
  
 ## Includes
@@ -37,7 +37,7 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * Pagination
 
 ## Networking
-If you would like to use Networking from this example project I made it easily availabe [here](https://github.com/kudoleh/SENetworking)
+If you would like to use Networking from this example project as repo I made it availabe [here](https://github.com/kudoleh/SENetworking)
 
 
 ## Requirements
