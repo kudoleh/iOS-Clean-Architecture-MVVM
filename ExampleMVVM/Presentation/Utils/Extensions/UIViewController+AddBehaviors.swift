@@ -5,6 +5,9 @@
 //  Created by Oleh Kudinov on 03/04/2020.
 //
 // View controller lifecycle behaviors https://irace.me/lifecycle-behaviors
+// Behaviors are very useful to reuse logic for cases like Keyboard Behaviour.
+// Where ViewController on didLoad adds behaviour which observes keyboard frame
+// and scrollView content inset changes based on keyboard frame.
 
 import UIKit
 

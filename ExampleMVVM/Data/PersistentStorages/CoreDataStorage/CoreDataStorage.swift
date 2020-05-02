@@ -22,8 +22,8 @@ final class CoreDataStorage {
         let container = NSPersistentContainer(name: "CoreDataStorage")
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {
-                // Log to Crashlytics
-                debugPrint("CoreDataStorage Unresolved error \(error), \(error.userInfo)")
+                // TODO: - Log to Crashlytics
+                assertionFailure("CoreDataStorage Unresolved error \(error), \(error.userInfo)")
             }
         }
         return container
@@ -36,8 +36,8 @@ final class CoreDataStorage {
             do {
                 try context.save()
             } catch {
-                // Log to Crashlytics
-                debugPrint("CoreDataStorage Unresolved error \(error), \((error as NSError).userInfo)")
+                // TODO: - Log to Crashlytics
+                assertionFailure("CoreDataStorage Unresolved error \(error), \((error as NSError).userInfo)")
             }
         }
     }
