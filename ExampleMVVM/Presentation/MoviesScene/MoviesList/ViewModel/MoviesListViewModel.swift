@@ -60,6 +60,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
 
     // MARK: - OUTPUT
+
     let items: Observable<[MoviesListItemViewModel]> = Observable([])
     let loadingType: Observable<MoviesListViewModelLoading?> = Observable(.none)
     let query: Observable<String> = Observable("")
@@ -70,11 +71,15 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     let errorTitle = NSLocalizedString("Error", comment: "")
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
 
+    // MARK: - Init
+
     init(searchMoviesUseCase: SearchMoviesUseCase,
          closures: MoviesListViewModelClosures? = nil) {
         self.searchMoviesUseCase = searchMoviesUseCase
         self.closures = closures
     }
+
+    // MARK: - Private
 
     private func appendPage(_ moviesPage: MoviesPage) {
         currentPage = moviesPage.page
@@ -126,6 +131,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
 }
 
 // MARK: - INPUT. View event methods
+
 extension DefaultMoviesListViewModel {
 
     func viewDidLoad() { }
@@ -159,6 +165,7 @@ extension DefaultMoviesListViewModel {
 }
 
 // MARK: - Private
+
 private extension Array where Element == DefaultMoviesListViewModel.Page {
     var movies: [Movie] { flatMap { $0.moviesPage.movies } }
     var items: [MoviesListItemViewModel] { flatMap { $0.items } }

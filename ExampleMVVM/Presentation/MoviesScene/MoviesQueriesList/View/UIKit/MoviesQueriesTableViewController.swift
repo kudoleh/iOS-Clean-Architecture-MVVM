@@ -39,6 +39,7 @@ final class MoviesQueriesTableViewController: UITableViewController, StoryboardI
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
+
 extension MoviesQueriesTableViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
