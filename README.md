@@ -1,5 +1,5 @@
 
-# Template iOS App using Clean Architecture and MVVM [![CI](https://img.shields.io/travis/kudoleh/iOS-Clean-Architecture-MVVM)](https://travis-ci.com/github/kudoleh/iOS-Clean-Architecture-MVVM)
+# Template iOS App using Clean Architecture and MVVM  [![CI](https://img.shields.io/travis/kudoleh/iOS-Clean-Architecture-MVVM)](https://travis-ci.com/github/kudoleh/iOS-Clean-Architecture-MVVM)
 iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used as Template project by replacing item name “Movie”). **More information in medium post**: <a href="https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3">Medium Post about Clean Architecture + MVVM</a>
 
 
