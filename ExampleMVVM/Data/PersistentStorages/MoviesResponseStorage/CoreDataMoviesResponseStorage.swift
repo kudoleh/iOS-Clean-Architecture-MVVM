@@ -20,7 +20,9 @@ final class CoreDataMoviesResponseStorage {
 
     private func fetchRequest(for requestDto: MoviesRequestDTO) -> NSFetchRequest<MoviesRequestEntity> {
         let request: NSFetchRequest = MoviesRequestEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "query = %@ AND page = %d", requestDto.query, requestDto.page)
+        request.predicate = NSPredicate(format: "%K = %@ AND %K = %d",
+                                        #keyPath(MoviesRequestEntity.query), requestDto.query,
+                                        #keyPath(MoviesRequestEntity.page), requestDto.page)
         return request
     }
 
