@@ -4,7 +4,7 @@
 //
 //  Created by Oleh on 03.10.18.
 //
-// Note: All properties in Domain Entities are let, not var
+// Note: All Domain Entities are structs and have all let properties
 
 import Foundation
 
