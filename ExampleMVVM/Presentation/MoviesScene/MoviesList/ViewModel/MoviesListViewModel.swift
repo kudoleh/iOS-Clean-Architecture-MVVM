@@ -8,7 +8,7 @@
 import Foundation
 
 struct MoviesListViewModelClosures {
-    // Note: if you would need to edit movie inside Details screen and update this Movies List screen with updated movie then you would just need this closure (commented):
+    // Note: if you would need to edit movie inside Details screen and update this Movies List screen with updated movie then you would need this closure:
     //  showMovieDetails: (Movie, @escaping (_ updated: Movie) -> Void) -> Void
     let showMovieDetails: (Movie) -> Void
     let showMovieQueriesSuggestions: (@escaping (_ didSelect: MovieQuery) -> Void) -> Void
