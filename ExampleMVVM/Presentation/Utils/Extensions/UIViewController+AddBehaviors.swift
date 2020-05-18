@@ -51,7 +51,7 @@ extension UIViewController {
     private final class LifecycleBehaviorViewController: UIViewController, UIGestureRecognizerDelegate {
         private let behaviors: [ViewControllerLifecycleBehavior]
 
-        // MARK: - Init
+        // MARK: - Lifecicle
 
         init(behaviors: [ViewControllerLifecycleBehavior]) {
             self.behaviors = behaviors
@@ -62,8 +62,6 @@ extension UIViewController {
         required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-
-        // MARK: - UIViewController
 
         override func viewDidLoad() {
             super.viewDidLoad()

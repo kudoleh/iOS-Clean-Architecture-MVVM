@@ -21,7 +21,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     private var moviesTableViewController: MoviesListTableViewController?
     private var searchController = UISearchController(searchResultsController: nil)
 
-    // MARK: - Init
+    // MARK: - Lifecicle
 
     static func create(with viewModel: MoviesListViewModel,
                        posterImagesRepository: PosterImagesRepository?) -> MoviesListViewController {
@@ -30,8 +30,6 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         view.posterImagesRepository = posterImagesRepository
         return view
     }
-
-    // MARK: - UIViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
