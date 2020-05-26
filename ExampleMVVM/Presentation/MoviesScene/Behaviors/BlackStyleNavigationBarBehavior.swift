@@ -11,6 +11,6 @@ struct BlackStyleNavigationBarBehavior: ViewControllerLifecycleBehavior {
 
     func viewDidLoad(viewController: UIViewController) {
 
-        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        viewController.navigationController?.navigationBar.barStyle = .black
     }
 }
