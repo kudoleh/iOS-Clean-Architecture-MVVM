@@ -1,13 +1,13 @@
 //
-//  BackButtonEmptyTitleNavigationBarBehavior.swift
+//  BlackStyleNavigationBarBehavior.swift
 //  ExampleMVVM
 //
-//  Created by Oleh Kudinov on 03/04/2020.
+//  Created by Oleh Kudinov on 26/05/2020.
 //
 
 import UIKit
 
-struct BackButtonEmptyTitleNavigationBarBehavior: ViewControllerLifecycleBehavior {
+struct BlackStyleNavigationBarBehavior: ViewControllerLifecycleBehavior {
 
     func viewDidLoad(viewController: UIViewController) {
 

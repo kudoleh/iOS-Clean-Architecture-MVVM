@@ -37,7 +37,8 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         title = viewModel.screenTitle
         emptyDataLabel.text = viewModel.emptyDataTitle
         setupSearchController()
-        addBehaviors([BackButtonEmptyTitleNavigationBarBehavior()])
+        addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
+                      BlackStyleNavigationBarBehavior()])
         
         bind(to: viewModel)
         viewModel.viewDidLoad()
@@ -104,12 +105,6 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
             return
         }
         viewModel.showQueriesSuggestions()
-    }
-}
-
-extension MoviesListViewController {
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
 }
 
