@@ -68,8 +68,6 @@ extension UIViewController {
 
             view.isHidden = true
 
-            navigationController?.interactivePopGestureRecognizer?.delegate = self
-
             applyBehaviors { behavior, viewController in
                 behavior.viewDidLoad(viewController: viewController)
             }
