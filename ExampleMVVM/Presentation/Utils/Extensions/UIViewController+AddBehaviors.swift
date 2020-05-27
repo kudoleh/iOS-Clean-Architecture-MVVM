@@ -1,5 +1,5 @@
 //
-//  UIViewController+addBehaviors.swift
+//  UIViewController+AddBehaviors.swift
 //  ExampleMVVM
 //
 //  Created by Oleh Kudinov on 03/04/2020.
