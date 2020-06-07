@@ -7,7 +7,7 @@
 
 import Foundation
 
-// Note: This model does not contain any domain model to prevent Views accessing them
+// Note: This view model is to display data and does not contain any domain model to prevent views accessing it
 
 struct MoviesListItemViewModel: Equatable {
     let title: String
