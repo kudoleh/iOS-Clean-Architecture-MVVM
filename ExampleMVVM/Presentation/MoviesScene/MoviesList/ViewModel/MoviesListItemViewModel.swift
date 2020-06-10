@@ -4,10 +4,9 @@
 //
 //  Created by Oleh Kudinov on 06/04/2020.
 //
+// **Note**: This view model is to display data and does not contain any domain model to prevent views accessing it
 
 import Foundation
-
-// Note: This view model is to display data and does not contain any domain model to prevent views accessing it
 
 struct MoviesListItemViewModel: Equatable {
     let title: String
