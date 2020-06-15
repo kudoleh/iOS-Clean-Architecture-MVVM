@@ -58,7 +58,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         let moviesPage: MoviesPage
         let items: [MoviesListItemViewModel]
     }
-    private var pages: [Page] = []
+    private var pages: [MoviesPage] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
 
     // MARK: - OUTPUT
@@ -88,11 +88,10 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         totalPageCount = moviesPage.totalPages
 
         pages = pages
-            .filter { $0.moviesPage.page != moviesPage.page }
-            + [Page(moviesPage: moviesPage,
-                    items: moviesPage.movies.map(MoviesListItemViewModel.init))]
+            .filter { $0.page != moviesPage.page }
+            + [moviesPage]
 
-        items.value = pages.items
+        items.value = pages.movies.map(MoviesListItemViewModel.init)
     }
 
     private func resetPages() {
@@ -168,7 +167,6 @@ extension DefaultMoviesListViewModel {
 
 // MARK: - Private
 
-private extension Array where Element == DefaultMoviesListViewModel.Page {
-    var movies: [Movie] { flatMap { $0.moviesPage.movies } }
-    var items: [MoviesListItemViewModel] { flatMap { $0.items } }
+private extension Array where Element == MoviesPage {
+    var movies: [Movie] { flatMap { $0.movies } }
 }

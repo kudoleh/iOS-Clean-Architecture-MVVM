@@ -11,27 +11,24 @@ final class MoviesListTableViewController: UITableViewController {
 
     var posterImagesRepository: PosterImagesRepository?
     var nextPageLoadingSpinner: UIActivityIndicatorView?
-    
+
     var viewModel: MoviesListViewModel!
-    var items: [MoviesListItemViewModel] = [] {
-        didSet { reload() }
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = MoviesListItemCell.height
         tableView.rowHeight = UITableView.automaticDimension
         bind(to: viewModel)
     }
-    
+
     private func bind(to viewModel: MoviesListViewModel) {
         viewModel.loadingType.observe(on: self) { [weak self] in self?.update(isLoadingNextPage: $0 == .nextPage) }
     }
-    
+
     func reload() {
         tableView.reloadData()
     }
-    
+
     func update(isLoadingNextPage: Bool) {
         if isLoadingNextPage {
             nextPageLoadingSpinner?.removeFromSuperview()
@@ -48,31 +45,30 @@ final class MoviesListTableViewController: UITableViewController {
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension MoviesListTableViewController {
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return viewModel.items.value.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MoviesListItemCell.reuseIdentifier, for: indexPath) as? MoviesListItemCell else {
-            assertionFailure("Cannot dequeue reusable cell \(MoviesListItemCell.self) with reuseIdentifier: \(MoviesListItemCell.reuseIdentifier)")
-            return .init()
+            fatalError("Cannot dequeue reusable cell \(MoviesListItemCell.self) with reuseIdentifier: \(MoviesListItemCell.reuseIdentifier)")
         }
 
-        cell.fill(with: items[indexPath.row],
+        cell.fill(with: viewModel.items.value[indexPath.row],
                   posterImagesRepository: posterImagesRepository)
 
-        if indexPath.row == items.count - 1 {
+        if indexPath.row == viewModel.items.value.count - 1 {
             viewModel.didLoadNextPage()
         }
-        
+
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return viewModel.isEmpty ? tableView.frame.height : super.tableView(tableView, heightForRowAt: indexPath)
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.didSelectItem(at: indexPath.row)
     }
