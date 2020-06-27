@@ -15,7 +15,7 @@ protocol MoviesSearchFlowCoordinatorDependencies  {
 
 class MoviesSearchFlowCoordinator {
     
-    private let navigationController: UINavigationController
+    private weak var navigationController: UINavigationController?
     private let dependencies: MoviesSearchFlowCoordinatorDependencies
 
     private weak var moviesListVC: MoviesListViewController?
@@ -34,13 +34,13 @@ class MoviesSearchFlowCoordinator {
                                                    closeMovieQueriesSuggestions: closeMovieQueriesSuggestions)
         let vc = dependencies.makeMoviesListViewController(closures: closures)
 
-        navigationController.pushViewController(vc, animated: false)
+        navigationController?.pushViewController(vc, animated: false)
         moviesListVC = vc
     }
 
     private func showMovieDetails(movie: Movie) {
         let vc = dependencies.makeMoviesDetailsViewController(movie: movie)
-        navigationController.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     private func showMovieQueriesSuggestions(didSelect: @escaping (MovieQuery) -> Void) {
