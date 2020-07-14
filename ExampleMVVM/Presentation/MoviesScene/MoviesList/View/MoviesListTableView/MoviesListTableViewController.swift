@@ -14,36 +14,41 @@ final class MoviesListTableViewController: UITableViewController {
 
     var viewModel: MoviesListViewModel!
 
+    // MARK: - Lifecicle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.estimatedRowHeight = MoviesListItemCell.height
-        tableView.rowHeight = UITableView.automaticDimension
-        bind(to: viewModel)
-    }
-
-    private func bind(to viewModel: MoviesListViewModel) {
-        viewModel.loadingType.observe(on: self) { [weak self] in self?.update(isLoadingNextPage: $0 == .nextPage) }
+        setupViews()
     }
 
     func reload() {
         tableView.reloadData()
     }
 
-    func update(isLoadingNextPage: Bool) {
-        if isLoadingNextPage {
+    func update(for loadingType: MoviesListViewModelLoading?) {
+        switch loadingType {
+        case .nextPage:
             nextPageLoadingSpinner?.removeFromSuperview()
             nextPageLoadingSpinner = UIActivityIndicatorView(style: .gray)
             nextPageLoadingSpinner?.startAnimating()
             nextPageLoadingSpinner?.isHidden = false
             nextPageLoadingSpinner?.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: tableView.frame.width, height: 44)
             tableView.tableFooterView = nextPageLoadingSpinner
-        } else {
+        case .fullScreen, .none:
             tableView.tableFooterView = nil
         }
+    }
+
+    // MARK: - Private
+
+    private func setupViews() {
+        tableView.estimatedRowHeight = MoviesListItemCell.height
+        tableView.rowHeight = UITableView.automaticDimension
     }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
+
 extension MoviesListTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -52,7 +57,8 @@ extension MoviesListTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MoviesListItemCell.reuseIdentifier, for: indexPath) as? MoviesListItemCell else {
-            fatalError("Cannot dequeue reusable cell \(MoviesListItemCell.self) with reuseIdentifier: \(MoviesListItemCell.reuseIdentifier)")
+            assertionFailure("Cannot dequeue reusable cell \(MoviesListItemCell.self) with reuseIdentifier: \(MoviesListItemCell.reuseIdentifier)")
+            return UITableViewCell()
         }
 
         cell.fill(with: viewModel.items.value[indexPath.row],

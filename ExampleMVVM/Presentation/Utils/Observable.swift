@@ -35,7 +35,7 @@ public final class Observable<Value> {
     
     private func notifyObservers() {
         for observer in observers {
-           DispatchQueue.main.async { observer.block(self.value) }
+            DispatchQueue.main.async { observer.block(self.value) }
         }
     }
 }

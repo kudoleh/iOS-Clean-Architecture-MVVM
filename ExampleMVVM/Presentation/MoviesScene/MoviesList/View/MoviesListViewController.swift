@@ -33,27 +33,28 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        title = viewModel.screenTitle
-        emptyDataLabel.text = viewModel.emptyDataTitle
+        setupViews()
         setupSearchController()
-        addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
-                      BlackStyleNavigationBarBehavior()])
-        
+        setupBehaviours()
         bind(to: viewModel)
         viewModel.viewDidLoad()
     }
-    
+
     private func bind(to viewModel: MoviesListViewModel) {
         viewModel.items.observe(on: self) { [weak self] _ in self?.moviesTableViewController?.reload() }
         viewModel.query.observe(on: self) { [weak self] in self?.updateSearchController(query: $0) }
         viewModel.error.observe(on: self) { [weak self] in self?.showError($0) }
-        viewModel.loadingType.observe(on: self) { [weak self] _ in self?.updateViewsVisibility() }
+        viewModel.loadingType.observe(on: self) { [weak self] in self?.updateViewsVisibility(loadingType: $0) }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         searchController.isActive = false
+    }
+
+    private func updateSearchController(query: String) {
+        searchController.isActive = false
+        searchController.searchBar.text = query
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -67,36 +68,37 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
 
     // MARK: - Private
 
-    private func updateSearchController(query: String) {
-        searchController.isActive = false
-        searchController.searchBar.text = query
+    private func setupViews() {
+        title = viewModel.screenTitle
+        emptyDataLabel.text = viewModel.emptyDataTitle
+    }
+
+    private func setupBehaviours() {
+        addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
+                      BlackStyleNavigationBarBehavior()])
     }
 
     private func showError(_ error: String) {
         guard !error.isEmpty else { return }
         showAlert(title: viewModel.errorTitle, message: error)
     }
-    
-    private func updateViewsVisibility() {
+
+    private func updateViewsVisibility(loadingType: MoviesListViewModelLoading?) {
         emptyDataLabel.isHidden = true
         moviesListContainer.isHidden = true
         suggestionsListContainer.isHidden = true
         LoadingView.hide()
 
-        switch viewModel.loadingType.value {
+        switch loadingType {
         case .fullScreen: LoadingView.show()
         case .nextPage: moviesListContainer.isHidden = false
-        case .none: updateMoviesListVisibility()
+        case .none:
+            moviesListContainer.isHidden = viewModel.isEmpty
+            emptyDataLabel.isHidden = !viewModel.isEmpty
         }
+
+        moviesTableViewController?.update(for: loadingType)
         updateQueriesSuggestionsVisibility()
-    }
-    
-    private func updateMoviesListVisibility() {
-        guard !viewModel.isEmpty else {
-            emptyDataLabel.isHidden = false
-            return
-        }
-        moviesListContainer.isHidden = false
     }
 
     private func updateQueriesSuggestionsVisibility() {
