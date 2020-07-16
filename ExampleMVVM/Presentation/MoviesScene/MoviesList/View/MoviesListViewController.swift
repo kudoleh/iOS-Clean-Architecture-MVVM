@@ -135,7 +135,6 @@ extension MoviesListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchText = searchBar.text, !searchText.isEmpty else { return }
         searchController.isActive = false
-        moviesTableViewController?.tableView.setContentOffset(CGPoint.zero, animated: false)
         viewModel.didSearch(query: searchText)
     }
 
