@@ -34,7 +34,6 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        setupSearchController()
         setupBehaviours()
         bind(to: viewModel)
         viewModel.viewDidLoad()
@@ -71,6 +70,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     private func setupViews() {
         title = viewModel.screenTitle
         emptyDataLabel.text = viewModel.emptyDataTitle
+        setupSearchController()
     }
 
     private func setupBehaviours() {
