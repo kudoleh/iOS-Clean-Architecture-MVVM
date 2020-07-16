@@ -32,7 +32,7 @@ final class MoviesListTableViewController: UITableViewController {
             nextPageLoadingSpinner = UIActivityIndicatorView(style: .gray)
             nextPageLoadingSpinner?.startAnimating()
             nextPageLoadingSpinner?.isHidden = false
-            nextPageLoadingSpinner?.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: tableView.frame.width, height: 44)
+            nextPageLoadingSpinner?.frame = .init(x: 0, y: 0, width: tableView.frame.width, height: 44)
             tableView.tableFooterView = nextPageLoadingSpinner
         case .fullScreen, .none:
             tableView.tableFooterView = nil
@@ -56,7 +56,8 @@ extension MoviesListTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MoviesListItemCell.reuseIdentifier, for: indexPath) as? MoviesListItemCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MoviesListItemCell.reuseIdentifier,
+                                                       for: indexPath) as? MoviesListItemCell else {
             assertionFailure("Cannot dequeue reusable cell \(MoviesListItemCell.self) with reuseIdentifier: \(MoviesListItemCell.reuseIdentifier)")
             return UITableViewCell()
         }
