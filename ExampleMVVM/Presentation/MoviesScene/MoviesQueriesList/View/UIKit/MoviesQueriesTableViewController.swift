@@ -11,7 +11,7 @@ final class MoviesQueriesTableViewController: UITableViewController, StoryboardI
     
     private var viewModel: MoviesQueryListViewModel!
 
-    // MARK: - Lifecicle
+    // MARK: - Lifecycle
 
     static func create(with viewModel: MoviesQueryListViewModel) -> MoviesQueriesTableViewController {
         let view = MoviesQueriesTableViewController.instantiateViewController()

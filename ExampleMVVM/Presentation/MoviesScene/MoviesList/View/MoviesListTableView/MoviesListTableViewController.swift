@@ -9,12 +9,12 @@ import UIKit
 
 final class MoviesListTableViewController: UITableViewController {
 
+    var viewModel: MoviesListViewModel!
+
     var posterImagesRepository: PosterImagesRepository?
     var nextPageLoadingSpinner: UIActivityIndicatorView?
 
-    var viewModel: MoviesListViewModel!
-
-    // MARK: - Lifecicle
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()

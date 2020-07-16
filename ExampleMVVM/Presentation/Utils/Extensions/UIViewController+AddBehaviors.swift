@@ -51,7 +51,7 @@ extension UIViewController {
     private final class LifecycleBehaviorViewController: UIViewController, UIGestureRecognizerDelegate {
         private let behaviors: [ViewControllerLifecycleBehavior]
 
-        // MARK: - Lifecicle
+        // MARK: - Lifecycle
 
         init(behaviors: [ViewControllerLifecycleBehavior]) {
             self.behaviors = behaviors

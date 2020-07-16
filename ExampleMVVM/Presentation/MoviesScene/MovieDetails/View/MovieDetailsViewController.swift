@@ -13,7 +13,7 @@ final class MovieDetailsViewController: UIViewController, StoryboardInstantiable
     @IBOutlet private var posterImageView: UIImageView!
     @IBOutlet private var overviewTextView: UITextView!
 
-    // MARK: - Lifecicle
+    // MARK: - Lifecycle
 
     private var viewModel: MovieDetailsViewModel!
     
