@@ -40,7 +40,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     }
 
     private func bind(to viewModel: MoviesListViewModel) {
-        viewModel.items.observe(on: self) { [weak self] items in self?.updateItems(items) }
+        viewModel.reloadItems.observe(on: self) { [weak self] _ in self?.reloadItems() }
         viewModel.query.observe(on: self) { [weak self] query in self?.updateSearchQuery(query) }
         viewModel.loading.observe(on: self) { [weak self] loading in self?.updateLoading(loading) }
         viewModel.error.observe(on: self) { [weak self] error in self?.showError(error) }
@@ -73,7 +73,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
                       BlackStyleNavigationBarBehavior()])
     }
 
-    private func updateItems(_ items: [MoviesListItemViewModel]) {
+    private func reloadItems() {
         moviesTableViewController?.reload()
     }
 

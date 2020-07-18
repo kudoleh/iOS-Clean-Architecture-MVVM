@@ -52,7 +52,7 @@ final class MoviesListTableViewController: UITableViewController {
 extension MoviesListTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.items.value.count
+        return viewModel.numberOfItems(in: section)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,10 +62,10 @@ extension MoviesListTableViewController {
             return UITableViewCell()
         }
 
-        cell.fill(with: viewModel.items.value[indexPath.row],
+        cell.fill(with: viewModel.item(for: indexPath),
                   posterImagesRepository: posterImagesRepository)
 
-        if indexPath.row == viewModel.items.value.count - 1 {
+        if indexPath.row == viewModel.numberOfItems(in: indexPath.section) - 1 {
             viewModel.didLoadNextPage()
         }
 
@@ -77,6 +77,6 @@ extension MoviesListTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelectItem(at: indexPath.row)
+        viewModel.didSelectItem(at: indexPath)
     }
 }
