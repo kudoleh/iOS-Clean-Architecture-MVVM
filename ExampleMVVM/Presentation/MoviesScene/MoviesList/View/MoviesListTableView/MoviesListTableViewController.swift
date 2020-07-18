@@ -25,8 +25,8 @@ final class MoviesListTableViewController: UITableViewController {
         tableView.reloadData()
     }
 
-    func update(for loadingType: MoviesListViewModelLoading?) {
-        switch loadingType {
+    func updateLoading(_ loading: MoviesListViewModelLoading?) {
+        switch loading {
         case .nextPage:
             nextPageLoadingSpinner?.removeFromSuperview()
             nextPageLoadingSpinner = UIActivityIndicatorView(style: .gray)

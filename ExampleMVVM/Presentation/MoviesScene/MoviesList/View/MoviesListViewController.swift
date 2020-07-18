@@ -40,20 +40,15 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     }
 
     private func bind(to viewModel: MoviesListViewModel) {
-        viewModel.items.observe(on: self) { [weak self] _ in self?.moviesTableViewController?.reload() }
-        viewModel.query.observe(on: self) { [weak self] in self?.updateSearchController(query: $0) }
-        viewModel.error.observe(on: self) { [weak self] in self?.showError($0) }
-        viewModel.loadingType.observe(on: self) { [weak self] in self?.updateViewsVisibility(loadingType: $0) }
+        viewModel.items.observe(on: self) { [weak self] items in self?.updateItems(items) }
+        viewModel.query.observe(on: self) { [weak self] query in self?.updateSearchQuery(query) }
+        viewModel.loading.observe(on: self) { [weak self] loading in self?.updateLoading(loading) }
+        viewModel.error.observe(on: self) { [weak self] error in self?.showError(error) }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         searchController.isActive = false
-    }
-
-    private func updateSearchController(query: String) {
-        searchController.isActive = false
-        searchController.searchBar.text = query
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -78,18 +73,22 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
                       BlackStyleNavigationBarBehavior()])
     }
 
-    private func showError(_ error: String) {
-        guard !error.isEmpty else { return }
-        showAlert(title: viewModel.errorTitle, message: error)
+    private func updateItems(_ items: [MoviesListItemViewModel]) {
+        moviesTableViewController?.reload()
     }
 
-    private func updateViewsVisibility(loadingType: MoviesListViewModelLoading?) {
+    private func updateSearchQuery(_ query: String) {
+        searchController.isActive = false
+        searchController.searchBar.text = query
+    }
+
+    private func updateLoading(_ loading: MoviesListViewModelLoading?) {
         emptyDataLabel.isHidden = true
         moviesListContainer.isHidden = true
         suggestionsListContainer.isHidden = true
         LoadingView.hide()
 
-        switch loadingType {
+        switch loading {
         case .fullScreen: LoadingView.show()
         case .nextPage: moviesListContainer.isHidden = false
         case .none:
@@ -97,16 +96,21 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
             emptyDataLabel.isHidden = !viewModel.isEmpty
         }
 
-        moviesTableViewController?.update(for: loadingType)
-        updateQueriesSuggestionsVisibility()
+        moviesTableViewController?.updateLoading(loading)
+        updateQueriesSuggestions()
     }
 
-    private func updateQueriesSuggestionsVisibility() {
+    private func updateQueriesSuggestions() {
         guard searchController.searchBar.isFirstResponder else {
             viewModel.closeQueriesSuggestions()
             return
         }
         viewModel.showQueriesSuggestions()
+    }
+
+    private func showError(_ error: String) {
+        guard !error.isEmpty else { return }
+        showAlert(title: viewModel.errorTitle, message: error)
     }
 }
 
@@ -145,14 +149,14 @@ extension MoviesListViewController: UISearchBarDelegate {
 
 extension MoviesListViewController: UISearchControllerDelegate {
     public func willPresentSearchController(_ searchController: UISearchController) {
-        updateQueriesSuggestionsVisibility()
+        updateQueriesSuggestions()
     }
 
     public func willDismissSearchController(_ searchController: UISearchController) {
-        updateQueriesSuggestionsVisibility()
+        updateQueriesSuggestions()
     }
 
     public func didDismissSearchController(_ searchController: UISearchController) {
-        updateQueriesSuggestionsVisibility()
+        updateQueriesSuggestions()
     }
 }

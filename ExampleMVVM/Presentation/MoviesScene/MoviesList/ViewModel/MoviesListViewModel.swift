@@ -32,7 +32,7 @@ protocol MoviesListViewModelInput {
 
 protocol MoviesListViewModelOutput {
     var items: Observable<[MoviesListItemViewModel]> { get }
-    var loadingType: Observable<MoviesListViewModelLoading?> { get }
+    var loading: Observable<MoviesListViewModelLoading?> { get }
     var query: Observable<String> { get }
     var error: Observable<String> { get }
     var isEmpty: Bool { get }
@@ -60,7 +60,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     // MARK: - OUTPUT
 
     let items: Observable<[MoviesListItemViewModel]> = Observable([])
-    let loadingType: Observable<MoviesListViewModelLoading?> = Observable(.none)
+    let loading: Observable<MoviesListViewModelLoading?> = Observable(.none)
     let query: Observable<String> = Observable("")
     let error: Observable<String> = Observable("")
     var isEmpty: Bool { return items.value.isEmpty }
@@ -97,8 +97,8 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         items.value.removeAll()
     }
 
-    private func load(movieQuery: MovieQuery, loadingType: MoviesListViewModelLoading) {
-        self.loadingType.value = loadingType
+    private func load(movieQuery: MovieQuery, loading: MoviesListViewModelLoading) {
+        self.loading.value = loading
         query.value = movieQuery.query
 
         moviesLoadTask = searchMoviesUseCase.execute(
@@ -111,7 +111,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
                 case .failure(let error):
                     self.handle(error: error)
                 }
-                self.loadingType.value = .none
+                self.loading.value = .none
         })
     }
 
@@ -123,7 +123,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
 
     private func update(movieQuery: MovieQuery) {
         resetPages()
-        load(movieQuery: movieQuery, loadingType: .fullScreen)
+        load(movieQuery: movieQuery, loading: .fullScreen)
     }
 }
 
@@ -134,9 +134,9 @@ extension DefaultMoviesListViewModel {
     func viewDidLoad() { }
 
     func didLoadNextPage() {
-        guard hasMorePages, loadingType.value == .none else { return }
-        load(movieQuery: MovieQuery(query: query.value),
-             loadingType: .nextPage)
+        guard hasMorePages, loading.value == .none else { return }
+        load(movieQuery: .init(query: query.value),
+             loading: .nextPage)
     }
 
     func didSearch(query: String) {
