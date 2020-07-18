@@ -8,8 +8,8 @@
 import Foundation
 
 struct MoviesListViewModelClosures {
-    // Note: if you would need to edit movie inside Details screen and update this Movies List screen with updated movie then you would need this closure:
-    //  showMovieDetails: (Movie, @escaping (_ updated: Movie) -> Void) -> Void
+    /// Note: if you would need to edit movie inside Details screen and update this Movies List screen with updated movie then you would need this closure:
+    /// showMovieDetails: (Movie, @escaping (_ updated: Movie) -> Void) -> Void
     let showMovieDetails: (Movie) -> Void
     let showMovieQueriesSuggestions: (@escaping (_ didSelect: MovieQuery) -> Void) -> Void
     let closeMovieQueriesSuggestions: () -> Void
@@ -31,7 +31,7 @@ protocol MoviesListViewModelInput {
 }
 
 protocol MoviesListViewModelOutput {
-    var items: Observable<[MoviesListItemViewModel]> { get }
+    var items: Observable<[MoviesListItemViewModel]> { get } /// Also we can calculate display view model items on demand:  https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/pull/9
     var loading: Observable<MoviesListViewModelLoading?> { get }
     var query: Observable<String> { get }
     var error: Observable<String> { get }
