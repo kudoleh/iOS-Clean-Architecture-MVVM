@@ -41,8 +41,8 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
 
     private func bind(to viewModel: MoviesListViewModel) {
         viewModel.items.observe(on: self) { [weak self] _ in self?.updateItems() }
-        viewModel.query.observe(on: self) { [weak self] in self?.updateSearchQuery($0) }
         viewModel.loading.observe(on: self) { [weak self] in self?.updateLoading($0) }
+        viewModel.query.observe(on: self) { [weak self] in self?.updateSearchQuery($0) }
         viewModel.error.observe(on: self) { [weak self] in self?.showError($0) }
     }
 
@@ -77,11 +77,6 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         moviesTableViewController?.reload()
     }
 
-    private func updateSearchQuery(_ query: String) {
-        searchController.isActive = false
-        searchController.searchBar.text = query
-    }
-
     private func updateLoading(_ loading: MoviesListViewModelLoading?) {
         emptyDataLabel.isHidden = true
         moviesListContainer.isHidden = true
@@ -106,6 +101,11 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
             return
         }
         viewModel.showQueriesSuggestions()
+    }
+
+    private func updateSearchQuery(_ query: String) {
+        searchController.isActive = false
+        searchController.searchBar.text = query
     }
 
     private func showError(_ error: String) {
