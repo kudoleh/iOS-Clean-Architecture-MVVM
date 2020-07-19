@@ -41,9 +41,9 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
 
     private func bind(to viewModel: MoviesListViewModel) {
         viewModel.items.observe(on: self) { [weak self] _ in self?.updateItems() }
-        viewModel.query.observe(on: self) { [weak self] query in self?.updateSearchQuery(query) }
-        viewModel.loading.observe(on: self) { [weak self] loading in self?.updateLoading(loading) }
-        viewModel.error.observe(on: self) { [weak self] error in self?.showError(error) }
+        viewModel.query.observe(on: self) { [weak self] in self?.updateSearchQuery($0) }
+        viewModel.loading.observe(on: self) { [weak self] in self?.updateLoading($0) }
+        viewModel.error.observe(on: self) { [weak self] in self?.showError($0) }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
