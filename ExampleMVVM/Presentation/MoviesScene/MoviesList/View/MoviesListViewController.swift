@@ -40,10 +40,10 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     }
 
     private func bind(to viewModel: MoviesListViewModel) {
-        viewModel.reloadItems.observe(on: self) { [weak self] _ in self?.reloadItems() }
-        viewModel.query.observe(on: self) { [weak self] query in self?.updateSearchQuery(query) }
-        viewModel.loading.observe(on: self) { [weak self] loading in self?.updateLoading(loading) }
-        viewModel.error.observe(on: self) { [weak self] error in self?.showError(error) }
+        viewModel.reloadItems.observe(on: self) { [weak self] _ in self?.updateItems() }
+        viewModel.loading.observe(on: self) { [weak self] in self?.updateLoading($0) }
+        viewModel.query.observe(on: self) { [weak self] in self?.updateSearchQuery($0) }
+        viewModel.error.observe(on: self) { [weak self] in self?.showError($0) }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,13 +73,8 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
                       BlackStyleNavigationBarBehavior()])
     }
 
-    private func reloadItems() {
+    private func updateItems() {
         moviesTableViewController?.reload()
-    }
-
-    private func updateSearchQuery(_ query: String) {
-        searchController.isActive = false
-        searchController.searchBar.text = query
     }
 
     private func updateLoading(_ loading: MoviesListViewModelLoading?) {
@@ -106,6 +101,11 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
             return
         }
         viewModel.showQueriesSuggestions()
+    }
+
+    private func updateSearchQuery(_ query: String) {
+        searchController.isActive = false
+        searchController.searchBar.text = query
     }
 
     private func showError(_ error: String) {
