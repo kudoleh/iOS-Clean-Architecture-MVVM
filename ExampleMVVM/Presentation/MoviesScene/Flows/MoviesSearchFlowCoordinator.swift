@@ -13,7 +13,7 @@ protocol MoviesSearchFlowCoordinatorDependencies  {
     func makeMoviesQueriesSuggestionsListViewController(didSelect: @escaping MoviesQueryListViewModelDidSelectAction) -> UIViewController
 }
 
-class MoviesSearchFlowCoordinator {
+final class MoviesSearchFlowCoordinator {
     
     private weak var navigationController: UINavigationController?
     private let dependencies: MoviesSearchFlowCoordinatorDependencies
