@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MoviesListViewModelClosures {
+struct MoviesListViewModelActions {
     /// Note: if you would need to edit movie inside Details screen and update this Movies List screen with updated movie then you would need this closure:
     /// showMovieDetails: (Movie, @escaping (_ updated: Movie) -> Void) -> Void
     let showMovieDetails: (Movie) -> Void
@@ -47,7 +47,7 @@ protocol MoviesListViewModel: MoviesListViewModelInput, MoviesListViewModelOutpu
 final class DefaultMoviesListViewModel: MoviesListViewModel {
 
     private let searchMoviesUseCase: SearchMoviesUseCase
-    private let closures: MoviesListViewModelClosures?
+    private let actions: MoviesListViewModelActions?
 
     var currentPage: Int = 0
     var totalPageCount: Int = 1
@@ -72,9 +72,9 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     // MARK: - Init
 
     init(searchMoviesUseCase: SearchMoviesUseCase,
-         closures: MoviesListViewModelClosures? = nil) {
+         actions: MoviesListViewModelActions? = nil) {
         self.searchMoviesUseCase = searchMoviesUseCase
-        self.closures = closures
+        self.actions = actions
     }
 
     // MARK: - Private
@@ -149,15 +149,15 @@ extension DefaultMoviesListViewModel {
     }
 
     func showQueriesSuggestions() {
-        closures?.showMovieQueriesSuggestions(update(movieQuery:))
+        actions?.showMovieQueriesSuggestions(update(movieQuery:))
     }
 
     func closeQueriesSuggestions() {
-        closures?.closeMovieQueriesSuggestions()
+        actions?.closeMovieQueriesSuggestions()
     }
 
     func didSelectItem(at index: Int) {
-        closures?.showMovieDetails(pages.movies[index])
+        actions?.showMovieDetails(pages.movies[index])
     }
 }
 

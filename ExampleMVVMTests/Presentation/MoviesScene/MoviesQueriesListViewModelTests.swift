@@ -77,12 +77,12 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.items.value.isEmpty)
     }
     
-    func test_whenDidSelectQueryEventIsReceived_thenCallDidSelectClosure() {
+    func test_whenDidSelectQueryEventIsReceived_thenCallDidSelectAction() {
         // given
         let selectedQueryItem = MovieQuery(query: "query1")
         var actionMovieQuery: MovieQuery?
         let expectation = self.expectation(description: "Delegate notified")
-        let didSelect: MoviesQueryListViewModelDidSelectClosure = { movieQuery in
+        let didSelect: MoviesQueryListViewModelDidSelectAction = { movieQuery in
             actionMovieQuery = movieQuery
             expectation.fulfill()
         }
