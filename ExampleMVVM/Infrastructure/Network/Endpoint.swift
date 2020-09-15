@@ -12,6 +12,7 @@ public enum HTTPMethodType: String {
     case head    = "HEAD"
     case post    = "POST"
     case put     = "PUT"
+    case patch   = "PATCH"
     case delete  = "DELETE"
 }
 

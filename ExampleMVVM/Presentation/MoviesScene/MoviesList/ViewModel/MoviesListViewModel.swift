@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct MoviesListViewModelClosures {
+struct MoviesListViewModelActions {
+    /// Note: if you would need to edit movie inside Details screen and update this Movies List screen with updated movie then you would need this closure:
+    /// showMovieDetails: (Movie, @escaping (_ updated: Movie) -> Void) -> Void
     let showMovieDetails: (Movie) -> Void
     let showMovieQueriesSuggestions: (@escaping (_ didSelect: MovieQuery) -> Void) -> Void
     let closeMovieQueriesSuggestions: () -> Void
@@ -25,12 +27,12 @@ protocol MoviesListViewModelInput {
     func didCancelSearch()
     func showQueriesSuggestions()
     func closeQueriesSuggestions()
-    func didSelect(item: MoviesListItemViewModel)
+    func didSelectItem(at index: Int)
 }
 
 protocol MoviesListViewModelOutput {
-    var items: Observable<[MoviesListItemViewModel]> { get }
-    var loadingType: Observable<MoviesListViewModelLoading?> { get }
+    var items: Observable<[MoviesListItemViewModel]> { get } /// Also we can calculate view model items on demand:  https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/pull/10/files
+    var loading: Observable<MoviesListViewModelLoading?> { get }
     var query: Observable<String> { get }
     var error: Observable<String> { get }
     var isEmpty: Bool { get }
@@ -45,19 +47,20 @@ protocol MoviesListViewModel: MoviesListViewModelInput, MoviesListViewModelOutpu
 final class DefaultMoviesListViewModel: MoviesListViewModel {
 
     private let searchMoviesUseCase: SearchMoviesUseCase
-    private let closures: MoviesListViewModelClosures?
+    private let actions: MoviesListViewModelActions?
 
     var currentPage: Int = 0
     var totalPageCount: Int = 1
     var hasMorePages: Bool { currentPage < totalPageCount }
     var nextPage: Int { hasMorePages ? currentPage + 1 : currentPage }
 
-    private var pages: [[MoviesListItemViewModel]] = []
+    private var pages: [MoviesPage] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
 
     // MARK: - OUTPUT
+
     let items: Observable<[MoviesListItemViewModel]> = Observable([])
-    let loadingType: Observable<MoviesListViewModelLoading?> = Observable(.none)
+    let loading: Observable<MoviesListViewModelLoading?> = Observable(.none)
     let query: Observable<String> = Observable("")
     let error: Observable<String> = Observable("")
     var isEmpty: Bool { return items.value.isEmpty }
@@ -66,20 +69,25 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     let errorTitle = NSLocalizedString("Error", comment: "")
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
 
+    // MARK: - Init
+
     init(searchMoviesUseCase: SearchMoviesUseCase,
-         closures: MoviesListViewModelClosures? = nil) {
+         actions: MoviesListViewModelActions? = nil) {
         self.searchMoviesUseCase = searchMoviesUseCase
-        self.closures = closures
+        self.actions = actions
     }
+
+    // MARK: - Private
 
     private func appendPage(_ moviesPage: MoviesPage) {
         currentPage = moviesPage.page
         totalPageCount = moviesPage.totalPages
 
-        if moviesPage.page == pages.count { pages.removeLast() }
-        pages.append(moviesPage.movies.map(MoviesListItemViewModel.init))
+        pages = pages
+            .filter { $0.page != moviesPage.page }
+            + [moviesPage]
 
-        self.items.value = pages.flatMap { $0 }
+        items.value = pages.movies.map(MoviesListItemViewModel.init)
     }
 
     private func resetPages() {
@@ -89,15 +97,13 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         items.value.removeAll()
     }
 
-    private func load(movieQuery: MovieQuery, loadingType: MoviesListViewModelLoading) {
-        self.loadingType.value = loadingType
+    private func load(movieQuery: MovieQuery, loading: MoviesListViewModelLoading) {
+        self.loading.value = loading
         query.value = movieQuery.query
 
         moviesLoadTask = searchMoviesUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
-            cached: { page in
-                self.appendPage(page)
-        },
+            cached: appendPage,
             completion: { result in
                 switch result {
                 case .success(let page):
@@ -105,7 +111,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
                 case .failure(let error):
                     self.handle(error: error)
                 }
-                self.loadingType.value = .none
+                self.loading.value = .none
         })
     }
 
@@ -117,19 +123,20 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
 
     private func update(movieQuery: MovieQuery) {
         resetPages()
-        load(movieQuery: movieQuery, loadingType: .fullScreen)
+        load(movieQuery: movieQuery, loading: .fullScreen)
     }
 }
 
 // MARK: - INPUT. View event methods
+
 extension DefaultMoviesListViewModel {
 
     func viewDidLoad() { }
 
     func didLoadNextPage() {
-        guard hasMorePages, loadingType.value == .none else { return }
-        load(movieQuery: MovieQuery(query: query.value),
-             loadingType: .nextPage)
+        guard hasMorePages, loading.value == .none else { return }
+        load(movieQuery: .init(query: query.value),
+             loading: .nextPage)
     }
 
     func didSearch(query: String) {
@@ -142,14 +149,20 @@ extension DefaultMoviesListViewModel {
     }
 
     func showQueriesSuggestions() {
-        closures?.showMovieQueriesSuggestions(update(movieQuery:))
+        actions?.showMovieQueriesSuggestions(update(movieQuery:))
     }
 
     func closeQueriesSuggestions() {
-        closures?.closeMovieQueriesSuggestions()
+        actions?.closeMovieQueriesSuggestions()
     }
 
-    func didSelect(item: MoviesListItemViewModel) {
-        closures?.showMovieDetails(item.movie)
+    func didSelectItem(at index: Int) {
+        actions?.showMovieDetails(pages.movies[index])
     }
+}
+
+// MARK: - Private
+
+private extension Array where Element == MoviesPage {
+    var movies: [Movie] { flatMap { $0.movies } }
 }

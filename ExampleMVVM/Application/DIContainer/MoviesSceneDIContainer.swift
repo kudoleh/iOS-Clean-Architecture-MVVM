@@ -48,19 +48,18 @@ final class MoviesSceneDIContainer {
                                               moviesQueriesPersistentStorage: moviesQueriesStorage)
     }
     func makePosterImagesRepository() -> PosterImagesRepository {
-        return DefaultPosterImagesRepository(dataTransferService: dependencies.imageDataTransferService,
-                                             imageNotFoundData: UIImage(named: "image_not_found")?.pngData())
+        return DefaultPosterImagesRepository(dataTransferService: dependencies.imageDataTransferService)
     }
     
     // MARK: - Movies List
-    func makeMoviesListViewController(closures: MoviesListViewModelClosures) -> MoviesListViewController {
-        return MoviesListViewController.create(with: makeMoviesListViewModel(closures: closures),
+    func makeMoviesListViewController(actions: MoviesListViewModelActions) -> MoviesListViewController {
+        return MoviesListViewController.create(with: makeMoviesListViewModel(actions: actions),
                                                posterImagesRepository: makePosterImagesRepository())
     }
     
-    func makeMoviesListViewModel(closures: MoviesListViewModelClosures) -> MoviesListViewModel {
+    func makeMoviesListViewModel(actions: MoviesListViewModelActions) -> MoviesListViewModel {
         return DefaultMoviesListViewModel(searchMoviesUseCase: makeSearchMoviesUseCase(),
-                                          closures: closures)
+                                          actions: actions)
     }
     
     // MARK: - Movie Details
@@ -74,7 +73,7 @@ final class MoviesSceneDIContainer {
     }
     
     // MARK: - Movies Queries Suggestions List
-    func makeMoviesQueriesSuggestionsListViewController(didSelect: @escaping MoviesQueryListViewModelDidSelectClosure) -> UIViewController {
+    func makeMoviesQueriesSuggestionsListViewController(didSelect: @escaping MoviesQueryListViewModelDidSelectAction) -> UIViewController {
         if #available(iOS 13.0, *) { // SwiftUI
             let view = MoviesQueryListView(viewModelWrapper: makeMoviesQueryListViewModelWrapper(didSelect: didSelect))
             return UIHostingController(rootView: view)
@@ -83,14 +82,14 @@ final class MoviesSceneDIContainer {
         }
     }
     
-    func makeMoviesQueryListViewModel(didSelect: @escaping MoviesQueryListViewModelDidSelectClosure) -> MoviesQueryListViewModel {
+    func makeMoviesQueryListViewModel(didSelect: @escaping MoviesQueryListViewModelDidSelectAction) -> MoviesQueryListViewModel {
         return DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 10,
                                                fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase,
                                                didSelect: didSelect)
     }
 
     @available(iOS 13.0, *)
-    func makeMoviesQueryListViewModelWrapper(didSelect: @escaping MoviesQueryListViewModelDidSelectClosure) -> MoviesQueryListViewModelWrapper {
+    func makeMoviesQueryListViewModelWrapper(didSelect: @escaping MoviesQueryListViewModelDidSelectAction) -> MoviesQueryListViewModelWrapper {
         return MoviesQueryListViewModelWrapper(viewModel: makeMoviesQueryListViewModel(didSelect: didSelect))
     }
 

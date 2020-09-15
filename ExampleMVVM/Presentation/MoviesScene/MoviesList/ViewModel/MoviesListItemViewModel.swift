@@ -4,6 +4,7 @@
 //
 //  Created by Oleh Kudinov on 06/04/2020.
 //
+// **Note**: This item view model is to display data and does not contain any domain model to prevent views accessing it
 
 import Foundation
 
@@ -12,7 +13,6 @@ struct MoviesListItemViewModel: Equatable {
     let overview: String
     let releaseDate: String
     let posterImagePath: String?
-    let movie: Movie
 }
 
 extension MoviesListItemViewModel {
@@ -26,7 +26,6 @@ extension MoviesListItemViewModel {
         } else {
             self.releaseDate = NSLocalizedString("To be announced", comment: "")
         }
-        self.movie = movie
     }
 }
 

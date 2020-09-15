@@ -1,4 +1,6 @@
-# Template iOS App using Clean Architecture and MVVM
+
+# Template iOS App using Clean Architecture and MVVM &nbsp; [![CI](https://img.shields.io/travis/kudoleh/iOS-Clean-Architecture-MVVM)](https://travis-ci.com/github/kudoleh/iOS-Clean-Architecture-MVVM)
+
 iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used as Template project by replacing item name “Movie”). **More information in medium post**: <a href="https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3">Medium Post about Clean Architecture + MVVM</a>
 
 
@@ -23,7 +25,9 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * [Flow Coordinator](ExampleMVVM/Presentation/MoviesScene/Flows/MoviesSearchFlowCoordinator.swift)
 * [Data Transfer Object (DTO)](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Network/DataMapping/MoviesResponseDTO%2BMapping.swift)
 * [Response Data Caching](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Repositories/DefaultMoviesRepository.swift)
+* [ViewController Lifecycle Behavior](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/3c47e8a4b9ae5dfce36f746242d1f40b6829079d/ExampleMVVM/Presentation/Utils/Extensions/UIViewController%2BAddBehaviors.swift#L7)
 * [SwiftUI and UIKit view](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/View/SwiftUI/MoviesQueryListView.swift) implementations by reusing same [ViewModel](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList/ViewModel/MoviesQueryListViewModel.swift) (at least Xcode 11 required)
+* Error handling examples: in [ViewModel](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/201de7759e2d5634e3bb4b5ad524c4242c62b306/ExampleMVVM/Presentation/MoviesScene/MoviesList/ViewModel/MoviesListViewModel.swift#L116), in [Networking](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/201de7759e2d5634e3bb4b5ad524c4242c62b306/ExampleMVVM/Infrastructure/Network/NetworkService.swift#L84)
 * CI Pipeline ([Travis CI + Fastlane](.travis.yml))
  
 ## Includes
@@ -35,9 +39,12 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 * Pagination
 
+## Networking
+If you would like to use Networking from this example project as repo I made it availabe [here](https://github.com/kudoleh/SENetworking)
+
 
 ## Requirements
 * Xcode Version 11.2.1+  Swift 5.0+
 
-# How to use app:
+# How to use app
 To search a movie, write a name of a movie inside searchbar and hit search button. There are two network calls: request movies and request poster images. Every successful search query is stored persistently.

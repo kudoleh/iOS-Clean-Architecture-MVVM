@@ -10,7 +10,9 @@ import UIKit
 final class MoviesQueriesTableViewController: UITableViewController, StoryboardInstantiable {
     
     private var viewModel: MoviesQueryListViewModel!
-    
+
+    // MARK: - Lifecycle
+
     static func create(with viewModel: MoviesQueryListViewModel) -> MoviesQueriesTableViewController {
         let view = MoviesQueriesTableViewController.instantiateViewController()
         view.viewModel = viewModel
@@ -19,11 +21,7 @@ final class MoviesQueriesTableViewController: UITableViewController, StoryboardI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableFooterView = UIView()
-        tableView.backgroundColor = .clear
-        tableView.estimatedRowHeight = MoviesQueriesItemCell.height
-        tableView.rowHeight = UITableView.automaticDimension
-        
+        setupViews()
         bind(to: viewModel)
     }
     
@@ -32,18 +30,24 @@ final class MoviesQueriesTableViewController: UITableViewController, StoryboardI
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         super.viewWillAppear(animated)
+
         viewModel.viewWillAppear()
+    }
+
+    // MARK: - Private
+
+    private func setupViews() {
+        tableView.tableFooterView = UIView()
+        tableView.backgroundColor = .clear
+        tableView.estimatedRowHeight = MoviesQueriesItemCell.height
+        tableView.rowHeight = UITableView.automaticDimension
     }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
+
 extension MoviesQueriesTableViewController {
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.items.value.count
@@ -51,10 +55,11 @@ extension MoviesQueriesTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MoviesQueriesItemCell.reuseIdentifier, for: indexPath) as? MoviesQueriesItemCell else {
-            fatalError("Cannot dequeue reusable cell \(MoviesQueriesItemCell.self) with reuseIdentifier: \(MoviesQueriesItemCell.reuseIdentifier)")
+            assertionFailure("Cannot dequeue reusable cell \(MoviesQueriesItemCell.self) with reuseIdentifier: \(MoviesQueriesItemCell.reuseIdentifier)")
+            return UITableViewCell()
         }
         cell.fill(with: viewModel.items.value[indexPath.row])
-        
+
         return cell
     }
     

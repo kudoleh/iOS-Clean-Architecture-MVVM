@@ -1,31 +1,34 @@
 //
-//  UIViewController+addBehaviors.swift
+//  UIViewController+AddBehaviors.swift
 //  ExampleMVVM
 //
 //  Created by Oleh Kudinov on 03/04/2020.
 //
 // View controller lifecycle behaviors https://irace.me/lifecycle-behaviors
+// Behaviors are very useful to reuse logic for cases like Keyboard Behaviour.
+// Where ViewController on didLoad adds behaviour which observes keyboard frame
+// and scrollView content inset changes based on keyboard frame.
 
 import UIKit
 
 protocol ViewControllerLifecycleBehavior {
-    func afterLoading(viewController: UIViewController)
-    func beforeAppearing(viewController: UIViewController)
-    func afterAppearing(viewController: UIViewController)
-    func beforeDisappearing(viewController: UIViewController)
-    func afterDisappearing(viewController: UIViewController)
-    func beforeLayingOutSubviews(viewController: UIViewController)
-    func afterLayingOutSubviews(viewController: UIViewController)
+    func viewDidLoad(viewController: UIViewController)
+    func viewWillAppear(viewController: UIViewController)
+    func viewDidAppear(viewController: UIViewController)
+    func viewWillDisappear(viewController: UIViewController)
+    func viewDidDisappear(viewController: UIViewController)
+    func viewWillLayoutSubviews(viewController: UIViewController)
+    func viewDidLayoutSubviews(viewController: UIViewController)
 }
 // Default implementations
 extension ViewControllerLifecycleBehavior {
-    func afterLoading(viewController: UIViewController) {}
-    func beforeAppearing(viewController: UIViewController) {}
-    func afterAppearing(viewController: UIViewController) {}
-    func beforeDisappearing(viewController: UIViewController) {}
-    func afterDisappearing(viewController: UIViewController) {}
-    func beforeLayingOutSubviews(viewController: UIViewController) {}
-    func afterLayingOutSubviews(viewController: UIViewController) {}
+    func viewDidLoad(viewController: UIViewController) {}
+    func viewWillAppear(viewController: UIViewController) {}
+    func viewDidAppear(viewController: UIViewController) {}
+    func viewWillDisappear(viewController: UIViewController) {}
+    func viewDidDisappear(viewController: UIViewController) {}
+    func viewWillLayoutSubviews(viewController: UIViewController) {}
+    func viewDidLayoutSubviews(viewController: UIViewController) {}
 }
 
 extension UIViewController {
@@ -48,7 +51,7 @@ extension UIViewController {
     private final class LifecycleBehaviorViewController: UIViewController, UIGestureRecognizerDelegate {
         private let behaviors: [ViewControllerLifecycleBehavior]
 
-        // MARK: - Initialization
+        // MARK: - Lifecycle
 
         init(behaviors: [ViewControllerLifecycleBehavior]) {
             self.behaviors = behaviors
@@ -60,17 +63,13 @@ extension UIViewController {
             fatalError("init(coder:) has not been implemented")
         }
 
-        // MARK: - UIViewController
-
         override func viewDidLoad() {
             super.viewDidLoad()
 
             view.isHidden = true
 
-            navigationController?.interactivePopGestureRecognizer?.delegate = self
-
             applyBehaviors { behavior, viewController in
-                behavior.afterLoading(viewController: viewController)
+                behavior.viewDidLoad(viewController: viewController)
             }
         }
 
@@ -78,7 +77,7 @@ extension UIViewController {
             super.viewWillAppear(animated)
 
             applyBehaviors { behavior, viewController in
-                behavior.beforeAppearing(viewController: viewController)
+                behavior.viewWillAppear(viewController: viewController)
             }
         }
 
@@ -86,7 +85,7 @@ extension UIViewController {
             super.viewDidAppear(animated)
 
             applyBehaviors { behavior, viewController in
-                behavior.afterAppearing(viewController: viewController)
+                behavior.viewDidAppear(viewController: viewController)
             }
         }
 
@@ -94,7 +93,7 @@ extension UIViewController {
             super.viewWillDisappear(animated)
 
             applyBehaviors { behavior, viewController in
-                behavior.beforeDisappearing(viewController: viewController)
+                behavior.viewWillDisappear(viewController: viewController)
             }
         }
 
@@ -102,7 +101,7 @@ extension UIViewController {
             super.viewDidDisappear(animated)
 
             applyBehaviors { behavior, viewController in
-                behavior.afterDisappearing(viewController: viewController)
+                behavior.viewDidDisappear(viewController: viewController)
             }
         }
 
@@ -110,7 +109,7 @@ extension UIViewController {
             super.viewWillLayoutSubviews()
 
             applyBehaviors { behavior, viewController in
-                behavior.beforeLayingOutSubviews(viewController: viewController)
+                behavior.viewWillLayoutSubviews(viewController: viewController)
             }
         }
 
@@ -118,7 +117,7 @@ extension UIViewController {
             super.viewDidLayoutSubviews()
 
             applyBehaviors { behavior, viewController in
-                behavior.afterLayingOutSubviews(viewController: viewController)
+                behavior.viewDidLayoutSubviews(viewController: viewController)
             }
         }
 

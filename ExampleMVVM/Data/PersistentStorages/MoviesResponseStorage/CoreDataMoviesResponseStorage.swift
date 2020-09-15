@@ -20,7 +20,9 @@ final class CoreDataMoviesResponseStorage {
 
     private func fetchRequest(for requestDto: MoviesRequestDTO) -> NSFetchRequest<MoviesRequestEntity> {
         let request: NSFetchRequest = MoviesRequestEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "query = %@ AND page = %d", requestDto.query, requestDto.page)
+        request.predicate = NSPredicate(format: "%K = %@ AND %K = %d",
+                                        #keyPath(MoviesRequestEntity.query), requestDto.query,
+                                        #keyPath(MoviesRequestEntity.page), requestDto.page)
         return request
     }
 
@@ -48,7 +50,6 @@ extension CoreDataMoviesResponseStorage: MoviesResponseStorage {
                 completion(.success(requestEntity?.response?.toDTO()))
             } catch {
                 completion(.failure(CoreDataStorageError.readError(error)))
-                print(error)
             }
         }
     }
@@ -63,7 +64,8 @@ extension CoreDataMoviesResponseStorage: MoviesResponseStorage {
 
                 try context.save()
             } catch {
-                print(error)
+                // TODO: - Log to Crashlytics
+                debugPrint("CoreDataMoviesResponseStorage Unresolved error \(error), \((error as NSError).userInfo)")
             }
         }
     }

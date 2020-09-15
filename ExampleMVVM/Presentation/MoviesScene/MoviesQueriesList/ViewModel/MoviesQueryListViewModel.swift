@@ -7,7 +7,7 @@
 
 import Foundation
 
-typealias MoviesQueryListViewModelDidSelectClosure = (MovieQuery) -> Void
+typealias MoviesQueryListViewModelDidSelectAction = (MovieQuery) -> Void
 
 protocol MoviesQueryListViewModelInput {
     func viewWillAppear()
@@ -29,14 +29,14 @@ final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
 
     private let numberOfQueriesToShow: Int
     private let fetchRecentMovieQueriesUseCaseFactory: FetchRecentMovieQueriesUseCaseFactory
-    private let didSelect: MoviesQueryListViewModelDidSelectClosure?
+    private let didSelect: MoviesQueryListViewModelDidSelectAction?
     
     // MARK: - OUTPUT
     let items: Observable<[MoviesQueryListItemViewModel]> = Observable([])
     
     init(numberOfQueriesToShow: Int,
          fetchRecentMovieQueriesUseCaseFactory: @escaping FetchRecentMovieQueriesUseCaseFactory,
-         didSelect: MoviesQueryListViewModelDidSelectClosure? = nil) {
+         didSelect: MoviesQueryListViewModelDidSelectAction? = nil) {
         self.numberOfQueriesToShow = numberOfQueriesToShow
         self.fetchRecentMovieQueriesUseCaseFactory = fetchRecentMovieQueriesUseCaseFactory
         self.didSelect = didSelect

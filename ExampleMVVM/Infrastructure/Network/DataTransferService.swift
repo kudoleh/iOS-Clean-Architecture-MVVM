@@ -15,7 +15,7 @@ public enum DataTransferError: Error {
 }
 
 public protocol DataTransferService {
-    typealias CompletionHandler<T> = (Result<T, Error>) -> Void
+    typealias CompletionHandler<T> = (Result<T, DataTransferError>) -> Void
     
     @discardableResult
     func request<T: Decodable, E: ResponseRequestable>(with endpoint: E,
@@ -60,7 +60,7 @@ extension DefaultDataTransferService: DataTransferService {
         return self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success(let data):
-                let result: Result<T, Error> = self.decode(data: data, decoder: endpoint.responseDecoder)
+                let result: Result<T, DataTransferError> = self.decode(data: data, decoder: endpoint.responseDecoder)
                 DispatchQueue.main.async { return completion(result) }
             case .failure(let error):
                 self.errorLogger.log(error: error)
@@ -70,7 +70,7 @@ extension DefaultDataTransferService: DataTransferService {
         }
     }
 
-    public func request<E>(with endpoint: E, completion: @escaping (Result<Void, Error>) -> Void) -> NetworkCancellable? where E : ResponseRequestable, E.Response == Void {
+    public func request<E>(with endpoint: E, completion: @escaping CompletionHandler<Void>) -> NetworkCancellable? where E : ResponseRequestable, E.Response == Void {
         return self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success:
@@ -82,15 +82,16 @@ extension DefaultDataTransferService: DataTransferService {
             }
         }
     }
-    
-    private func decode<T: Decodable>(data: Data?, decoder: ResponseDecoder) -> Result<T, Error> {
+
+    // MARK: - Private
+    private func decode<T: Decodable>(data: Data?, decoder: ResponseDecoder) -> Result<T, DataTransferError> {
         do {
-            guard let data = data else { return .failure(DataTransferError.noResponse) }
+            guard let data = data else { return .failure(.noResponse) }
             let result: T = try decoder.decode(data)
             return .success(result)
         } catch {
             self.errorLogger.log(error: error)
-            return .failure(DataTransferError.parsing(error))
+            return .failure(.parsing(error))
         }
     }
     

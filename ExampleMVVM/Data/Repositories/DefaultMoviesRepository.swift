@@ -4,6 +4,7 @@
 //
 //  Created by Oleh Kudinov on 01.10.18.
 //
+// **Note**: DTOs structs are mapped into Domains here, and Repository protocols does not contain DTOs
 
 import Foundation
 
@@ -30,7 +31,7 @@ extension DefaultMoviesRepository: MoviesRepository {
         cache.getResponse(for: requestDTO) { result in
 
             if case let .success(responseDTO?) = result {
-                cached(responseDTO.mapToDomain())
+                cached(responseDTO.toDomain())
             }
             guard !task.isCancelled else { return }
 
@@ -39,7 +40,7 @@ extension DefaultMoviesRepository: MoviesRepository {
                 switch result {
                 case .success(let responseDTO):
                     self.cache.save(response: responseDTO, for: requestDTO)
-                    completion(.success(responseDTO.mapToDomain()))
+                    completion(.success(responseDTO.toDomain()))
                 case .failure(let error):
                     completion(.failure(error))
                 }

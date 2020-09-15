@@ -9,7 +9,7 @@ import UIKit
 
 struct BackButtonEmptyTitleNavigationBarBehavior: ViewControllerLifecycleBehavior {
 
-    func afterLoading(viewController: UIViewController) {
+    func viewDidLoad(viewController: UIViewController) {
 
         viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
