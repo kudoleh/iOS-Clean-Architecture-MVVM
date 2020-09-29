@@ -29,10 +29,7 @@ final class MoviesListTableViewController: UITableViewController {
         switch loading {
         case .nextPage:
             nextPageLoadingSpinner?.removeFromSuperview()
-            nextPageLoadingSpinner = UIActivityIndicatorView(style: .gray)
-            nextPageLoadingSpinner?.startAnimating()
-            nextPageLoadingSpinner?.isHidden = false
-            nextPageLoadingSpinner?.frame = .init(x: 0, y: 0, width: tableView.frame.width, height: 44)
+            nextPageLoadingSpinner = makeActivityIndicator(size: .init(width: tableView.frame.width, height: 44))
             tableView.tableFooterView = nextPageLoadingSpinner
         case .fullScreen, .none:
             tableView.tableFooterView = nil
