@@ -25,16 +25,16 @@ public class Endpoint<R>: ResponseRequestable {
     
     public typealias Response = R
     
-    public var path: String
-    public var isFullPath: Bool
-    public var method: HTTPMethodType
-    public var headerParamaters: [String: String]
-    public var queryParametersEncodable: Encodable? = nil
-    public var queryParameters: [String: Any]
-    public var bodyParamatersEncodable: Encodable? = nil
-    public var bodyParamaters: [String: Any]
-    public var bodyEncoding: BodyEncoding
-    public var responseDecoder: ResponseDecoder
+    public let path: String
+    public let isFullPath: Bool
+    public let method: HTTPMethodType
+    public let headerParamaters: [String: String]
+    public let queryParametersEncodable: Encodable?
+    public let queryParameters: [String: Any]
+    public let bodyParamatersEncodable: Encodable?
+    public let bodyParamaters: [String: Any]
+    public let bodyEncoding: BodyEncoding
+    public let responseDecoder: ResponseDecoder
     
     init(path: String,
          isFullPath: Bool = false,
