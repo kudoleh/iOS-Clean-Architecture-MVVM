@@ -34,12 +34,13 @@ final class UserDefaultsMoviesQueriesStorage {
         }
     }
 
-    private func removeOldQueries(_ queries: [MovieQuery]) -> [MovieQuery] {
-        return queries.count <= maxStorageLimit ? queries : Array(queries[0..<maxStorageLimit])
+    private func removeQueries(limit: Int, in queries: [MovieQuery]) -> [MovieQuery] {
+        return queries.count <= limit ? queries : Array(queries[0..<limit])
     }
 }
 
 extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
+
     func fetchRecentsQueries(maxCount: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
@@ -48,13 +49,14 @@ extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
             completion(.success(queries))
         }
     }
+
     func saveRecentQuery(query: MovieQuery, completion: @escaping (Result<MovieQuery, Error>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             var queries = self.fetchMoviesQuries()
             queries = queries.filter { $0 != query }
             queries.insert(query, at: 0)
-            self.persist(moviesQuries: self.removeOldQueries(queries))
+            self.persist(moviesQuries: self.removeQueries(limit: self.maxStorageLimit, in: queries))
             completion(.success(query))
         }
     }

@@ -65,7 +65,7 @@ extension CoreDataMoviesQueriesStorage {
         var result = try context.fetch(request)
 
         removeDuplicates(for: query, in: &result, inContext: context)
-        removeMore(than: maxStorageLimit - 1, in: result, inContext: context)
+        removeQueries(limit: maxStorageLimit - 1, in: result, inContext: context)
     }
 
     private func removeDuplicates(for query: MovieQuery, in queries: inout [MovieQueryEntity], inContext context: NSManagedObjectContext) {
@@ -75,7 +75,7 @@ extension CoreDataMoviesQueriesStorage {
         queries.removeAll { $0.query == query.query }
     }
 
-    private func removeMore(than limit: Int, in queries: [MovieQueryEntity], inContext context: NSManagedObjectContext) {
+    private func removeQueries(limit: Int, in queries: [MovieQueryEntity], inContext context: NSManagedObjectContext) {
         guard queries.count > limit else { return }
 
         queries.suffix(queries.count - limit)
