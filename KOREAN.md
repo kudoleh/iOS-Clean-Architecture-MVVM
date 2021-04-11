@@ -1,6 +1,6 @@
-# [🇰🇷 Korean ver] Clean Architecture와 MVVM를 사용한 iOS 앱 템플릿
+# [🇰🇷 Korean ver.] Clean Architecture와 MVVM를 사용한 iOS 앱 템플릿
 
-해당 iOS 프로젝트는 Clean Layered Architecture와 MVVM 방식으로 구현되어있다. ("Movie"라는 아이템 이름으로 해당 템플릿이 사용되었다.) **자세한 정보는 중간 포스트에서 확인해볼 수 있다:**  <a href="https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3">Medium Post about Clean Architecture + MVVM</a>
+해당 iOS 프로젝트는 Clean Layered Architectur e와 MVVM 방식으로 구현되어있다. ("Movie"라는 아이템 이름으로 해당 템플릿이 사용되었다.) **자세한 정보는 중간 포스트에서 확인해볼 수 있다:** [Medium Post about Clean Architecture + MVVM](https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3).
 
 
 
@@ -57,7 +57,7 @@
 
 ## 네트워킹
 
-만약 레포지토리에 있는 해당 예시에서 네트워킹을 사용하고 싶다면,  [바로가기](https://github.com/kudoleh/SENetworking) 에 만들어 놓았다.
+만약 레포지토리에 있는 해당 예시에서 네트워킹을 사용하고 싶다면,  [바로가기](https://github.com/kudoleh/SENetworking) 를 참고하면 된다.
 
 
 
@@ -67,7 +67,7 @@
 
 
 
-## 사용방법
+## 사용 방법
 
 영화를 찾기 위해선 서치바에 이름을 적고 찾기 버튼을 누른다. 
 
