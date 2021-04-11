@@ -10,8 +10,8 @@
 
 ## 계층
 
-- **도메인 계층** = 개체 (Entities) + 유스케이스 (Use Cases) + 인터페이스 부분 (Repositories Interfaces)
-- **데이터 레포지토리 계층**: 구현 부분 (Repositories Implementations) + API (네트워크) + 지속되는 DB
+- **도메인 계층** = 개체 (Entities) + 유스케이스 (Use Cases) + 레포지토리 인터페이스 부분 (Repositories Interfaces)
+- **데이터 레포지토리 계층**: 레포지토리 구현 부분 (Repositories Implementations) + API (네트워크) + 지속되는 DB
 -  **프레젠테이션 계층(MVVM)**: 뷰 모델 (View Models) + 뷰 (Views)
 
 
