@@ -1,6 +1,6 @@
 # [🇰🇷 Korean ver.] Clean Architecture와 MVVM를 사용한 iOS 앱 템플릿
 
-해당 iOS 프로젝트는 Clean Layered Architectur e와 MVVM 방식으로 구현되어있다. ("Movie"라는 아이템 이름으로 해당 템플릿이 사용되었다.) **자세한 정보는 중간 포스트에서 확인해볼 수 있다:** [Medium Post about Clean Architecture + MVVM](https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3).
+해당 iOS 프로젝트는 Clean Layered Architecture와 MVVM 방식으로 구현되어있다. ("Movie"라는 아이템 이름으로 해당 템플릿이 사용되었다.) **자세한 정보는 중간 포스트에서 확인해볼 수 있다:** [Medium Post about Clean Architecture + MVVM](https://tech.olx.com/clean-architecture-and-mvvm-on-ios-c9d167d9f5b3).
 
 
 
