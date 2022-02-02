@@ -69,8 +69,9 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     }
 
     private func setupBehaviours() {
-        addBehaviors([BackButtonEmptyTitleNavigationBarBehavior(),
-                      BlackStyleNavigationBarBehavior()])
+        addBehaviors([
+            BackButtonEmptyTitleNavigationBarBehavior()
+        ])
     }
 
     private func updateItems() {
