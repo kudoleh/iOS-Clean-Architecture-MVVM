@@ -28,32 +28,32 @@ public class Endpoint<R>: ResponseRequestable {
     public let path: String
     public let isFullPath: Bool
     public let method: HTTPMethodType
-    public let headerParamaters: [String: String]
+    public let headerParameters: [String: String]
     public let queryParametersEncodable: Encodable?
     public let queryParameters: [String: Any]
-    public let bodyParamatersEncodable: Encodable?
-    public let bodyParamaters: [String: Any]
+    public let bodyParametersEncodable: Encodable?
+    public let bodyParameters: [String: Any]
     public let bodyEncoding: BodyEncoding
     public let responseDecoder: ResponseDecoder
     
     init(path: String,
          isFullPath: Bool = false,
          method: HTTPMethodType,
-         headerParamaters: [String: String] = [:],
+         headerParameters: [String: String] = [:],
          queryParametersEncodable: Encodable? = nil,
          queryParameters: [String: Any] = [:],
-         bodyParamatersEncodable: Encodable? = nil,
-         bodyParamaters: [String: Any] = [:],
+         bodyParametersEncodable: Encodable? = nil,
+         bodyParameters: [String: Any] = [:],
          bodyEncoding: BodyEncoding = .jsonSerializationData,
          responseDecoder: ResponseDecoder = JSONResponseDecoder()) {
         self.path = path
         self.isFullPath = isFullPath
         self.method = method
-        self.headerParamaters = headerParamaters
+        self.headerParameters = headerParameters
         self.queryParametersEncodable = queryParametersEncodable
         self.queryParameters = queryParameters
-        self.bodyParamatersEncodable = bodyParamatersEncodable
-        self.bodyParamaters = bodyParamaters
+        self.bodyParametersEncodable = bodyParametersEncodable
+        self.bodyParameters = bodyParameters
         self.bodyEncoding = bodyEncoding
         self.responseDecoder = responseDecoder
     }
@@ -63,11 +63,11 @@ public protocol Requestable {
     var path: String { get }
     var isFullPath: Bool { get }
     var method: HTTPMethodType { get }
-    var headerParamaters: [String: String] { get }
+    var headerParameters: [String: String] { get }
     var queryParametersEncodable: Encodable? { get }
     var queryParameters: [String: Any] { get }
-    var bodyParamatersEncodable: Encodable? { get }
-    var bodyParamaters: [String: Any] { get }
+    var bodyParametersEncodable: Encodable? { get }
+    var bodyParameters: [String: Any] { get }
     var bodyEncoding: BodyEncoding { get }
     
     func urlRequest(with networkConfig: NetworkConfigurable) throws -> URLRequest
@@ -110,23 +110,23 @@ extension Requestable {
         let url = try self.url(with: config)
         var urlRequest = URLRequest(url: url)
         var allHeaders: [String: String] = config.headers
-        headerParamaters.forEach { allHeaders.updateValue($1, forKey: $0) }
+        headerParameters.forEach { allHeaders.updateValue($1, forKey: $0) }
 
-        let bodyParamaters = try bodyParamatersEncodable?.toDictionary() ?? self.bodyParamaters
-        if !bodyParamaters.isEmpty {
-            urlRequest.httpBody = encodeBody(bodyParamaters: bodyParamaters, bodyEncoding: bodyEncoding)
+        let bodyParameters = try bodyParametersEncodable?.toDictionary() ?? self.bodyParameters
+        if !bodyParameters.isEmpty {
+            urlRequest.httpBody = encodeBody(bodyParameters: bodyParameters, bodyEncoding: bodyEncoding)
         }
         urlRequest.httpMethod = method.rawValue
         urlRequest.allHTTPHeaderFields = allHeaders
         return urlRequest
     }
     
-    private func encodeBody(bodyParamaters: [String: Any], bodyEncoding: BodyEncoding) -> Data? {
+    private func encodeBody(bodyParameters: [String: Any], bodyEncoding: BodyEncoding) -> Data? {
         switch bodyEncoding {
         case .jsonSerializationData:
-            return try? JSONSerialization.data(withJSONObject: bodyParamaters)
+            return try? JSONSerialization.data(withJSONObject: bodyParameters)
         case .stringEncodingAscii:
-            return bodyParamaters.queryString.data(using: String.Encoding.ascii, allowLossyConversion: true)
+            return bodyParameters.queryString.data(using: String.Encoding.ascii, allowLossyConversion: true)
         }
     }
 }
