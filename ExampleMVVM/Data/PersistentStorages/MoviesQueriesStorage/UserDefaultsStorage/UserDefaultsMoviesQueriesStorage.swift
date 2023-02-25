@@ -54,7 +54,7 @@ extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
             var queries = self.fetchMoviesQueries()
             self.cleanUpQueries(for: query, in: &queries)
             queries.insert(query, at: 0)
-            self.persist(moviesQuries: queries)
+            self.persist(moviesQueries: queries)
 
             completion(.success(query))
         }
