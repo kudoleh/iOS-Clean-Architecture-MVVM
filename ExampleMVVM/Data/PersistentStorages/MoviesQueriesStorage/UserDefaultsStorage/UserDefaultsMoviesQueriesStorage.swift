@@ -17,7 +17,7 @@ final class UserDefaultsMoviesQueriesStorage {
         self.userDefaults = userDefaults
     }
 
-    private func fetchMoviesQuries() -> [MovieQuery] {
+    private func fetchMoviesQueries() -> [MovieQuery] {
         if let queriesData = userDefaults.object(forKey: recentsMoviesQueriesKey) as? Data {
             if let movieQueryList = try? JSONDecoder().decode(MovieQueriesListUDS.self, from: queriesData) {
                 return movieQueryList.list.map { $0.toDomain() }
@@ -26,9 +26,9 @@ final class UserDefaultsMoviesQueriesStorage {
         return []
     }
 
-    private func persist(moviesQuries: [MovieQuery]) {
+    private func persist(moviesQueries: [MovieQuery]) {
         let encoder = JSONEncoder()
-        let movieQueryUDSs = moviesQuries.map(MovieQueryUDS.init)
+        let movieQueryUDSs = moviesQueries.map(MovieQueryUDS.init)
         if let encoded = try? encoder.encode(MovieQueriesListUDS(list: movieQueryUDSs)) {
             userDefaults.set(encoded, forKey: recentsMoviesQueriesKey)
         }
@@ -41,7 +41,7 @@ extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
 
-            var queries = self.fetchMoviesQuries()
+            var queries = self.fetchMoviesQueries()
             queries = queries.count < self.maxStorageLimit ? queries : Array(queries[0..<maxCount])
             completion(.success(queries))
         }
@@ -51,7 +51,7 @@ extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
 
-            var queries = self.fetchMoviesQuries()
+            var queries = self.fetchMoviesQueries()
             self.cleanUpQueries(for: query, in: &queries)
             queries.insert(query, at: 0)
             self.persist(moviesQuries: queries)

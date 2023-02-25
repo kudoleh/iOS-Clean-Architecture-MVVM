@@ -9,7 +9,7 @@ import XCTest
 
 class MovieDetailsViewModelTests: XCTestCase {
     
-    private enum PosterImageDowloadError: Error {
+    private enum PosterImageDownloadError: Error {
         case someError
     }
     
