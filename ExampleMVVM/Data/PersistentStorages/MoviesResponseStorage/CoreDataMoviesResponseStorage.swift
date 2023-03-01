@@ -41,7 +41,7 @@ final class CoreDataMoviesResponseStorage {
 
 extension CoreDataMoviesResponseStorage: MoviesResponseStorage {
 
-    func getResponse(for requestDto: MoviesRequestDTO, completion: @escaping (Result<MoviesResponseDTO?, CoreDataStorageError>) -> Void) {
+    func getResponse(for requestDto: MoviesRequestDTO, completion: @escaping (Result<MoviesResponseDTO?, Error>) -> Void) {
         coreDataStorage.performBackgroundTask { context in
             do {
                 let fetchRequest = self.fetchRequest(for: requestDto)
