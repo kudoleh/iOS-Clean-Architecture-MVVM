@@ -9,7 +9,7 @@ import Foundation
 import XCTest
 
 class PosterImagesRepositoryMock: PosterImagesRepository {
-    var expectation: XCTestExpectation?
+    var completionCalls = 0
     var error: Error?
     var image = Data()
     var validateInput: ((String, Int) -> Void)?
@@ -21,7 +21,7 @@ class PosterImagesRepositoryMock: PosterImagesRepository {
         } else {
             completion(.success(image))
         }
-        expectation?.fulfill()
+        completionCalls += 1
         return nil
     }
 }

@@ -25,7 +25,7 @@ extension DefaultPosterImagesRepository: PosterImagesRepository {
         task.networkTask = dataTransferService.request(with: endpoint) { (result: Result<Data, DataTransferError>) in
 
             let result = result.mapError { $0 as Error }
-            DispatchQueue.main.async { completion(result) }
+            completion(result)
         }
         return task
     }

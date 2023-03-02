@@ -23,7 +23,7 @@ class MoviesListViewModelTests: XCTestCase {
     }()
     
     class SearchMoviesUseCaseMock: SearchMoviesUseCase {
-        var expectation: XCTestExpectation?
+        var executeCallCount: Int = 0
         var error: Error?
         var page = MoviesPage(page: 0, totalPages: 0, movies: [])
         
@@ -35,7 +35,7 @@ class MoviesListViewModelTests: XCTestCase {
             } else {
                 completion(.success(page))
             }
-            expectation?.fulfill()
+            executeCallCount += 1
             return nil
         }
     }
@@ -43,71 +43,65 @@ class MoviesListViewModelTests: XCTestCase {
     func test_whenSearchMoviesUseCaseRetrievesFirstPage_thenViewModelContainsOnlyFirstPage() {
         // given
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
-        searchMoviesUseCaseMock.expectation = self.expectation(description: "contains only first page")
         searchMoviesUseCaseMock.page = MoviesPage(page: 1, totalPages: 2, movies: moviesPages[0].movies)
         let viewModel = DefaultMoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock)
         // when
         viewModel.didSearch(query: "query")
         
         // then
-        waitForExpectations(timeout: 5, handler: nil)
         XCTAssertEqual(viewModel.currentPage, 1)
         XCTAssertTrue(viewModel.hasMorePages)
+        XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
     }
     
     func test_whenSearchMoviesUseCaseRetrievesFirstAndSecondPage_thenViewModelContainsTwoPages() {
         // given
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
-        searchMoviesUseCaseMock.expectation = self.expectation(description: "First page loaded")
         searchMoviesUseCaseMock.page = MoviesPage(page: 1, totalPages: 2, movies: moviesPages[0].movies)
         let viewModel = DefaultMoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock)
         // when
         viewModel.didSearch(query: "query")
-        waitForExpectations(timeout: 5, handler: nil)
+        XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
         
-        searchMoviesUseCaseMock.expectation = self.expectation(description: "Second page loaded")
         searchMoviesUseCaseMock.page = MoviesPage(page: 2, totalPages: 2, movies: moviesPages[1].movies)
         
         viewModel.didLoadNextPage()
         
         // then
-        waitForExpectations(timeout: 5, handler: nil)
         XCTAssertEqual(viewModel.currentPage, 2)
         XCTAssertFalse(viewModel.hasMorePages)
+        XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 2)
     }
     
     func test_whenSearchMoviesUseCaseReturnsError_thenViewModelContainsError() {
         // given
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
-        searchMoviesUseCaseMock.expectation = self.expectation(description: "contain errors")
         searchMoviesUseCaseMock.error = SearchMoviesUseCaseError.someError
         let viewModel = DefaultMoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock)
         // when
         viewModel.didSearch(query: "query")
         
         // then
-        waitForExpectations(timeout: 5, handler: nil)
         XCTAssertNotNil(viewModel.error)
+        XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
     }
     
     func test_whenLastPage_thenHasNoPageIsTrue() {
         // given
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
-        searchMoviesUseCaseMock.expectation = self.expectation(description: "First page loaded")
         searchMoviesUseCaseMock.page = MoviesPage(page: 1, totalPages: 2, movies: moviesPages[0].movies)
         let viewModel = DefaultMoviesListViewModel(searchMoviesUseCase: searchMoviesUseCaseMock)
         // when
         viewModel.didSearch(query: "query")
-        waitForExpectations(timeout: 5, handler: nil)
+        XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
         
-        searchMoviesUseCaseMock.expectation = self.expectation(description: "Second page loaded")
         searchMoviesUseCaseMock.page = MoviesPage(page: 2, totalPages: 2, movies: moviesPages[1].movies)
 
         viewModel.didLoadNextPage()
         
         // then
-        waitForExpectations(timeout: 5, handler: nil)
         XCTAssertEqual(viewModel.currentPage, 2)
         XCTAssertFalse(viewModel.hasMorePages)
+        XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 2)
     }
 }

@@ -40,13 +40,17 @@ class NetworkServiceTests: XCTestCase {
     func test_whenMockDataPassed_shouldReturnProperResponse() {
         //given
         let config = NetworkConfigurableMock()
-        let expectation = self.expectation(description: "Should return correct data")
+        var completionCallsCount = 0
         
         let expectedResponseData = "Response data".data(using: .utf8)!
-        let sut = DefaultNetworkService(config: config,
-                                        sessionManager: NetworkSessionManagerMock(response: nil,
-                                                                                  data: expectedResponseData,
-                                                                                  error: nil))
+        let sut = DefaultNetworkService(
+            config: config,
+            sessionManager: NetworkSessionManagerMock(
+                response: nil,
+                data: expectedResponseData,
+                error: nil
+            )
+        )
         //when
         _ = sut.request(endpoint: EndpointMock(path: "http://mock.test.com", method: .get)) { result in
             guard let responseData = try? result.get() else {
@@ -54,16 +58,16 @@ class NetworkServiceTests: XCTestCase {
                 return
             }
             XCTAssertEqual(responseData, expectedResponseData)
-            expectation.fulfill()
+            completionCallsCount += 1
         }
         //then
-        wait(for: [expectation], timeout: 0.1)
+        XCTAssertEqual(completionCallsCount, 1)
     }
     
     func test_whenErrorWithNSURLErrorCancelledReturned_shouldReturnCancelledError() {
         //given
         let config = NetworkConfigurableMock()
-        let expectation = self.expectation(description: "Should return hasStatusCode error")
+        var completionCallsCount = 0
         
         let cancelledError = NSError(domain: "network", code: NSURLErrorCancelled, userInfo: nil)
         let sut = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
@@ -80,17 +84,17 @@ class NetworkServiceTests: XCTestCase {
                     return
                 }
                 
-                expectation.fulfill()
+                completionCallsCount += 1
             }
         }
         //then
-        wait(for: [expectation], timeout: 0.1)
+        XCTAssertEqual(completionCallsCount, 1)
     }
 
     func test_whenStatusCodeEqualOrAbove400_shouldReturnhasStatusCodeError() {
         //given
         let config = NetworkConfigurableMock()
-        let expectation = self.expectation(description: "Should return hasStatusCode error")
+        var completionCallsCount = 0
         
         let response = HTTPURLResponse(url: URL(string: "test_url")!,
                                        statusCode: 500,
@@ -107,18 +111,18 @@ class NetworkServiceTests: XCTestCase {
             } catch let error {
                 if case NetworkError.error(let statusCode, _) = error {
                     XCTAssertEqual(statusCode, 500)
-                    expectation.fulfill()
+                    completionCallsCount += 1
                 }
             }
         }
         //then
-        wait(for: [expectation], timeout: 0.1)
+        XCTAssertEqual(completionCallsCount, 1)
     }
     
     func test_whenErrorWithNSURLErrorNotConnectedToInternetReturned_shouldReturnNotConnectedError() {
         //given
         let config = NetworkConfigurableMock()
-        let expectation = self.expectation(description: "Should return hasStatusCode error")
+        var completionCallsCount = 0
         
         let error = NSError(domain: "network", code: NSURLErrorNotConnectedToInternet, userInfo: nil)
         let sut = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
@@ -136,11 +140,11 @@ class NetworkServiceTests: XCTestCase {
                     return
                 }
                 
-                expectation.fulfill()
+                completionCallsCount += 1
             }
         }
         //then
-        wait(for: [expectation], timeout: 0.1)
+        XCTAssertEqual(completionCallsCount, 1)
     }
     
     func test_whenhasStatusCodeUsedWithWrongError_shouldReturnFalse() {
@@ -162,7 +166,7 @@ class NetworkServiceTests: XCTestCase {
     func test_whenErrorWithNSURLErrorNotConnectedToInternetReturned_shouldLogThisError() {
         //given
         let config = NetworkConfigurableMock()
-        let expectation = self.expectation(description: "Should return hasStatusCode error")
+        var completionCallsCount = 0
         
         let error = NSError(domain: "network", code: NSURLErrorNotConnectedToInternet, userInfo: nil)
         let networkErrorLogger = NetworkErrorLoggerMock()
@@ -181,12 +185,12 @@ class NetworkServiceTests: XCTestCase {
                     return
                 }
                 
-                expectation.fulfill()
+                completionCallsCount += 1
             }
         }
         
         //then
-        wait(for: [expectation], timeout: 0.1)
+        XCTAssertEqual(completionCallsCount, 1)
         XCTAssertTrue(networkErrorLogger.loggedErrors.contains {
             guard case NetworkError.notConnected = $0 else { return false }
             return true

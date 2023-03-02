@@ -20,7 +20,7 @@ class DataTransferServiceTests: XCTestCase {
     func test_whenReceivedValidJsonInResponse_shouldDecodeResponseToDecodableObject() {
         //given
         let config = NetworkConfigurableMock()
-        let expectation = self.expectation(description: "Should decode mock object")
+        var completionCallsCount = 0
         
         let responseData = #"{"name": "Hello"}"#.data(using: .utf8)
         let networkService = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
@@ -33,19 +33,19 @@ class DataTransferServiceTests: XCTestCase {
             do {
                 let object = try result.get()
                 XCTAssertEqual(object.name, "Hello")
-                expectation.fulfill()
+                completionCallsCount += 1
             } catch {
                 XCTFail("Failed decoding MockObject")
             }
         }
         //then
-        wait(for: [expectation], timeout: 0.1)
+        XCTAssertEqual(completionCallsCount, 1)
     }
     
     func test_whenInvalidResponse_shouldNotDecodeObject() {
         //given
         let config = NetworkConfigurableMock()
-        let expectation = self.expectation(description: "Should not decode mock object")
+        var completionCallsCount = 0
         
         let responseData = #"{"age": 20}"#.data(using: .utf8)
         let networkService = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
@@ -59,17 +59,17 @@ class DataTransferServiceTests: XCTestCase {
                 _ = try result.get()
                 XCTFail("Should not happen")
             } catch {
-                expectation.fulfill()
+                completionCallsCount += 1
             }
         }
         //then
-        wait(for: [expectation], timeout: 0.1)
+        XCTAssertEqual(completionCallsCount, 1)
     }
     
     func test_whenBadRequestReceived_shouldRethrowNetworkError() {
         //given
         let config = NetworkConfigurableMock()
-        let expectation = self.expectation(description: "Should throw network error")
+        var completionCallsCount = 0
         
         let responseData = #"{"invalidStructure": "Nothing"}"#.data(using: .utf8)!
         let response = HTTPURLResponse(url: URL(string: "test_url")!,
@@ -89,20 +89,20 @@ class DataTransferServiceTests: XCTestCase {
             } catch let error {
                 
                 if case DataTransferError.networkFailure(NetworkError.error(statusCode: 500, _)) = error {
-                    expectation.fulfill()
+                    completionCallsCount += 1
                 } else {
                     XCTFail("Wrong error")
                 }
             }
         }
         //then
-        wait(for: [expectation], timeout: 0.1)
+        XCTAssertEqual(completionCallsCount, 1)
     }
     
     func test_whenNoDataReceived_shouldThrowNoDataError() {
         //given
         let config = NetworkConfigurableMock()
-        let expectation = self.expectation(description: "Should throw no data error")
+        var completionCallsCount = 0
         
         let response = HTTPURLResponse(url: URL(string: "test_url")!,
                                        statusCode: 200,
@@ -120,13 +120,13 @@ class DataTransferServiceTests: XCTestCase {
                 XCTFail("Should not happen")
             } catch let error {
                 if case DataTransferError.noResponse = error {
-                    expectation.fulfill()
+                    completionCallsCount += 1
                 } else {
                     XCTFail("Wrong error")
                 }
             }
         }
         //then
-        wait(for: [expectation], timeout: 0.1)
+        XCTAssertEqual(completionCallsCount, 1)
     }
 }

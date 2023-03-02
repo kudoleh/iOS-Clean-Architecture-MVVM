@@ -11,6 +11,7 @@ final class UserDefaultsMoviesQueriesStorage {
     private let maxStorageLimit: Int
     private let recentsMoviesQueriesKey = "recentsMoviesQueries"
     private var userDefaults: UserDefaults
+    private let backgroundQueue: DispatchQueue = .global(qos: .userInitiated)
     
     init(maxStorageLimit: Int, userDefaults: UserDefaults = UserDefaults.standard) {
         self.maxStorageLimit = maxStorageLimit
@@ -38,7 +39,7 @@ final class UserDefaultsMoviesQueriesStorage {
 extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
 
     func fetchRecentsQueries(maxCount: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+        backgroundQueue.async { [weak self] in
             guard let self = self else { return }
 
             var queries = self.fetchMoviesQueries()
@@ -48,7 +49,7 @@ extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
     }
 
     func saveRecentQuery(query: MovieQuery, completion: @escaping (Result<MovieQuery, Error>) -> Void) {
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+        backgroundQueue.async { [weak self] in
             guard let self = self else { return }
 
             var queries = self.fetchMoviesQueries()

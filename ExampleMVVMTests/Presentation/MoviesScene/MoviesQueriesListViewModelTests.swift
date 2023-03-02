@@ -21,7 +21,7 @@ class MoviesQueriesListViewModelTests: XCTestCase {
                         MovieQuery(query: "query5")]
 
     class FetchRecentMovieQueriesUseCaseMock: UseCase {
-        var expectation: XCTestExpectation?
+        var startCalledCount: Int = 0
         var error: Error?
         var movieQueries: [MovieQuery] = []
         var completion: (Result<[MovieQuery], Error>) -> Void = { _ in }
@@ -32,7 +32,7 @@ class MoviesQueriesListViewModelTests: XCTestCase {
             } else {
                 completion(.success(movieQueries))
             }
-            expectation?.fulfill()
+            startCalledCount += 1
             return nil
         }
     }
@@ -48,54 +48,58 @@ class MoviesQueriesListViewModelTests: XCTestCase {
     func test_whenFetchRecentMovieQueriesUseCaseReturnsQueries_thenShowTheseQueries() {
         // given
         let useCase = FetchRecentMovieQueriesUseCaseMock()
-        useCase.expectation = self.expectation(description: "Recent query fetched")
         useCase.movieQueries = movieQueries
-        let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
-                                                        fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(useCase))
+        let viewModel = DefaultMoviesQueryListViewModel(
+            numberOfQueriesToShow: 3,
+            fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(useCase)
+        )
 
         // when
         viewModel.viewWillAppear()
         
         // then
-        waitForExpectations(timeout: 5, handler: nil)
         XCTAssertEqual(viewModel.items.value.map { $0.query }, movieQueries.map { $0.query })
+        XCTAssertEqual(useCase.startCalledCount, 1)
     }
     
     func test_whenFetchRecentMovieQueriesUseCaseReturnsError_thenDontShowAnyQuery() {
         // given
         let useCase = FetchRecentMovieQueriesUseCaseMock()
-        useCase.expectation = self.expectation(description: "Recent query fetched")
         useCase.error = FetchRecentQueriedUseCase.someError
-        let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
-                                                        fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(useCase))
+        let viewModel = DefaultMoviesQueryListViewModel(
+            numberOfQueriesToShow: 3,
+            fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(useCase)
+        )
         
         // when
         viewModel.viewWillAppear()
         
         // then
-        waitForExpectations(timeout: 5, handler: nil)
         XCTAssertTrue(viewModel.items.value.isEmpty)
+        XCTAssertEqual(useCase.startCalledCount, 1)
     }
     
     func test_whenDidSelectQueryEventIsReceived_thenCallDidSelectAction() {
         // given
         let selectedQueryItem = MovieQuery(query: "query1")
         var actionMovieQuery: MovieQuery?
-        let expectation = self.expectation(description: "Delegate notified")
+        var delegateNotifiedCount = 0
         let didSelect: MoviesQueryListViewModelDidSelectAction = { movieQuery in
             actionMovieQuery = movieQuery
-            expectation.fulfill()
+            delegateNotifiedCount += 1
         }
         
-        let viewModel = DefaultMoviesQueryListViewModel(numberOfQueriesToShow: 3,
-                                                        fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(FetchRecentMovieQueriesUseCaseMock()),
-                                                        didSelect: didSelect)
+        let viewModel = DefaultMoviesQueryListViewModel(
+            numberOfQueriesToShow: 3,
+            fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(FetchRecentMovieQueriesUseCaseMock()),
+            didSelect: didSelect
+        )
         
         // when
         viewModel.didSelect(item: MoviesQueryListItemViewModel(query: selectedQueryItem.query))
         
         // then
-        waitForExpectations(timeout: 5, handler: nil)
         XCTAssertEqual(actionMovieQuery, selectedQueryItem)
+        XCTAssertEqual(delegateNotifiedCount, 1)
     }
 }

@@ -61,11 +61,11 @@ extension DefaultDataTransferService: DataTransferService {
             switch result {
             case .success(let data):
                 let result: Result<T, DataTransferError> = self.decode(data: data, decoder: endpoint.responseDecoder)
-                DispatchQueue.main.async { return completion(result) }
+                return completion(result)
             case .failure(let error):
                 self.errorLogger.log(error: error)
                 let error = self.resolve(networkError: error)
-                DispatchQueue.main.async { return completion(.failure(error)) }
+                return completion(.failure(error))
             }
         }
     }
@@ -74,11 +74,11 @@ extension DefaultDataTransferService: DataTransferService {
         return self.networkService.request(endpoint: endpoint) { result in
             switch result {
             case .success:
-                DispatchQueue.main.async { return completion(.success(())) }
+                return completion(.success(()))
             case .failure(let error):
                 self.errorLogger.log(error: error)
                 let error = self.resolve(networkError: error)
-                DispatchQueue.main.async { return completion(.failure(error)) }
+                return completion(.failure(error))
             }
         }
     }
