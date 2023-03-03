@@ -1,10 +1,3 @@
-//
-//  MoviesQueryListViewModel.swift
-//  ExampleMVVM
-//
-//  Created by Oleh on 03.10.18.
-//
-
 import Foundation
 
 typealias MoviesQueryListViewModelDidSelectAction = (MovieQuery) -> Void
@@ -23,7 +16,7 @@ protocol MoviesQueryListViewModel: MoviesQueryListViewModelInput, MoviesQueryLis
 typealias FetchRecentMovieQueriesUseCaseFactory = (
     FetchRecentMovieQueriesUseCase.RequestValue,
     @escaping (FetchRecentMovieQueriesUseCase.ResultValue) -> Void
-    ) -> UseCase
+) -> UseCase
 
 final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
 
@@ -35,9 +28,10 @@ final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
     // MARK: - OUTPUT
     let items: Observable<[MoviesQueryListItemViewModel]> = Observable([])
     
-    init(numberOfQueriesToShow: Int,
-         fetchRecentMovieQueriesUseCaseFactory: @escaping FetchRecentMovieQueriesUseCaseFactory,
-         didSelect: MoviesQueryListViewModelDidSelectAction? = nil
+    init(
+        numberOfQueriesToShow: Int,
+        fetchRecentMovieQueriesUseCaseFactory: @escaping FetchRecentMovieQueriesUseCaseFactory,
+        didSelect: MoviesQueryListViewModelDidSelectAction? = nil
     ) {
         self.numberOfQueriesToShow = numberOfQueriesToShow
         self.fetchRecentMovieQueriesUseCaseFactory = fetchRecentMovieQueriesUseCaseFactory

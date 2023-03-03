@@ -1,10 +1,3 @@
-//
-//  MoviesListTableViewController.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 01.10.18.
-//
-
 import UIKit
 
 final class MoviesListTableViewController: UITableViewController {
@@ -53,8 +46,10 @@ extension MoviesListTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MoviesListItemCell.reuseIdentifier,
-                                                       for: indexPath) as? MoviesListItemCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: MoviesListItemCell.reuseIdentifier,
+            for: indexPath
+        ) as? MoviesListItemCell else {
             assertionFailure("Cannot dequeue reusable cell \(MoviesListItemCell.self) with reuseIdentifier: \(MoviesListItemCell.reuseIdentifier)")
             return UITableViewCell()
         }

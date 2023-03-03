@@ -1,10 +1,3 @@
-//
-//  NetworkServiceTests.swift
-//  ExampleMVVMTests
-//
-//  Created by Oleh Kudinov on 16.08.19.
-//
-
 import XCTest
 
 class NetworkServiceTests: XCTestCase {

@@ -1,16 +1,13 @@
-//
-//  MoviesSearchFlowCoordinator.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 03.03.19.
-//
-
 import UIKit
 
 protocol MoviesSearchFlowCoordinatorDependencies  {
-    func makeMoviesListViewController(actions: MoviesListViewModelActions) -> MoviesListViewController
+    func makeMoviesListViewController(
+        actions: MoviesListViewModelActions
+    ) -> MoviesListViewController
     func makeMoviesDetailsViewController(movie: Movie) -> UIViewController
-    func makeMoviesQueriesSuggestionsListViewController(didSelect: @escaping MoviesQueryListViewModelDidSelectAction) -> UIViewController
+    func makeMoviesQueriesSuggestionsListViewController(
+        didSelect: @escaping MoviesQueryListViewModelDidSelectAction
+    ) -> UIViewController
 }
 
 final class MoviesSearchFlowCoordinator {

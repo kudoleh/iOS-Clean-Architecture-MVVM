@@ -1,10 +1,3 @@
-//
-//  UIViewController+AddChild.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 25.08.19.
-//
-
 import UIKit
 
 extension UIViewController {

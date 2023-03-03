@@ -1,10 +1,3 @@
-//
-//  CoreDataStorage.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 26/03/2020.
-//
-
 import CoreData
 
 enum CoreDataStorageError: Error {
@@ -17,8 +10,6 @@ final class CoreDataStorage {
 
     static let shared = CoreDataStorage()
     
-    private init() {}
-
     // MARK: - Core Data stack
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "CoreDataStorage")

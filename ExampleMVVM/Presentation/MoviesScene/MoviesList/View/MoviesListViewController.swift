@@ -1,10 +1,3 @@
-//
-//  MoviesListViewController.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 01.10.18.
-//
-
 import UIKit
 
 final class MoviesListViewController: UIViewController, StoryboardInstantiable, Alertable {
@@ -23,8 +16,10 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
 
     // MARK: - Lifecycle
 
-    static func create(with viewModel: MoviesListViewModel,
-                       posterImagesRepository: PosterImagesRepository?) -> MoviesListViewController {
+    static func create(
+        with viewModel: MoviesListViewModel,
+        posterImagesRepository: PosterImagesRepository?
+    ) -> MoviesListViewController {
         let view = MoviesListViewController.instantiateViewController()
         view.viewModel = viewModel
         view.posterImagesRepository = posterImagesRepository
@@ -148,15 +143,15 @@ extension MoviesListViewController: UISearchBarDelegate {
 }
 
 extension MoviesListViewController: UISearchControllerDelegate {
-    public func willPresentSearchController(_ searchController: UISearchController) {
+    func willPresentSearchController(_ searchController: UISearchController) {
         updateQueriesSuggestions()
     }
 
-    public func willDismissSearchController(_ searchController: UISearchController) {
+    func willDismissSearchController(_ searchController: UISearchController) {
         updateQueriesSuggestions()
     }
 
-    public func didDismissSearchController(_ searchController: UISearchController) {
+    func didDismissSearchController(_ searchController: UISearchController) {
         updateQueriesSuggestions()
     }
 }

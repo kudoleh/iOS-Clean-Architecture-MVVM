@@ -1,10 +1,3 @@
-//
-//  CoreDataMoviesResponseStorage.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 05/04/2020.
-//
-
 import Foundation
 import CoreData
 
@@ -18,7 +11,9 @@ final class CoreDataMoviesResponseStorage {
 
     // MARK: - Private
 
-    private func fetchRequest(for requestDto: MoviesRequestDTO) -> NSFetchRequest<MoviesRequestEntity> {
+    private func fetchRequest(
+        for requestDto: MoviesRequestDTO
+    ) -> NSFetchRequest<MoviesRequestEntity> {
         let request: NSFetchRequest = MoviesRequestEntity.fetchRequest()
         request.predicate = NSPredicate(format: "%K = %@ AND %K = %d",
                                         #keyPath(MoviesRequestEntity.query), requestDto.query,
@@ -26,7 +21,10 @@ final class CoreDataMoviesResponseStorage {
         return request
     }
 
-    private func deleteResponse(for requestDto: MoviesRequestDTO, in context: NSManagedObjectContext) {
+    private func deleteResponse(
+        for requestDto: MoviesRequestDTO,
+        in context: NSManagedObjectContext
+    ) {
         let request = fetchRequest(for: requestDto)
 
         do {
@@ -41,7 +39,10 @@ final class CoreDataMoviesResponseStorage {
 
 extension CoreDataMoviesResponseStorage: MoviesResponseStorage {
 
-    func getResponse(for requestDto: MoviesRequestDTO, completion: @escaping (Result<MoviesResponseDTO?, Error>) -> Void) {
+    func getResponse(
+        for requestDto: MoviesRequestDTO,
+        completion: @escaping (Result<MoviesResponseDTO?, Error>) -> Void
+    ) {
         coreDataStorage.performBackgroundTask { context in
             do {
                 let fetchRequest = self.fetchRequest(for: requestDto)
@@ -54,7 +55,10 @@ extension CoreDataMoviesResponseStorage: MoviesResponseStorage {
         }
     }
 
-    func save(response responseDto: MoviesResponseDTO, for requestDto: MoviesRequestDTO) {
+    func save(
+        response responseDto: MoviesResponseDTO,
+        for requestDto: MoviesRequestDTO
+    ) {
         coreDataStorage.performBackgroundTask { context in
             do {
                 self.deleteResponse(for: requestDto, in: context)

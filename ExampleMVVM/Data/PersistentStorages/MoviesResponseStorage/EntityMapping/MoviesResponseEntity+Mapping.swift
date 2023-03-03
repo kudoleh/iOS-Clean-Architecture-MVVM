@@ -1,29 +1,26 @@
-//
-//  MoviesResponseEntity+Mapping.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 05/04/2020.
-//
-
 import Foundation
 import CoreData
 
 extension MoviesResponseEntity {
     func toDTO() -> MoviesResponseDTO {
-        return .init(page: Int(page),
-                     totalPages: Int(totalPages),
-                     movies: movies?.allObjects.map { ($0 as! MovieResponseEntity).toDTO() } ?? [])
+        return .init(
+            page: Int(page),
+            totalPages: Int(totalPages),
+            movies: movies?.allObjects.map { ($0 as! MovieResponseEntity).toDTO() } ?? []
+        )
     }
 }
 
 extension MovieResponseEntity {
     func toDTO() -> MoviesResponseDTO.MovieDTO {
-        return .init(id: Int(id),
-                     title: title,
-                     genre: MoviesResponseDTO.MovieDTO.GenreDTO(rawValue: genre ?? ""),
-                     posterPath: posterPath,
-                     overview: overview,
-                     releaseDate: releaseDate)
+        return .init(
+            id: Int(id),
+            title: title,
+            genre: MoviesResponseDTO.MovieDTO.GenreDTO(rawValue: genre ?? ""),
+            posterPath: posterPath,
+            overview: overview,
+            releaseDate: releaseDate
+        )
     }
 }
 

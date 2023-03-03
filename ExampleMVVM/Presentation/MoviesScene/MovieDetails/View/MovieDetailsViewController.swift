@@ -1,11 +1,3 @@
-//
-//  MovieDetailsViewController.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 04.08.19.
-//  Copyright (c) 2019 All rights reserved.
-//
-
 import UIKit
 
 final class MovieDetailsViewController: UIViewController, StoryboardInstantiable {

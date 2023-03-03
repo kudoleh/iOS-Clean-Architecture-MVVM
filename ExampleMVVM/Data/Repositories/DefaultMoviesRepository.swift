@@ -1,9 +1,3 @@
-//
-//  DefaultMoviesRepository.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 01.10.18.
-//
 // **Note**: DTOs structs are mapped into Domains here, and Repository protocols does not contain DTOs
 
 import Foundation
@@ -13,7 +7,10 @@ final class DefaultMoviesRepository {
     private let dataTransferService: DataTransferService
     private let cache: MoviesResponseStorage
 
-    init(dataTransferService: DataTransferService, cache: MoviesResponseStorage) {
+    init(
+        dataTransferService: DataTransferService,
+        cache: MoviesResponseStorage
+    ) {
         self.dataTransferService = dataTransferService
         self.cache = cache
     }
@@ -21,9 +18,12 @@ final class DefaultMoviesRepository {
 
 extension DefaultMoviesRepository: MoviesRepository {
 
-    public func fetchMoviesList(query: MovieQuery, page: Int,
-                                cached: @escaping (MoviesPage) -> Void,
-                                completion: @escaping (Result<MoviesPage, Error>) -> Void) -> Cancellable? {
+    func fetchMoviesList(
+        query: MovieQuery,
+        page: Int,
+        cached: @escaping (MoviesPage) -> Void,
+        completion: @escaping (Result<MoviesPage, Error>) -> Void
+    ) -> Cancellable? {
 
         let requestDTO = MoviesRequestDTO(query: query.query, page: page)
         let task = RepositoryTask()

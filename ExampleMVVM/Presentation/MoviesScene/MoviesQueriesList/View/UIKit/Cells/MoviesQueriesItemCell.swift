@@ -1,10 +1,3 @@
-//
-//  MoviesQueriesItemCell.swift
-//  ExampleMVVM
-//
-//  Created by Oleh on 03.10.18.
-//
-
 import UIKit
 
 final class MoviesQueriesItemCell: UITableViewCell {

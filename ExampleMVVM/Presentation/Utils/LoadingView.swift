@@ -1,17 +1,10 @@
-//
-//  LoadingView.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 28/03/2020.
-//
-
 import UIKit
 
-public class LoadingView {
+class LoadingView {
 
     internal static var spinner: UIActivityIndicatorView?
 
-    public static func show() {
+    static func show() {
         DispatchQueue.main.async {
             NotificationCenter.default.addObserver(self, selector: #selector(update), name: UIDevice.orientationDidChangeNotification, object: nil)
             if spinner == nil, let window = UIApplication.shared.keyWindow {
@@ -27,7 +20,7 @@ public class LoadingView {
         }
     }
 
-    public static func hide() {
+    static func hide() {
         DispatchQueue.main.async {
             guard let spinner = spinner else { return }
             spinner.stopAnimating()
@@ -36,7 +29,7 @@ public class LoadingView {
         }
     }
 
-    @objc public static func update() {
+    @objc static func update() {
         DispatchQueue.main.async {
             if spinner != nil {
                 hide()

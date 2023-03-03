@@ -1,10 +1,3 @@
-//
-//  MoviesListViewModel.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 01.10.18.
-//
-
 import Foundation
 
 struct MoviesListViewModelActions {
@@ -42,7 +35,7 @@ protocol MoviesListViewModelOutput {
     var searchBarPlaceholder: String { get }
 }
 
-protocol MoviesListViewModel: MoviesListViewModelInput, MoviesListViewModelOutput {}
+typealias MoviesListViewModel = MoviesListViewModelInput & MoviesListViewModelOutput
 
 final class DefaultMoviesListViewModel: MoviesListViewModel {
 
@@ -71,9 +64,10 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
 
     // MARK: - Init
-
-    init(searchMoviesUseCase: SearchMoviesUseCase,
-         actions: MoviesListViewModelActions? = nil
+    
+    init(
+        searchMoviesUseCase: SearchMoviesUseCase,
+        actions: MoviesListViewModelActions? = nil
     ) {
         self.searchMoviesUseCase = searchMoviesUseCase
         self.actions = actions

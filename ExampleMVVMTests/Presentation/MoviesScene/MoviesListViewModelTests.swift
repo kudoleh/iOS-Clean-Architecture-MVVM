@@ -1,10 +1,3 @@
-//
-//  MoviesListViewModelTests.swift
-//  ExampleMVVMTests
-//
-//  Created by Oleh Kudinov on 17.08.19.
-//
-
 import XCTest
 
 class MoviesListViewModelTests: XCTestCase {

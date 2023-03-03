@@ -1,13 +1,6 @@
-//
-//  Endpoint.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 01.10.18.
-//
-
 import Foundation
 
-public enum HTTPMethodType: String {
+enum HTTPMethodType: String {
     case get     = "GET"
     case head    = "HEAD"
     case post    = "POST"
@@ -16,25 +9,25 @@ public enum HTTPMethodType: String {
     case delete  = "DELETE"
 }
 
-public enum BodyEncoding {
+enum BodyEncoding {
     case jsonSerializationData
     case stringEncodingAscii
 }
 
-public class Endpoint<R>: ResponseRequestable {
+class Endpoint<R>: ResponseRequestable {
     
-    public typealias Response = R
+    typealias Response = R
     
-    public let path: String
-    public let isFullPath: Bool
-    public let method: HTTPMethodType
-    public let headerParameters: [String: String]
-    public let queryParametersEncodable: Encodable?
-    public let queryParameters: [String: Any]
-    public let bodyParametersEncodable: Encodable?
-    public let bodyParameters: [String: Any]
-    public let bodyEncoding: BodyEncoding
-    public let responseDecoder: ResponseDecoder
+    let path: String
+    let isFullPath: Bool
+    let method: HTTPMethodType
+    let headerParameters: [String: String]
+    let queryParametersEncodable: Encodable?
+    let queryParameters: [String: Any]
+    let bodyParametersEncodable: Encodable?
+    let bodyParameters: [String: Any]
+    let bodyEncoding: BodyEncoding
+    let responseDecoder: ResponseDecoder
     
     init(path: String,
          isFullPath: Bool = false,
@@ -59,7 +52,7 @@ public class Endpoint<R>: ResponseRequestable {
     }
 }
 
-public protocol Requestable {
+protocol Requestable {
     var path: String { get }
     var isFullPath: Bool { get }
     var method: HTTPMethodType { get }
@@ -73,7 +66,7 @@ public protocol Requestable {
     func urlRequest(with networkConfig: NetworkConfigurable) throws -> URLRequest
 }
 
-public protocol ResponseRequestable: Requestable {
+protocol ResponseRequestable: Requestable {
     associatedtype Response
     
     var responseDecoder: ResponseDecoder { get }
@@ -87,10 +80,14 @@ extension Requestable {
     
     func url(with config: NetworkConfigurable) throws -> URL {
 
-        let baseURL = config.baseURL.absoluteString.last != "/" ? config.baseURL.absoluteString + "/" : config.baseURL.absoluteString
+        let baseURL = config.baseURL.absoluteString.last != "/"
+        ? config.baseURL.absoluteString + "/"
+        : config.baseURL.absoluteString
         let endpoint = isFullPath ? path : baseURL.appending(path)
         
-        guard var urlComponents = URLComponents(string: endpoint) else { throw RequestGenerationError.components }
+        guard var urlComponents = URLComponents(
+            string: endpoint
+        ) else { throw RequestGenerationError.components }
         var urlQueryItems = [URLQueryItem]()
 
         let queryParameters = try queryParametersEncodable?.toDictionary() ?? self.queryParameters
@@ -105,7 +102,7 @@ extension Requestable {
         return url
     }
     
-    public func urlRequest(with config: NetworkConfigurable) throws -> URLRequest {
+    func urlRequest(with config: NetworkConfigurable) throws -> URLRequest {
         
         let url = try self.url(with: config)
         var urlRequest = URLRequest(url: url)
@@ -126,7 +123,10 @@ extension Requestable {
         case .jsonSerializationData:
             return try? JSONSerialization.data(withJSONObject: bodyParameters)
         case .stringEncodingAscii:
-            return bodyParameters.queryString.data(using: String.Encoding.ascii, allowLossyConversion: true)
+            return bodyParameters.queryString.data(
+                using: String.Encoding.ascii,
+                allowLossyConversion: true
+            )
         }
     }
 }

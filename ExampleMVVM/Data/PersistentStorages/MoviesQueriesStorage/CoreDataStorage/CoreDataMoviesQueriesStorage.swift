@@ -1,10 +1,3 @@
-//
-//  CoreDataMoviesQueriesStorage.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 16.08.19.
-//
-
 import Foundation
 import CoreData
 
@@ -13,7 +6,10 @@ final class CoreDataMoviesQueriesStorage {
     private let maxStorageLimit: Int
     private let coreDataStorage: CoreDataStorage
 
-    init(maxStorageLimit: Int, coreDataStorage: CoreDataStorage = CoreDataStorage.shared) {
+    init(
+        maxStorageLimit: Int,
+        coreDataStorage: CoreDataStorage = CoreDataStorage.shared
+    ) {
         self.maxStorageLimit = maxStorageLimit
         self.coreDataStorage = coreDataStorage
     }
@@ -21,7 +17,10 @@ final class CoreDataMoviesQueriesStorage {
 
 extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
     
-    func fetchRecentsQueries(maxCount: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
+    func fetchRecentsQueries(
+        maxCount: Int,
+        completion: @escaping (Result<[MovieQuery], Error>) -> Void
+    ) {
         
         coreDataStorage.performBackgroundTask { context in
             do {
@@ -38,7 +37,10 @@ extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
         }
     }
     
-    func saveRecentQuery(query: MovieQuery, completion: @escaping (Result<MovieQuery, Error>) -> Void) {
+    func saveRecentQuery(
+        query: MovieQuery,
+        completion: @escaping (Result<MovieQuery, Error>) -> Void
+    ) {
 
         coreDataStorage.performBackgroundTask { [weak self] context in
             guard let self = self else { return }
@@ -58,7 +60,10 @@ extension CoreDataMoviesQueriesStorage: MoviesQueriesStorage {
 // MARK: - Private
 extension CoreDataMoviesQueriesStorage {
 
-    private func cleanUpQueries(for query: MovieQuery, inContext context: NSManagedObjectContext) throws {
+    private func cleanUpQueries(
+        for query: MovieQuery,
+        inContext context: NSManagedObjectContext
+    ) throws {
         let request: NSFetchRequest = MovieQueryEntity.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: #keyPath(MovieQueryEntity.createdAt),
                                                     ascending: false)]
@@ -68,14 +73,22 @@ extension CoreDataMoviesQueriesStorage {
         removeQueries(limit: maxStorageLimit - 1, in: result, inContext: context)
     }
 
-    private func removeDuplicates(for query: MovieQuery, in queries: inout [MovieQueryEntity], inContext context: NSManagedObjectContext) {
+    private func removeDuplicates(
+        for query: MovieQuery,
+        in queries: inout [MovieQueryEntity],
+        inContext context: NSManagedObjectContext
+    ) {
         queries
             .filter { $0.query == query.query }
             .forEach { context.delete($0) }
         queries.removeAll { $0.query == query.query }
     }
 
-    private func removeQueries(limit: Int, in queries: [MovieQueryEntity], inContext context: NSManagedObjectContext) {
+    private func removeQueries(
+        limit: Int,
+        in queries: [MovieQueryEntity],
+        inContext context: NSManagedObjectContext
+    ) {
         guard queries.count > limit else { return }
 
         queries.suffix(queries.count - limit)

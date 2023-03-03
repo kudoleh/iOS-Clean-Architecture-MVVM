@@ -1,10 +1,3 @@
-//
-//  UserDefaultsMoviesQueriesStorage.swift
-//  ExampleMVVM
-//
-//  Created by Oleh on 03.10.18.
-//
-
 import Foundation
 
 final class UserDefaultsMoviesQueriesStorage {
@@ -13,7 +6,10 @@ final class UserDefaultsMoviesQueriesStorage {
     private var userDefaults: UserDefaults
     private let backgroundQueue: DispatchQueue = .global(qos: .userInitiated)
     
-    init(maxStorageLimit: Int, userDefaults: UserDefaults = UserDefaults.standard) {
+    init(
+        maxStorageLimit: Int,
+        userDefaults: UserDefaults = UserDefaults.standard
+    ) {
         self.maxStorageLimit = maxStorageLimit
         self.userDefaults = userDefaults
     }
@@ -38,7 +34,10 @@ final class UserDefaultsMoviesQueriesStorage {
 
 extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
 
-    func fetchRecentsQueries(maxCount: Int, completion: @escaping (Result<[MovieQuery], Error>) -> Void) {
+    func fetchRecentsQueries(
+        maxCount: Int,
+        completion: @escaping (Result<[MovieQuery], Error>) -> Void
+    ) {
         backgroundQueue.async { [weak self] in
             guard let self = self else { return }
 
@@ -48,7 +47,10 @@ extension UserDefaultsMoviesQueriesStorage: MoviesQueriesStorage {
         }
     }
 
-    func saveRecentQuery(query: MovieQuery, completion: @escaping (Result<MovieQuery, Error>) -> Void) {
+    func saveRecentQuery(
+        query: MovieQuery,
+        completion: @escaping (Result<MovieQuery, Error>) -> Void
+    ) {
         backgroundQueue.async { [weak self] in
             guard let self = self else { return }
 

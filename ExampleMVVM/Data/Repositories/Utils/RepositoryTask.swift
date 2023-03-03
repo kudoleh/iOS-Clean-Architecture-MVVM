@@ -1,10 +1,3 @@
-//
-//  RepositoryTask.swift
-//  ExampleMVVM
-//
-//  Created by Oleh Kudinov on 25.10.19.
-//
-
 import Foundation
 
 class RepositoryTask: Cancellable {
