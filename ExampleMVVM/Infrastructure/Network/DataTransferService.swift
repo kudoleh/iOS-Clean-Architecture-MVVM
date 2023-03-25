@@ -7,8 +7,25 @@ enum DataTransferError: Error {
     case resolvedNetworkFailure(Error)
 }
 
+protocol DataTransferDispatchQueue {
+    func asyncExecute(work: @escaping () -> Void)
+}
+
+extension DispatchQueue: DataTransferDispatchQueue {
+    func asyncExecute(work: @escaping () -> Void) {
+        async(group: nil, execute: work)
+    }
+}
+
 protocol DataTransferService {
     typealias CompletionHandler<T> = (Result<T, DataTransferError>) -> Void
+    
+    @discardableResult
+    func request<T: Decodable, E: ResponseRequestable>(
+        with endpoint: E,
+        on queue: DataTransferDispatchQueue,
+        completion: @escaping CompletionHandler<T>
+    ) -> NetworkCancellable? where E.Response == T
     
     @discardableResult
     func request<T: Decodable, E: ResponseRequestable>(
@@ -16,6 +33,13 @@ protocol DataTransferService {
         completion: @escaping CompletionHandler<T>
     ) -> NetworkCancellable? where E.Response == T
 
+    @discardableResult
+    func request<E: ResponseRequestable>(
+        with endpoint: E,
+        on queue: DataTransferDispatchQueue,
+        completion: @escaping CompletionHandler<Void>
+    ) -> NetworkCancellable? where E.Response == Void
+    
     @discardableResult
     func request<E: ResponseRequestable>(
         with endpoint: E,
@@ -56,6 +80,7 @@ extension DefaultDataTransferService: DataTransferService {
     
     func request<T: Decodable, E: ResponseRequestable>(
         with endpoint: E,
+        on queue: DataTransferDispatchQueue,
         completion: @escaping CompletionHandler<T>
     ) -> NetworkCancellable? where E.Response == T {
 
@@ -66,11 +91,35 @@ extension DefaultDataTransferService: DataTransferService {
                     data: data,
                     decoder: endpoint.responseDecoder
                 )
-                completion(result)
+                queue.asyncExecute { completion(result) }
             case .failure(let error):
                 self.errorLogger.log(error: error)
                 let error = self.resolve(networkError: error)
-                completion(.failure(error))
+                queue.asyncExecute { completion(.failure(error)) }
+            }
+        }
+    }
+    
+    func request<T: Decodable, E: ResponseRequestable>(
+        with endpoint: E,
+        completion: @escaping CompletionHandler<T>
+    ) -> NetworkCancellable? where E.Response == T {
+        request(with: endpoint, on: DispatchQueue.main, completion: completion)
+    }
+
+    func request<E>(
+        with endpoint: E,
+        on queue: DataTransferDispatchQueue,
+        completion: @escaping CompletionHandler<Void>
+    ) -> NetworkCancellable? where E : ResponseRequestable, E.Response == Void {
+        networkService.request(endpoint: endpoint) { result in
+            switch result {
+            case .success:
+                queue.asyncExecute { completion(.success(())) }
+            case .failure(let error):
+                self.errorLogger.log(error: error)
+                let error = self.resolve(networkError: error)
+                queue.asyncExecute { completion(.failure(error)) }
             }
         }
     }
@@ -79,16 +128,7 @@ extension DefaultDataTransferService: DataTransferService {
         with endpoint: E,
         completion: @escaping CompletionHandler<Void>
     ) -> NetworkCancellable? where E : ResponseRequestable, E.Response == Void {
-        networkService.request(endpoint: endpoint) { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                self.errorLogger.log(error: error)
-                let error = self.resolve(networkError: error)
-                completion(.failure(error))
-            }
-        }
+        request(with: endpoint, on: DispatchQueue.main, completion: completion)
     }
 
     // MARK: - Private

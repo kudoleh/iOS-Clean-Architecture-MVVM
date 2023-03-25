@@ -13,7 +13,7 @@ final class MoviesListItemCell: UITableViewCell {
     private var viewModel: MoviesListItemViewModel!
     private var posterImagesRepository: PosterImagesRepository?
     private var imageLoadTask: Cancellable? { willSet { imageLoadTask?.cancel() } }
-    private let onMainThreadExecutor: OnMainThreadExecutor = DefaultOnMainThreadExecutor()
+    private let mainQueue: DispatchQueueType = DispatchQueue.main
 
     func fill(
         with viewModel: MoviesListItemViewModel,
@@ -36,7 +36,7 @@ final class MoviesListItemCell: UITableViewCell {
             with: posterImagePath,
             width: width
         ) { [weak self] result in
-            self?.onMainThreadExecutor.execute {
+            self?.mainQueue.async {
                 guard self?.viewModel.posterImagePath == posterImagePath else { return }
                 if case let .success(data) = result {
                     self?.posterImageView.image = UIImage(data: data)

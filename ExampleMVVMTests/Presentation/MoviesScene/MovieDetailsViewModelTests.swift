@@ -13,8 +13,11 @@ class MovieDetailsViewModelTests: XCTestCase {
         let expectedImage = "image data".data(using: .utf8)!
         posterImagesRepository.image = expectedImage
 
-        let viewModel = DefaultMovieDetailsViewModel(movie: Movie.stub(posterPath: "posterPath"),
-                                                     posterImagesRepository: posterImagesRepository)
+        let viewModel = DefaultMovieDetailsViewModel(
+            movie: Movie.stub(posterPath: "posterPath"),
+            posterImagesRepository: posterImagesRepository,
+            mainQueue: DispatchQueueTypeMock()
+        )
         
         posterImagesRepository.validateInput = { (imagePath: String, width: Int) in
             XCTAssertEqual(imagePath, "posterPath")

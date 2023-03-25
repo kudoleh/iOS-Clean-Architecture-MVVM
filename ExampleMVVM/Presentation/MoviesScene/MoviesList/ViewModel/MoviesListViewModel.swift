@@ -49,7 +49,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
 
     private var pages: [MoviesPage] = []
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
-    private let onMainThreadExecutor: OnMainThreadExecutor = DefaultOnMainThreadExecutor()
+    private let mainQueue: DispatchQueueType
 
     // MARK: - OUTPUT
 
@@ -67,10 +67,12 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     
     init(
         searchMoviesUseCase: SearchMoviesUseCase,
-        actions: MoviesListViewModelActions? = nil
+        actions: MoviesListViewModelActions? = nil,
+        mainQueue: DispatchQueueType = DispatchQueue.main
     ) {
         self.searchMoviesUseCase = searchMoviesUseCase
         self.actions = actions
+        self.mainQueue = mainQueue
     }
 
     // MARK: - Private
@@ -100,12 +102,12 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
         moviesLoadTask = searchMoviesUseCase.execute(
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: { [weak self] page in
-                self?.onMainThreadExecutor.execute {
+                self?.mainQueue.async {
                     self?.appendPage(page)
                 }
             },
             completion: { [weak self] result in
-                self?.onMainThreadExecutor.execute {
+                self?.mainQueue.async {
                     switch result {
                     case .success(let page):
                         self?.appendPage(page)

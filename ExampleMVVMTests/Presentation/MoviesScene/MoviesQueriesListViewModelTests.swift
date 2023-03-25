@@ -42,7 +42,7 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         // given
         let useCase = FetchRecentMovieQueriesUseCaseMock()
         useCase.movieQueries = movieQueries
-        let viewModel = DefaultMoviesQueryListViewModel(
+        let viewModel = DefaultMoviesQueryListViewModel.make(
             numberOfQueriesToShow: 3,
             fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(useCase)
         )
@@ -59,7 +59,7 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         // given
         let useCase = FetchRecentMovieQueriesUseCaseMock()
         useCase.error = FetchRecentQueriedUseCase.someError
-        let viewModel = DefaultMoviesQueryListViewModel(
+        let viewModel = DefaultMoviesQueryListViewModel.make(
             numberOfQueriesToShow: 3,
             fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(useCase)
         )
@@ -82,7 +82,7 @@ class MoviesQueriesListViewModelTests: XCTestCase {
             delegateNotifiedCount += 1
         }
         
-        let viewModel = DefaultMoviesQueryListViewModel(
+        let viewModel = DefaultMoviesQueryListViewModel.make(
             numberOfQueriesToShow: 3,
             fetchRecentMovieQueriesUseCaseFactory: makeFetchRecentMovieQueriesUseCase(FetchRecentMovieQueriesUseCaseMock()),
             didSelect: didSelect
@@ -94,5 +94,20 @@ class MoviesQueriesListViewModelTests: XCTestCase {
         // then
         XCTAssertEqual(actionMovieQuery, selectedQueryItem)
         XCTAssertEqual(delegateNotifiedCount, 1)
+    }
+}
+
+extension DefaultMoviesQueryListViewModel {
+    static func make(
+        numberOfQueriesToShow: Int,
+        fetchRecentMovieQueriesUseCaseFactory: @escaping FetchRecentMovieQueriesUseCaseFactory,
+        didSelect: MoviesQueryListViewModelDidSelectAction? = nil
+    ) -> DefaultMoviesQueryListViewModel {
+        DefaultMoviesQueryListViewModel(
+            numberOfQueriesToShow: numberOfQueriesToShow,
+            fetchRecentMovieQueriesUseCaseFactory: fetchRecentMovieQueriesUseCaseFactory,
+            didSelect: didSelect,
+            mainQueue: DispatchQueueTypeMock()
+        )
     }
 }

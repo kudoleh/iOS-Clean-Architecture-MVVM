@@ -4,6 +4,12 @@ private struct MockModel: Decodable {
     let name: String
 }
 
+final class DataTransferDispatchQueueMock: DataTransferDispatchQueue {
+    func asyncExecute(work: @escaping () -> Void) {
+        work()
+    }
+}
+
 class DataTransferServiceTests: XCTestCase {
     
     private enum DataTransferErrorMock: Error {
@@ -16,13 +22,21 @@ class DataTransferServiceTests: XCTestCase {
         var completionCallsCount = 0
         
         let responseData = #"{"name": "Hello"}"#.data(using: .utf8)
-        let networkService = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
-                                                                                                             data: responseData,
-                                                                                                             error: nil))
+        let networkService = DefaultNetworkService(
+            config: config,
+            sessionManager: NetworkSessionManagerMock(
+                response: nil,
+                data: responseData,
+                error: nil
+            )
+        )
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
-        _ = sut.request(with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
+        _ = sut.request(
+            with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get),
+            on: DataTransferDispatchQueueMock()
+        ) { result in
             do {
                 let object = try result.get()
                 XCTAssertEqual(object.name, "Hello")
@@ -41,13 +55,21 @@ class DataTransferServiceTests: XCTestCase {
         var completionCallsCount = 0
         
         let responseData = #"{"age": 20}"#.data(using: .utf8)
-        let networkService = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: nil,
-                                                                                                             data: responseData,
-                                                                                                             error: nil))
+        let networkService = DefaultNetworkService(
+            config: config,
+            sessionManager: NetworkSessionManagerMock(
+                response: nil,
+                data: responseData,
+                error: nil
+            )
+        )
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
-        _ = sut.request(with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
+        _ = sut.request(
+            with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get),
+            on: DataTransferDispatchQueueMock()
+        ) { result in
             do {
                 _ = try result.get()
                 XCTFail("Should not happen")
@@ -69,13 +91,21 @@ class DataTransferServiceTests: XCTestCase {
                                        statusCode: 500,
                                        httpVersion: "1.1",
                                        headerFields: nil)
-        let networkService = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: response,
-                                                                                                             data: responseData,
-                                                                                                             error: DataTransferErrorMock.someError))
+        let networkService = DefaultNetworkService(
+            config: config,
+            sessionManager: NetworkSessionManagerMock(
+                response: response,
+                data: responseData,
+                error: DataTransferErrorMock.someError
+            )
+        )
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
-        _ = sut.request(with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
+        _ = sut.request(
+            with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get),
+            on: DataTransferDispatchQueueMock()
+        ) { result in
             do {
                 _ = try result.get()
                 XCTFail("Should not happen")
@@ -101,13 +131,21 @@ class DataTransferServiceTests: XCTestCase {
                                        statusCode: 200,
                                        httpVersion: "1.1",
                                        headerFields: [:])
-        let networkService = DefaultNetworkService(config: config, sessionManager: NetworkSessionManagerMock(response: response,
-                                                                                                             data: nil,
-                                                                                                             error: nil))
+        let networkService = DefaultNetworkService(
+            config: config,
+            sessionManager: NetworkSessionManagerMock(
+                response: response,
+                data: nil,
+                error: nil
+            )
+        )
         
         let sut = DefaultDataTransferService(with: networkService)
         //when
-        _ = sut.request(with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get)) { result in
+        _ = sut.request(
+            with: Endpoint<MockModel>(path: "http://mock.endpoint.com", method: .get),
+            on: DataTransferDispatchQueueMock()
+        ) { result in
             do {
                 _ = try result.get()
                 XCTFail("Should not happen")

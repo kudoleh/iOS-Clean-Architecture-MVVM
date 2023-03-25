@@ -23,7 +23,7 @@ final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
     private let numberOfQueriesToShow: Int
     private let fetchRecentMovieQueriesUseCaseFactory: FetchRecentMovieQueriesUseCaseFactory
     private let didSelect: MoviesQueryListViewModelDidSelectAction?
-    private let onMainThreadExecutor: OnMainThreadExecutor = DefaultOnMainThreadExecutor()
+    private let mainQueue: DispatchQueueType
     
     // MARK: - OUTPUT
     let items: Observable<[MoviesQueryListItemViewModel]> = Observable([])
@@ -31,21 +31,26 @@ final class DefaultMoviesQueryListViewModel: MoviesQueryListViewModel {
     init(
         numberOfQueriesToShow: Int,
         fetchRecentMovieQueriesUseCaseFactory: @escaping FetchRecentMovieQueriesUseCaseFactory,
-        didSelect: MoviesQueryListViewModelDidSelectAction? = nil
+        didSelect: MoviesQueryListViewModelDidSelectAction? = nil,
+        mainQueue: DispatchQueueType = DispatchQueue.main
     ) {
         self.numberOfQueriesToShow = numberOfQueriesToShow
         self.fetchRecentMovieQueriesUseCaseFactory = fetchRecentMovieQueriesUseCaseFactory
         self.didSelect = didSelect
+        self.mainQueue = mainQueue
     }
     
     private func updateMoviesQueries() {
         let request = FetchRecentMovieQueriesUseCase.RequestValue(maxCount: numberOfQueriesToShow)
         let completion: (FetchRecentMovieQueriesUseCase.ResultValue) -> Void = { [weak self] result in
-            self?.onMainThreadExecutor.execute {
+            self?.mainQueue.async {
                 switch result {
                 case .success(let items):
-                    self?.items.value = items.map { $0.query }.map(MoviesQueryListItemViewModel.init)
-                case .failure: break
+                    self?.items.value = items
+                        .map { $0.query }
+                        .map(MoviesQueryListItemViewModel.init)
+                case .failure:
+                    break
                 }
             }
         }

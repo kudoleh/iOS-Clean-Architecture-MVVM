@@ -18,7 +18,7 @@ final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     private let posterImagePath: String?
     private let posterImagesRepository: PosterImagesRepository
     private var imageLoadTask: Cancellable? { willSet { imageLoadTask?.cancel() } }
-    private let onMainThreadExecutor: OnMainThreadExecutor = DefaultOnMainThreadExecutor()
+    private let mainQueue: DispatchQueueType
 
     // MARK: - OUTPUT
     let title: String
@@ -28,13 +28,15 @@ final class DefaultMovieDetailsViewModel: MovieDetailsViewModel {
     
     init(
         movie: Movie,
-        posterImagesRepository: PosterImagesRepository
+        posterImagesRepository: PosterImagesRepository,
+        mainQueue: DispatchQueueType = DispatchQueue.main
     ) {
         self.title = movie.title ?? ""
         self.overview = movie.overview ?? ""
         self.posterImagePath = movie.posterPath
         self.isPosterImageHidden = movie.posterPath == nil
         self.posterImagesRepository = posterImagesRepository
+        self.mainQueue = mainQueue
     }
 }
 
@@ -48,7 +50,7 @@ extension DefaultMovieDetailsViewModel {
             with: posterImagePath,
             width: width
         ) { [weak self] result in
-            self?.onMainThreadExecutor.execute {
+            self?.mainQueue.async {
                 guard self?.posterImagePath == posterImagePath else { return }
                 switch result {
                 case .success(let data):
