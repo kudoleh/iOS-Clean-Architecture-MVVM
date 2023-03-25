@@ -398,9 +398,9 @@
 			isa = PBXGroup;
 			children = (
 				1F90353F2307757D00DEA4BD /* Mocks */,
-				1F9034D92307238C00DEA4BD /* MoviesQueriesListViewModelTests.swift */,
 				1F9035392307716300DEA4BD /* MoviesListViewModelTests.swift */,
 				1F90353623076B8A00DEA4BD /* MovieDetailsViewModelTests.swift */,
+				1F9034D92307238C00DEA4BD /* MoviesQueriesListViewModelTests.swift */,
 			);
 			path = MoviesScene;
 			sourceTree = "<group>";

@@ -17,28 +17,36 @@ class MoviesListViewModelTests: XCTestCase {
     
     class SearchMoviesUseCaseMock: SearchMoviesUseCase {
         var executeCallCount: Int = 0
-        var error: Error?
-        var page = MoviesPage(page: 0, totalPages: 0, movies: [])
+
+        typealias ExecuteBlock = (
+            SearchMoviesUseCaseRequestValue,
+            (MoviesPage) -> Void,
+            (Result<MoviesPage, Error>) -> Void
+        ) -> Void
+
+        lazy var _execute: ExecuteBlock = { _, _, _ in
+            XCTFail("not implemented")
+        }
         
         func execute(
             requestValue: SearchMoviesUseCaseRequestValue,
             cached: @escaping (MoviesPage) -> Void,
             completion: @escaping (Result<MoviesPage, Error>) -> Void
         ) -> Cancellable? {
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.success(page))
-            }
             executeCallCount += 1
+            _execute(requestValue, cached, completion)
             return nil
         }
     }
     
-    func test_whenSearchMoviesUseCaseRetrievesFirstPage_thenViewModelContainsOnlyFirstPage() {
+    func test_whenFetchUsersUseCaseRetrievesEmptyPage_thenViewModelIsEmpty() {
         // given
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
-        searchMoviesUseCaseMock.page = MoviesPage(page: 1, totalPages: 2, movies: moviesPages[0].movies)
+
+        searchMoviesUseCaseMock._execute = { requestValue, _, completion in
+            XCTAssertEqual(requestValue.page, 1)
+            completion(.success(MoviesPage(page: 1, totalPages: 0, movies: [])))
+        }
         let viewModel = DefaultMoviesListViewModel(
             searchMoviesUseCase: searchMoviesUseCaseMock,
             mainQueue: DispatchQueueTypeMock()
@@ -48,6 +56,32 @@ class MoviesListViewModelTests: XCTestCase {
         
         // then
         XCTAssertEqual(viewModel.currentPage, 1)
+        XCTAssertFalse(viewModel.hasMorePages)
+        XCTAssertTrue(viewModel.items.value.isEmpty)
+        XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
+    }
+    
+    func test_whenSearchMoviesUseCaseRetrievesFirstPage_thenViewModelContainsOnlyFirstPage() {
+        // given
+        let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
+
+        searchMoviesUseCaseMock._execute = { requestValue, _, completion in
+            XCTAssertEqual(requestValue.page, 1)
+            completion(.success(self.moviesPages[0]))
+        }
+        let viewModel = DefaultMoviesListViewModel(
+            searchMoviesUseCase: searchMoviesUseCaseMock,
+            mainQueue: DispatchQueueTypeMock()
+        )
+        // when
+        viewModel.didSearch(query: "query")
+        
+        // then
+        let expectedItems: [MoviesListItemViewModel] = moviesPages[0]
+            .movies
+            .map { MoviesListItemViewModel(movie: $0) }
+        XCTAssertEqual(viewModel.items.value, expectedItems)
+        XCTAssertEqual(viewModel.currentPage, 1)
         XCTAssertTrue(viewModel.hasMorePages)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
     }
@@ -55,7 +89,11 @@ class MoviesListViewModelTests: XCTestCase {
     func test_whenSearchMoviesUseCaseRetrievesFirstAndSecondPage_thenViewModelContainsTwoPages() {
         // given
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
-        searchMoviesUseCaseMock.page = MoviesPage(page: 1, totalPages: 2, movies: moviesPages[0].movies)
+
+        searchMoviesUseCaseMock._execute = { requestValue, _, completion in
+            XCTAssertEqual(requestValue.page, 1)
+            completion(.success(self.moviesPages[0]))
+        }
         let viewModel = DefaultMoviesListViewModel.make(
             searchMoviesUseCase: searchMoviesUseCaseMock
         )
@@ -63,51 +101,72 @@ class MoviesListViewModelTests: XCTestCase {
         viewModel.didSearch(query: "query")
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
         
-        searchMoviesUseCaseMock.page = MoviesPage(page: 2, totalPages: 2, movies: moviesPages[1].movies)
-        
+        let testPage2 = 1
+        searchMoviesUseCaseMock._execute = { requestValue, _, completion in
+            XCTAssertEqual(requestValue.page, 2)
+            completion(.success(self.moviesPages[1]))
+        }
+
         viewModel.didLoadNextPage()
-        
+
         // then
+        let expectedItems: [MoviesListItemViewModel] = moviesPages
+            .flatMap { $0.movies }
+            .map { MoviesListItemViewModel(movie: $0) }
+        XCTAssertEqual(viewModel.items.value, expectedItems)
         XCTAssertEqual(viewModel.currentPage, 2)
         XCTAssertFalse(viewModel.hasMorePages)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 2)
     }
-    
+
     func test_whenSearchMoviesUseCaseReturnsError_thenViewModelContainsError() {
         // given
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
-        searchMoviesUseCaseMock.error = SearchMoviesUseCaseError.someError
+        
+        searchMoviesUseCaseMock._execute = { requestValue, _, completion in
+            XCTAssertEqual(requestValue.page, 1)
+            completion(.failure(SearchMoviesUseCaseError.someError))
+        }
         let viewModel = DefaultMoviesListViewModel.make(
             searchMoviesUseCase: searchMoviesUseCaseMock
         )
         // when
         viewModel.didSearch(query: "query")
-        
+
         // then
         XCTAssertNotNil(viewModel.error)
+        XCTAssertTrue(viewModel.items.value.isEmpty)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
     }
-    
+
     func test_whenLastPage_thenHasNoPageIsTrue() {
         // given
         let searchMoviesUseCaseMock = SearchMoviesUseCaseMock()
-        searchMoviesUseCaseMock.page = MoviesPage(page: 1, totalPages: 2, movies: moviesPages[0].movies)
+        searchMoviesUseCaseMock._execute = { requestValue, _, completion in
+            XCTAssertEqual(requestValue.page, 1)
+            completion(.success(self.moviesPages[0]))
+        }
         let viewModel = DefaultMoviesListViewModel.make(
             searchMoviesUseCase: searchMoviesUseCaseMock
         )
         // when
         viewModel.didSearch(query: "query")
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
-        
-        searchMoviesUseCaseMock.page = MoviesPage(page: 2, totalPages: 2, movies: moviesPages[1].movies)
+
+        searchMoviesUseCaseMock._execute = { requestValue, _, completion in
+            XCTAssertEqual(requestValue.page, 2)
+            completion(.success(self.moviesPages[1]))
+        }
 
         viewModel.didLoadNextPage()
-        
+
         // then
         XCTAssertEqual(viewModel.currentPage, 2)
         XCTAssertFalse(viewModel.hasMorePages)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 2)
     }
+    
+    
 }
 
 extension DefaultMoviesListViewModel {
