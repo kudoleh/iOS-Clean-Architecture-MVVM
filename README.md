@@ -31,11 +31,11 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * CI Pipeline ([Travis CI + Fastlane](.travis.yml))
  
 ## Includes
-* Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService(Infrastructure Layer)
-* Size Classes and UIStackView in Detail view
-* Dark Mode
-* SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 * Pagination
+* Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService(Infrastructure Layer)
+* Dark Mode
+* Size Classes and UIStackView in Detail view
+* SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 
 ## Networking
 If you would like to use Networking from this example project as repo I made it availabe [here](https://github.com/kudoleh/SENetworking)
