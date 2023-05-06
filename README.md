@@ -31,13 +31,12 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * CI Pipeline ([Travis CI + Fastlane](.travis.yml))
  
 ## Includes
-* [Unit Tests with Quick and Nimble](https://github.com/kudoleh/iOS-Modular-Architecture/blob/master/DevPods/MoviesSearch/MoviesSearch/Tests/Presentation/MoviesScene/MoviesListViewModelSpec.swift), and [View Unit tests with iOSSnapshotTestCase](https://github.com/kudoleh/iOS-Modular-Architecture/blob/master/DevPods/MoviesSearch/MoviesSearch/Tests/Presentation/MoviesScene/MoviesListViewTests.swift)
 * Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService(Infrastructure Layer)
-* UI test with XCUITests
 * Size Classes and UIStackView in Detail view
 * Dark Mode
 * SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 * Pagination
+* UI test with XCUITests and [View Unit tests with iOSSnapshotTestCase](https://github.com/kudoleh/iOS-Modular-Architecture/blob/master/DevPods/MoviesSearch/MoviesSearch/Tests/Presentation/MoviesScene/MoviesListViewTests.swift) are inside (Modular Architecture repository)[https://github.com/kudoleh/iOS-Modular-Architecture]. 
 
 ## Networking
 If you would like to use Networking from this example project as repo I made it availabe [here](https://github.com/kudoleh/SENetworking)
