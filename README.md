@@ -36,7 +36,6 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * Dark Mode
 * SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 * Pagination
-* UI test with XCUITests and [View Unit tests with iOSSnapshotTestCase](https://github.com/kudoleh/iOS-Modular-Architecture/blob/master/DevPods/MoviesSearch/MoviesSearch/Tests/Presentation/MoviesScene/MoviesListViewTests.swift) are inside [Modular Architecture repository](https://github.com/kudoleh/iOS-Modular-Architecture) 
 
 ## Networking
 If you would like to use Networking from this example project as repo I made it availabe [here](https://github.com/kudoleh/SENetworking)
