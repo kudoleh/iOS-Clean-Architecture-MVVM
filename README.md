@@ -53,6 +53,9 @@ https://user-images.githubusercontent.com/6785311/236615779-153ef846-ae0b-4ce8-9
 
 
 
+# Views in coded
+There is also similar repostiry but instead of using Storyboards, all views are written in coded:
+https://github.com/kudoleh/iOS-Clean-Architecture-MVVM-Views-In-Code
 
 
 
