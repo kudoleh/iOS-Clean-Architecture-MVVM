@@ -42,9 +42,12 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 ## Networking
 If you would like to use Networking from this example project as repo I made it availabe [here](https://github.com/kudoleh/SENetworking)
 
-
 ## Requirements
 * Xcode Version 11.2.1+  Swift 5.0+
 
 # How to use app
 To search a movie, write a name of a movie inside searchbar and hit search button. There are two network calls: request movies and request poster images. Every successful search query is stored persistently.
+
+https://user-images.githubusercontent.com/6785311/236613562-6485f3f9-48e1-46c2-a2cf-0d5c352959cc.mp4
+
+
