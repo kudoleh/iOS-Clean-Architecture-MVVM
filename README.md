@@ -53,8 +53,8 @@ https://user-images.githubusercontent.com/6785311/236615779-153ef846-ae0b-4ce8-9
 
 
 
-# Views in code (instead of using Storyboards)
-There is also similar repository but instead of using Storyboards, all views are written in coded. 
+# Views in code, instead of using Storyboards
+This repository uses Storyboards (except one view written in SwiftUI). There is also similar repository but instead of using Storyboards, all views are written in code. 
 It also uses UITableViewDiffableDataSource:
 https://github.com/kudoleh/iOS-Clean-Architecture-MVVM-Views-In-Code
 
