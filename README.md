@@ -49,7 +49,10 @@ If you would like to use Networking from this example project as repo I made it 
 To search a movie, write a name of a movie inside searchbar and hit search button. There are two network calls: request movies and request poster images. Every successful search query is stored persistently.
 
 
-https://user-images.githubusercontent.com/6785311/236614453-f64697f3-ad05-45c1-a88a-4cfcbefc5fbe.mp4
+https://user-images.githubusercontent.com/6785311/236614528-c115f26a-541e-4326-9700-79a4ee91ec5b.mp4
+
+
+
 
 
 
