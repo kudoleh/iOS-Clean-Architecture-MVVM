@@ -46,7 +46,6 @@ final class MoviesSceneDIContainer: MoviesSearchFlowCoordinatorDependencies {
     }
     func makeMoviesQueriesRepository() -> MoviesQueriesRepository {
         DefaultMoviesQueriesRepository(
-            dataTransferService: dependencies.apiDataTransferService,
             moviesQueriesPersistentStorage: moviesQueriesStorage
         )
     }
