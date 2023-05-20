@@ -45,12 +45,13 @@ This repository uses Storyboards (except one view written in SwiftUI). There is 
 It also uses UITableViewDiffableDataSource:
 [iOS-Clean-Architecture-MVVM-Views-In-Code](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM-Views-In-Code)
 
-## Requirements
-* Xcode Version 11.2.1+  Swift 5.0+
-
 # How to use app
 To search a movie, write a name of a movie inside searchbar and hit search button. There are two network calls: request movies and request poster images. Every successful search query is stored persistently.
 
 
 https://user-images.githubusercontent.com/6785311/236615779-153ef846-ae0b-4ce8-908a-57fca7158b9d.mp4
+
+
+## Requirements
+* Xcode Version 11.2.1+  Swift 5.0+
 
