@@ -40,12 +40,12 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 ## Networking
 If you would like to reuse Networking from this example project as repository I made it availabe [here](https://github.com/kudoleh/SENetworking)
 
-# Views in Code vs Storyboard
+## Views in Code vs Storyboard
 This repository uses Storyboards (except one view written in SwiftUI). There is another similar repository but instead of using Storyboards, all Views are written in Code. 
 It also uses UITableViewDiffableDataSource:
 [iOS-Clean-Architecture-MVVM-Views-In-Code](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM-Views-In-Code)
 
-# How to use app
+## How to use app
 To search a movie, write a name of a movie inside searchbar and hit search button. There are two network calls: request movies and request poster images. Every successful search query is stored persistently.
 
 
