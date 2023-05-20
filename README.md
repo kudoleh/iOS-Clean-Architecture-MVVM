@@ -38,7 +38,12 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
 
 ## Networking
-If you would like to use Networking from this example project as repo I made it availabe [here](https://github.com/kudoleh/SENetworking)
+If you would like to reuse Networking from this example project as repository I made it availabe [here](https://github.com/kudoleh/SENetworking)
+
+# Views in Code vs Storyboard
+This repository uses Storyboards (except one view written in SwiftUI). There is another similar repository but instead of using Storyboards, all Views are written in Code. 
+It also uses UITableViewDiffableDataSource:
+[iOS-Clean-Architecture-MVVM-Views-In-Code](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM-Views-In-Code)
 
 ## Requirements
 * Xcode Version 11.2.1+  Swift 5.0+
@@ -49,8 +54,3 @@ To search a movie, write a name of a movie inside searchbar and hit search butto
 
 https://user-images.githubusercontent.com/6785311/236615779-153ef846-ae0b-4ce8-908a-57fca7158b9d.mp4
 
-
-# Note about Views in code
-This repository uses Storyboards (except one view written in SwiftUI). There is another similar repository but instead of using Storyboards, all views are written in code. 
-It also uses UITableViewDiffableDataSource:
-[iOS-Clean-Architecture-MVVM-Views-In-Code](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM-Views-In-Code)
