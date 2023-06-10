@@ -108,7 +108,7 @@ extension DefaultNetworkService: NetworkService {
 // MARK: - Default Network Session Manager
 // Note: If authorization is needed NetworkSessionManager can be implemented by using,
 // for example, Alamofire SessionManager with its RequestAdapter and RequestRetrier.
-// And it can be incjected into NetworkService instead of default one.
+// And it can be injected into NetworkService instead of default one.
 
 final class DefaultNetworkSessionManager: NetworkSessionManager {
     func request(
