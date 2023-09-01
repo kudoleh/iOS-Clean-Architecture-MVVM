@@ -11,7 +11,7 @@ class NetworkServiceTests: XCTestCase {
         var queryParameters: [String: Any] = [:]
         var bodyParametersEncodable: Encodable?
         var bodyParameters: [String: Any] = [:]
-        var bodyEncoding: BodyEncoding = .stringEncodingAscii
+        var bodyEncoder: BodyEncoder = AsciiBodyEncoder()
         
         init(path: String, method: HTTPMethodType) {
             self.path = path

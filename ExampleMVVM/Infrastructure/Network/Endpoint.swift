@@ -9,11 +9,6 @@ enum HTTPMethodType: String {
     case delete  = "DELETE"
 }
 
-enum BodyEncoding {
-    case jsonSerializationData
-    case stringEncodingAscii
-}
-
 class Endpoint<R>: ResponseRequestable {
     
     typealias Response = R
@@ -26,7 +21,7 @@ class Endpoint<R>: ResponseRequestable {
     let queryParameters: [String: Any]
     let bodyParametersEncodable: Encodable?
     let bodyParameters: [String: Any]
-    let bodyEncoding: BodyEncoding
+    let bodyEncoder: BodyEncoder
     let responseDecoder: ResponseDecoder
     
     init(path: String,
@@ -37,7 +32,7 @@ class Endpoint<R>: ResponseRequestable {
          queryParameters: [String: Any] = [:],
          bodyParametersEncodable: Encodable? = nil,
          bodyParameters: [String: Any] = [:],
-         bodyEncoding: BodyEncoding = .jsonSerializationData,
+         bodyEncoder: BodyEncoder = JSONBodyEncoder(),
          responseDecoder: ResponseDecoder = JSONResponseDecoder()) {
         self.path = path
         self.isFullPath = isFullPath
@@ -47,8 +42,24 @@ class Endpoint<R>: ResponseRequestable {
         self.queryParameters = queryParameters
         self.bodyParametersEncodable = bodyParametersEncodable
         self.bodyParameters = bodyParameters
-        self.bodyEncoding = bodyEncoding
+        self.bodyEncoder = bodyEncoder
         self.responseDecoder = responseDecoder
+    }
+}
+
+protocol BodyEncoder {
+    func encode(_ parameters: [String: Any]) -> Data?
+}
+
+struct JSONBodyEncoder: BodyEncoder {
+    func encode(_ parameters: [String: Any]) -> Data? {
+        return try? JSONSerialization.data(withJSONObject: parameters)
+    }
+}
+
+struct AsciiBodyEncoder: BodyEncoder {
+    func encode(_ parameters: [String: Any]) -> Data? {
+        return parameters.queryString.data(using: String.Encoding.ascii, allowLossyConversion: true)
     }
 }
 
@@ -61,7 +72,7 @@ protocol Requestable {
     var queryParameters: [String: Any] { get }
     var bodyParametersEncodable: Encodable? { get }
     var bodyParameters: [String: Any] { get }
-    var bodyEncoding: BodyEncoding { get }
+    var bodyEncoder: BodyEncoder { get }
     
     func urlRequest(with networkConfig: NetworkConfigurable) throws -> URLRequest
 }
@@ -111,23 +122,11 @@ extension Requestable {
 
         let bodyParameters = try bodyParametersEncodable?.toDictionary() ?? self.bodyParameters
         if !bodyParameters.isEmpty {
-            urlRequest.httpBody = encodeBody(bodyParameters: bodyParameters, bodyEncoding: bodyEncoding)
+            urlRequest.httpBody = bodyEncoder.encode(bodyParameters)
         }
         urlRequest.httpMethod = method.rawValue
         urlRequest.allHTTPHeaderFields = allHeaders
         return urlRequest
-    }
-    
-    private func encodeBody(bodyParameters: [String: Any], bodyEncoding: BodyEncoding) -> Data? {
-        switch bodyEncoding {
-        case .jsonSerializationData:
-            return try? JSONSerialization.data(withJSONObject: bodyParameters)
-        case .stringEncodingAscii:
-            return bodyParameters.queryString.data(
-                using: String.Encoding.ascii,
-                allowLossyConversion: true
-            )
-        }
     }
 }
 
