@@ -51,13 +51,13 @@ protocol BodyEncoder {
     func encode(_ parameters: [String: Any]) -> Data?
 }
 
-struct JSONBodyEncoder: BodyEncoder {
+private struct JSONBodyEncoder: BodyEncoder {
     func encode(_ parameters: [String: Any]) -> Data? {
         return try? JSONSerialization.data(withJSONObject: parameters)
     }
 }
 
-struct AsciiBodyEncoder: BodyEncoder {
+private struct AsciiBodyEncoder: BodyEncoder {
     func encode(_ parameters: [String: Any]) -> Data? {
         return parameters.queryString.data(using: String.Encoding.ascii, allowLossyConversion: true)
     }
