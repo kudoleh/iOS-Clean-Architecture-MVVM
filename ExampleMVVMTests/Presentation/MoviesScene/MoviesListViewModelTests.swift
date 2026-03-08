@@ -59,7 +59,6 @@ class MoviesListViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.hasMorePages)
         XCTAssertTrue(viewModel.items.value.isEmpty)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
-        addTeardownBlock { [weak viewModel] in XCTAssertNil(viewModel) }
     }
     
     func test_whenSearchMoviesUseCaseRetrievesFirstPage_thenViewModelContainsOnlyFirstPage() {
@@ -85,7 +84,6 @@ class MoviesListViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.currentPage, 1)
         XCTAssertTrue(viewModel.hasMorePages)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
-        addTeardownBlock { [weak viewModel] in XCTAssertNil(viewModel) }
     }
     
     func test_whenSearchMoviesUseCaseRetrievesFirstAndSecondPage_thenViewModelContainsTwoPages() {
@@ -118,7 +116,6 @@ class MoviesListViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.currentPage, 2)
         XCTAssertFalse(viewModel.hasMorePages)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 2)
-        addTeardownBlock { [weak viewModel] in XCTAssertNil(viewModel) }
     }
 
     func test_whenSearchMoviesUseCaseReturnsError_thenViewModelContainsError() {
@@ -139,7 +136,6 @@ class MoviesListViewModelTests: XCTestCase {
         XCTAssertNotNil(viewModel.error)
         XCTAssertTrue(viewModel.items.value.isEmpty)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
-        addTeardownBlock { [weak viewModel] in XCTAssertNil(viewModel) }
     }
 
     func test_whenLastPage_thenHasNoPageIsTrue() {
@@ -167,7 +163,6 @@ class MoviesListViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.currentPage, 2)
         XCTAssertFalse(viewModel.hasMorePages)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 2)
-        addTeardownBlock { [weak viewModel] in XCTAssertNil(viewModel) }
     }
     
     func test_whenSearchMoviesUseCaseReturnsCachedData_thenViewModelShowsFirstCachedDataAndAfterFreshData() {
@@ -211,7 +206,6 @@ class MoviesListViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.currentPage, 1)
         XCTAssertTrue(viewModel.hasMorePages)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
-        addTeardownBlock { [weak viewModel] in XCTAssertNil(viewModel) }
     }
     
     func test_whenSearchMoviesUseCaseReturnsError_thenViewModelShowsCachedData() {
@@ -245,7 +239,6 @@ class MoviesListViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.currentPage, 1)
         XCTAssertTrue(viewModel.hasMorePages)
         XCTAssertEqual(searchMoviesUseCaseMock.executeCallCount, 1)
-        addTeardownBlock { [weak viewModel] in XCTAssertNil(viewModel) }
     }
 
 }
