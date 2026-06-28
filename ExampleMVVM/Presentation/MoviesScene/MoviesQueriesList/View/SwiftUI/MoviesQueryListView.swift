@@ -1,4 +1,3 @@
-import Foundation
 import SwiftUI
 
 @available(iOS 13.0, *)
