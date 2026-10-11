@@ -8,22 +8,19 @@ class MoviesSceneUITests: XCTestCase {
         XCUIApplication().launch()
     }
 
-    // NOTE: for UI tests to work the keyboard of simulator must be on.
-    // Keyboard shortcut COMMAND + SHIFT + K while simulator has focus
     func testOpenMovieDetails_whenSearchBatmanAndTapOnFirstResultRow_thenMovieDetailsViewOpensWithTitleBatman() {
-        
+
         let app = XCUIApplication()
-        
+
         // Search for Batman
         let searchText = "Batman Begins"
-        app.searchFields[AccessibilityIdentifier.searchField].tap()
-        if !app.keys["A"].waitForExistence(timeout: 5) {
-            XCTFail("The keyboard could not be found. Use keyboard shortcut COMMAND + SHIFT + K while simulator has focus on text input")
-        }
-        _ = app.searchFields[AccessibilityIdentifier.searchField].waitForExistence(timeout: 10)
-        app.searchFields[AccessibilityIdentifier.searchField].typeText(searchText)
-        app.buttons["search"].tap()
-        
+        let searchField = app.searchFields[AccessibilityIdentifier.searchField]
+        XCTAssertTrue(searchField.waitForExistence(timeout: 10))
+        searchField.tap()
+        // Appending "\n" submits the search the same way the keyboard's search key does,
+        // without depending on the on-screen keyboard being rendered/tappable.
+        searchField.typeText(searchText + "\n")
+
         // Tap on first result row
         app.tables.cells.staticTexts[searchText].tap()
         
