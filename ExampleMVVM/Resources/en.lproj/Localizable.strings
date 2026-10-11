@@ -13,6 +13,6 @@
 "No internet connection" = "No internet connection";
 "Failed loading movies" = "Failed loading movies";
 "Search Movies" = "Search Movies";
-"Type a title above, then tap Search to see results." = "Type a title above, then tap Search to see results.";
+"Type a title above, then tap Search or press Enter on the keyboard." = "Type a title above, then tap Search or press Enter on the keyboard.";
 "No Results" = "No Results";
 "No movies found for “%@”. Try another title." = "No movies found for “%@”. Try another title.";

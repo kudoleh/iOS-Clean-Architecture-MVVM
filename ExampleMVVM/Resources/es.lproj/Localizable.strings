@@ -13,6 +13,6 @@
 "No internet connection" = "Sin conexión a internet";
 "Failed loading movies" = "Error al descargar películas";
 "Search Movies" = "Buscar películas";
-"Type a title above, then tap Search to see results." = "Escribe un título arriba y pulsa Buscar para ver los resultados.";
+"Type a title above, then tap Search or press Enter on the keyboard." = "Escribe un título arriba y pulsa Buscar o Intro en el teclado.";
 "No Results" = "Sin resultados";
 "No movies found for “%@”. Try another title." = "No se encontraron películas para “%@”. Prueba otro título.";

@@ -69,7 +69,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     let errorTitle = NSLocalizedString("Error", comment: "")
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
     let emptySearchTitle = NSLocalizedString("Search Movies", comment: "")
-    let emptySearchSubtitle = NSLocalizedString("Type a title above, then tap Search to see results.", comment: "")
+    let emptySearchSubtitle = NSLocalizedString("Type a title above, then tap Search or press Enter on the keyboard.", comment: "")
     let noResultsTitle = NSLocalizedString("No Results", comment: "")
 
     func noResultsSubtitle(forQuery query: String) -> String {
