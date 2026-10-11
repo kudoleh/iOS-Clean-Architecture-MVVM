@@ -1,34 +1,23 @@
 import UIKit
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    let appDIContainer = AppDIContainer()
-    var appFlowCoordinator: AppFlowCoordinator?
-    var window: UIWindow?
-    
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        
         AppAppearance.setupAppearance()
-        
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let navigationController = UINavigationController()
-
-        window?.rootViewController = navigationController
-        appFlowCoordinator = AppFlowCoordinator(
-            navigationController: navigationController,
-            appDIContainer: appDIContainer
-        )
-        appFlowCoordinator?.start()
-        window?.makeKeyAndVisible()
-    
         return true
     }
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        CoreDataStorage.shared.saveContext()
+    // The window is created per scene in `SceneDelegate` (UIScene life cycle is required
+    // for apps built with the iOS 26+ SDKs).
+    func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 }
