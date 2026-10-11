@@ -22,6 +22,7 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * Advanced iOS App Architecture https://www.raywenderlich.com/8477-introducing-advanced-ios-app-architecture
 * [MVVM](ExampleMVVM/Presentation/MoviesScene/MoviesQueriesList) 
 * Data Binding using [Observable](ExampleMVVM/Presentation/Utils/Observable.swift) without 3rd party libraries 
+* Search-as-you-type with an injectable, unit-tested [Debouncer](ExampleMVVM/Presentation/Utils/Debouncer.swift) and protection against stale responses
 * [Dependency Injection](ExampleMVVM/Application/DIContainer/AppDIContainer.swift)
 * [Flow Coordinator](ExampleMVVM/Presentation/MoviesScene/Flows/MoviesSearchFlowCoordinator.swift)
 * [Data Transfer Object (DTO)](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM/blob/master/ExampleMVVM/Data/Network/DataMapping/MoviesResponseDTO%2BMapping.swift)
@@ -36,7 +37,9 @@ iOS Project implemented with Clean Layered Architecture and MVVM. (Can be used a
 * Unit Tests for Use Cases(Domain Layer), ViewModels(Presentation Layer), NetworkService(Infrastructure Layer)
 * Dark Mode
 * Size Classes and UIStackView in Detail view
-* SwiftUI example, demostration that presentation layer does not change, only UI (at least Xcode 11 required)
+* SwiftUI example, demostration that presentation layer does not change, only UI
+* Search as you type (debounced) with an empty state for "no query" and "no results"
+* UIScene life cycle ([SceneDelegate](ExampleMVVM/Application/SceneDelegate.swift)), required for apps built with the iOS 26+ SDKs
 
 ## Networking
 If you would like to reuse Networking from this example project as repository I made it availabe [here](https://github.com/kudoleh/SENetworking)
@@ -47,12 +50,13 @@ It also uses UITableViewDiffableDataSource:
 [iOS-Clean-Architecture-MVVM-Views-In-Code](https://github.com/kudoleh/iOS-Clean-Architecture-MVVM-Views-In-Code)
 
 ## How to use app
-To search a movie, write a name of a movie inside searchbar and hit search button. There are two network calls: request movies and request poster images. Every successful search query is stored persistently.
+To search a movie, start typing its name in the search bar. Results appear as you type (after a short pause), or tap the search button to search immediately. There are two network calls: request movies and request poster images. Every successful search query is stored persistently.
 
 
 https://user-images.githubusercontent.com/6785311/236615779-153ef846-ae0b-4ce8-908a-57fca7158b9d.mp4
 
 
 ## Requirements
-* Xcode Version 11.2.1+  Swift 5.0+
+* Xcode 14+, Swift 5.7+
+* iOS 15.0+
 
