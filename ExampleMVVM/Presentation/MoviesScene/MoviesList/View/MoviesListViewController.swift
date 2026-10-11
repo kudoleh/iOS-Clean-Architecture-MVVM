@@ -6,7 +6,10 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     @IBOutlet private var moviesListContainer: UIView!
     @IBOutlet private(set) var suggestionsListContainer: UIView!
     @IBOutlet private var searchBarContainer: UIView!
-    @IBOutlet private var emptyDataLabel: UILabel!
+    @IBOutlet private var emptyStateStackView: UIStackView!
+    @IBOutlet private var emptyStateIconImageView: UIImageView!
+    @IBOutlet private var emptyStateTitleLabel: UILabel!
+    @IBOutlet private var emptyStateSubtitleLabel: UILabel!
     
     private var viewModel: MoviesListViewModel!
     private var posterImagesRepository: PosterImagesRepository?
@@ -59,8 +62,20 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
 
     private func setupViews() {
         title = viewModel.screenTitle
-        emptyDataLabel.text = viewModel.emptyDataTitle
         setupSearchController()
+    }
+
+    private func updateEmptyState() {
+        let query = viewModel.query.value
+        if query.isEmpty {
+            emptyStateIconImageView.image = UIImage(systemName: "magnifyingglass")
+            emptyStateTitleLabel.text = viewModel.emptySearchTitle
+            emptyStateSubtitleLabel.text = viewModel.emptySearchSubtitle
+        } else {
+            emptyStateIconImageView.image = UIImage(systemName: "film")
+            emptyStateTitleLabel.text = viewModel.noResultsTitle
+            emptyStateSubtitleLabel.text = viewModel.noResultsSubtitle(forQuery: query)
+        }
     }
 
     private func setupBehaviours() {
@@ -73,7 +88,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     }
 
     private func updateLoading(_ loading: MoviesListViewModelLoading?) {
-        emptyDataLabel.isHidden = true
+        emptyStateStackView.isHidden = true
         moviesListContainer.isHidden = true
         suggestionsListContainer.isHidden = true
         LoadingView.hide()
@@ -83,7 +98,8 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
         case .nextPage: moviesListContainer.isHidden = false
         case .none:
             moviesListContainer.isHidden = viewModel.isEmpty
-            emptyDataLabel.isHidden = !viewModel.isEmpty
+            emptyStateStackView.isHidden = !viewModel.isEmpty
+            if viewModel.isEmpty { updateEmptyState() }
         }
 
         moviesTableViewController?.updateLoading(loading)
@@ -106,6 +122,10 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     private func showError(_ error: String) {
         guard !error.isEmpty else { return }
         showAlert(title: viewModel.errorTitle, message: error)
+    }
+
+    @IBAction private func startSearchButtonTapped(_ sender: UIButton) {
+        searchController.searchBar.becomeFirstResponder()
     }
 }
 

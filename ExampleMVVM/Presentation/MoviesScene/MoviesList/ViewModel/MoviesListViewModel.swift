@@ -30,9 +30,12 @@ protocol MoviesListViewModelOutput {
     var error: Observable<String> { get }
     var isEmpty: Bool { get }
     var screenTitle: String { get }
-    var emptyDataTitle: String { get }
     var errorTitle: String { get }
     var searchBarPlaceholder: String { get }
+    var emptySearchTitle: String { get }
+    var emptySearchSubtitle: String { get }
+    var noResultsTitle: String { get }
+    func noResultsSubtitle(forQuery query: String) -> String
 }
 
 typealias MoviesListViewModel = MoviesListViewModelInput & MoviesListViewModelOutput
@@ -59,9 +62,16 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     let error: Observable<String> = Observable("")
     var isEmpty: Bool { return items.value.isEmpty }
     let screenTitle = NSLocalizedString("Movies", comment: "")
-    let emptyDataTitle = NSLocalizedString("Search results", comment: "")
     let errorTitle = NSLocalizedString("Error", comment: "")
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
+    let emptySearchTitle = NSLocalizedString("Search Movies", comment: "")
+    let emptySearchSubtitle = NSLocalizedString("Type a title above, then tap Search to see results.", comment: "")
+    let noResultsTitle = NSLocalizedString("No Results", comment: "")
+
+    func noResultsSubtitle(forQuery query: String) -> String {
+        let format = NSLocalizedString("No movies found for \u{201c}%@\u{201d}. Try another title.", comment: "")
+        return String(format: format, query)
+    }
 
     // MARK: - Init
     
