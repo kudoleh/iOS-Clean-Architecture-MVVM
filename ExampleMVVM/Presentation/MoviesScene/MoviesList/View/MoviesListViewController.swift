@@ -16,6 +16,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
 
     private var moviesTableViewController: MoviesListTableViewController?
     private var searchController = UISearchController(searchResultsController: nil)
+    private let searchDebouncer: Debouncer = DefaultDebouncer(delay: 0.4)
 
     // MARK: - Lifecycle
 
@@ -46,6 +47,7 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        searchDebouncer.cancel()
         searchController.isActive = false
     }
 
@@ -107,7 +109,8 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     }
 
     private func updateQueriesSuggestions() {
-        guard searchController.searchBar.isFirstResponder else {
+        let searchText = searchController.searchBar.text ?? ""
+        guard searchController.searchBar.isFirstResponder, searchText.isEmpty else {
             viewModel.closeQueriesSuggestions()
             return
         }
@@ -115,6 +118,9 @@ final class MoviesListViewController: UIViewController, StoryboardInstantiable, 
     }
 
     private func updateSearchQuery(_ query: String) {
+        // Live search already keeps the search bar's text in sync with `query` as the user types,
+        // so only force-sync (and dismiss search) when the query changed from elsewhere, e.g. a selected suggestion.
+        guard searchController.searchBar.text != query else { return }
         searchController.isActive = false
         searchController.searchBar.text = query
     }
@@ -151,13 +157,29 @@ extension MoviesListViewController {
 }
 
 extension MoviesListViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchDebouncer.cancel()
+        updateQueriesSuggestions()
+
+        guard !searchText.isEmpty else {
+            viewModel.didCancelSearch()
+            return
+        }
+
+        searchDebouncer.execute { [weak self] in
+            self?.viewModel.didSearch(query: searchText)
+        }
+    }
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        searchDebouncer.cancel()
         searchController.isActive = false
         viewModel.didSearch(query: searchText)
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchDebouncer.cancel()
         viewModel.didCancelSearch()
     }
 }

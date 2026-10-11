@@ -54,6 +54,10 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     private var moviesLoadTask: Cancellable? { willSet { moviesLoadTask?.cancel() } }
     private let mainQueue: DispatchQueueType
 
+    /// Bumped on every load() / cancel, so a response from a superseded request can be told apart
+    /// from the latest one and ignored even if cancellation of the old task isn't honored in time.
+    private var latestRequestID = 0
+
     // MARK: - OUTPUT
 
     let items: Observable<[MoviesListItemViewModel]> = Observable([])
@@ -65,7 +69,7 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     let errorTitle = NSLocalizedString("Error", comment: "")
     let searchBarPlaceholder = NSLocalizedString("Search Movies", comment: "")
     let emptySearchTitle = NSLocalizedString("Search Movies", comment: "")
-    let emptySearchSubtitle = NSLocalizedString("Type a title above, then tap Search to see results.", comment: "")
+    let emptySearchSubtitle = NSLocalizedString("Type a title above and results will appear as you type.", comment: "")
     let noResultsTitle = NSLocalizedString("No Results", comment: "")
 
     func noResultsSubtitle(forQuery query: String) -> String {
@@ -106,6 +110,9 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
     }
 
     private func load(movieQuery: MovieQuery, loading: MoviesListViewModelLoading) {
+        latestRequestID += 1
+        let requestID = latestRequestID
+
         self.loading.value = loading
         query.value = movieQuery.query
 
@@ -113,18 +120,22 @@ final class DefaultMoviesListViewModel: MoviesListViewModel {
             requestValue: .init(query: movieQuery, page: nextPage),
             cached: { [weak self] page in
                 self?.mainQueue.async {
-                    self?.appendPage(page)
+                    guard let self, requestID == self.latestRequestID else { return }
+                    self.appendPage(page)
                 }
             },
             completion: { [weak self] result in
                 self?.mainQueue.async {
+                    // Ignore responses from a request that's been superseded by a newer search,
+                    // in case this one is slower and would otherwise overwrite fresher results.
+                    guard let self, requestID == self.latestRequestID else { return }
                     switch result {
                     case .success(let page):
-                        self?.appendPage(page)
+                        self.appendPage(page)
                     case .failure(let error):
-                        self?.handle(error: error)
+                        self.handle(error: error)
                     }
-                    self?.loading.value = .none
+                    self.loading.value = .none
                 }
         })
     }
@@ -159,7 +170,11 @@ extension DefaultMoviesListViewModel {
     }
 
     func didCancelSearch() {
+        latestRequestID += 1
         moviesLoadTask?.cancel()
+        resetPages()
+        query.value = ""
+        loading.value = .none
     }
 
     func showQueriesSuggestions() {
